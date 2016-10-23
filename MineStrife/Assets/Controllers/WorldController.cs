@@ -46,6 +46,7 @@ namespace Assets.Controllers
         {
             BuildingPrefabController.Instance = new PrefabAssetController<BuildingType>(BuildingPrefabController.GetPaths());
             BuildingIconPrefabController.Instance = new PrefabAssetController<BuildingType>(BuildingIconPrefabController.GetPaths());
+            UnitPrefabController.Instance = new PrefabAssetController<UnitTypes>(UnitPrefabController.GetPaths());
         }
 
         private void GenerateTiles()

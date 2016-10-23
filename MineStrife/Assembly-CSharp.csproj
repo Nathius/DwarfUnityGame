@@ -52,6 +52,7 @@
      <Compile Include="Assets\Controllers\PrefabControllers\BuildingIconPrefabController.cs" />
      <Compile Include="Assets\Controllers\PrefabControllers\BuildingPrefabController.cs" />
      <Compile Include="Assets\Controllers\PrefabControllers\PrefabAssetController.cs" />
+     <Compile Include="Assets\Controllers\PrefabControllers\UnitPrefabController.cs" />
      <Compile Include="Assets\Controllers\WorldController.cs" />
      <Compile Include="Assets\Models\Buildings\Building.cs" />
      <Compile Include="Assets\Models\Buildings\BuildingDefinition.cs" />
@@ -66,6 +67,7 @@
      <Compile Include="Assets\Models\Econemy\Stockpile.cs" />
      <Compile Include="Assets\Models\TeamEntity.cs" />
      <Compile Include="Assets\Models\Tile.cs" />
+     <Compile Include="Assets\Models\Units\UnitDefinition.cs" />
      <Compile Include="Assets\Models\World.cs" />
      <Compile Include="Assets\Models\WorldEntity.cs" />
      <Compile Include="Assets\Scripts\ProductionNumber.cs" />
