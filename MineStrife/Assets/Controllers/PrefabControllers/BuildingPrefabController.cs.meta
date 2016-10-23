@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: c8b2475c6199afe40b62e3ffa5feb366
+timeCreated: 1477209423
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - WoodCutter: {fileID: 161378, guid: d2843d3c25aa90d479ff95ed96346250, type: 2}
+  - Farmer: {fileID: 180786, guid: 1ed1d7a3a43ab724b8dfe9cecb40ef2b, type: 2}
+  - Mill: {fileID: 193412, guid: 824898bd7116e2c46a8b0ed5f0a424c4, type: 2}
+  - CityCenter: {fileID: 195894, guid: fc09776f1a7108e42bc481aaf49209c8, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
