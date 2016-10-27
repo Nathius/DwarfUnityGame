@@ -12,6 +12,7 @@ namespace Assets.Models.Econemy
         WHEAT,
         FLOUR,
         ORE,
+        BREAD,
         COUNT
     }
 }

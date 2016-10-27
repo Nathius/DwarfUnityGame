@@ -151,7 +151,7 @@ namespace Assets.Controllers
         private void UpdateZoomLevel()
         {
             Camera.main.orthographicSize -= Camera.main.orthographicSize * Input.GetAxis("Mouse ScrollWheel");
-            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 3, 25);
+            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 3, 20);
         }
 
         private void DragScreen(Vector3 currentPosition)

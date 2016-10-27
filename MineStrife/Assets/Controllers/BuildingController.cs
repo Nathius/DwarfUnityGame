@@ -14,7 +14,6 @@ namespace Assets.Controllers
     public class BuildingController : MonoBehaviour
 	{
         public static BuildingController Instance { get; protected set; }
-        public static List<GameObject> AllBuildings { get; set; }
         public GameObject buildingGhostPrefab;
         public GameObject buildingGhost;
 
@@ -25,7 +24,6 @@ namespace Assets.Controllers
                 Debug.LogError("World controller already instanced");
             }
             Instance = this;
-            AllBuildings = new List<GameObject>();
             buildingGhost = Instantiate(buildingGhostPrefab);
             buildingGhost.transform.position = new Vector3(0, 0, 0);
             hideGhost();
@@ -44,7 +42,6 @@ namespace Assets.Controllers
                     //instance a new build prefab and place it on the screen
                     GameObject building_go = Instantiate(prefab);
                     building_go.transform.SetParent(this.transform, true);
-                    AllBuildings.Add(building_go);
                     building_go.name = "building";
 
                     //create a new building data object

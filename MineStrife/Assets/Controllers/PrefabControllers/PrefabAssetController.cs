@@ -56,7 +56,7 @@ namespace Assets.Controllers.PrefabControllers
             //if path not found error
             if (!Paths.ContainsKey(inTypeKey))
             {
-                Debug.LogError(string.Format("No path or prefab found for type: {0}:{1} " + typeof(T).ToString(), inTypeKey.ToString()));
+                Debug.Log(string.Format("No path or prefab found for type: {0}:{1} " + typeof(T).ToString(), inTypeKey.ToString()));
                 return null;
             }
 

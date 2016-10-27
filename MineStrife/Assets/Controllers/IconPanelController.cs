@@ -25,6 +25,7 @@ public class IconPanelController : MonoBehaviour {
     {
         var instance = Instantiate(inPrefab);
         instance.transform.parent = this.transform;
+        instance.transform.localScale = new Vector3(1.6f, 1.6f);
         inIcon.gameObject = instance;
         CurrentIcons.Add(inIcon);
         ShuffelIcons();
@@ -36,7 +37,8 @@ public class IconPanelController : MonoBehaviour {
         {
             var thisPos = this.transform.position;
             var go = CurrentIcons[i].gameObject;
-            go.transform.position = new Vector3(thisPos.x + (i * 1.2f), thisPos.y, 0);
+            var scale = Camera.main.orthographicSize * 0.18f;
+            go.transform.position = new Vector3(thisPos.x + (i * 1.2f * scale), thisPos.y, 0);
         }
     }
 
@@ -71,6 +73,10 @@ public class IconPanelController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
-        //check each icon for collisions   
+        //constantly reset each icons z position to 0
+        foreach (var icon in CurrentIcons)
+        {
+            icon.gameObject.transform.position = new Vector3(icon.gameObject.transform.position.x, icon.gameObject.transform.position.y, 0);
+        }
 	}
 }

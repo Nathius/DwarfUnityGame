@@ -29,10 +29,5 @@ namespace Assets.Models
                 " (" + Math.Round(Position.x, 2) + "," + Math.Round(Position.y, 2) + ")," + "\n" +
                 " size (" + tileWidth + "," + tileHeight + ")";
         }
-        //building type
-        //current que
-        //commands available
-        //
-
     }
 }
