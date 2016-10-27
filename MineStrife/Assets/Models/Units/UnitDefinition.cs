@@ -6,38 +6,38 @@ using Assets.Models.Econemy;
 
 namespace Assets.Models.Buildings
 {
-    public enum UnitTypes
+    public enum UnitType
     {
         WORKER,
         COUNT
     }
 
-    //public class UnitDefinition
-    //{
-    //    public Conversion Conversion{ get; set; }
-    //    public ResourceAmmount BuildingCost { get; set; }
-    //    public BuildingType BuildingType { get; set; }
+    public class UnitDefinition
+    {
+        public int Health{ get; set; }
+        public ResourceAmmount Cost { get; set; }
+        public UnitType UnitType { get; set; }
 
-    //    public static List<BuildingDefinition> allDefinitions { get; set; }
-    //    public BuildingDefinition()
-    //    {
-    //        if (allDefinitions == null)
-    //        {
-    //            allDefinitions = new List<BuildingDefinition>();
-    //        }
-    //        allDefinitions.Add(this);
-    //    }
+        public static List<UnitDefinition> allDefinitions { get; set; }
+        public UnitDefinition()
+        {
+            if (allDefinitions == null)
+            {
+                allDefinitions = new List<UnitDefinition>();
+            }
+            allDefinitions.Add(this);
+        }
 
-    //    public static BuildingDefinition GetBuildingDefinitionForType(BuildingType inBuildingType)
-    //    {
-    //        return allDefinitions.Where(x => x.BuildingType == inBuildingType).FirstOrDefault();
-    //    }
+        public static UnitDefinition GetDefinitionForType(UnitType inType)
+        {
+            return allDefinitions.Where(x => x.UnitType == inType).FirstOrDefault();
+        }
 
-    //    //city center
-    //    public static BuildingDefinition CityCenter = new BuildingDefinition
-    //    {
-    //        BuildingType = BuildingType.CITY_CENTER,
-    //        BuildingCost = new ResourceAmmount(RESOURCE_TYPE.STONE, 20)
-    //    };
-    //}
+        //Worker
+        public static UnitDefinition Worker = new UnitDefinition
+        {
+            UnitType = UnitType.WORKER,
+            Cost = new ResourceAmmount(RESOURCE_TYPE.BREAD, 20)
+        };
+    }
 }

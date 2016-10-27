@@ -9,13 +9,13 @@ namespace Assets.Controllers.PrefabControllers
 {
     public class UnitPrefabController
 	{
-        public static PrefabAssetController<UnitTypes> Instance { get; set;  }
+        public static PrefabAssetController<UnitType> Instance { get; set;  }
 
-        public static Dictionary<UnitTypes, string> GetPaths()
+        public static Dictionary<UnitType, string> GetPaths()
         {
-            var paths = new Dictionary<UnitTypes, string>();
+            var paths = new Dictionary<UnitType, string>();
             string basePath = "Units/";
-            paths.Add(UnitTypes.WORKER, basePath + "Unit_Worker");
+            paths.Add(UnitType.WORKER, basePath + "Unit_Worker");
 
             return paths;
         }

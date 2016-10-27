@@ -67,6 +67,7 @@
      <Compile Include="Assets\Models\Econemy\Stockpile.cs" />
      <Compile Include="Assets\Models\TeamEntity.cs" />
      <Compile Include="Assets\Models\Tile.cs" />
+     <Compile Include="Assets\Models\Units\Unit.cs" />
      <Compile Include="Assets\Models\Units\UnitDefinition.cs" />
      <Compile Include="Assets\Models\World.cs" />
      <Compile Include="Assets\Models\WorldEntity.cs" />
