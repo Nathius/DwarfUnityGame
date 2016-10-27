@@ -63,6 +63,9 @@ namespace Assets.Controllers
 
             var mill = BuildingIconPrefabController.Instance.GetPrefab(BuildingType.MILL);
             IconPanelController.Instance.AddIcon(new Icon(BuildingType.MILL), mill);
+
+            var barracks = BuildingIconPrefabController.Instance.GetPrefab(BuildingType.BARRACKS);
+            IconPanelController.Instance.AddIcon(new Icon(BuildingType.BARRACKS), barracks);
         }
 
         private void UpdateStockpileReadout()

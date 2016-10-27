@@ -19,6 +19,7 @@ namespace Assets.Controllers.PrefabControllers
             paths.Add(BuildingType.WOOD_CUTTER, basePath + "Building_WoodCutter");
             paths.Add(BuildingType.FARMER, basePath + "Building_Farmer");
             paths.Add(BuildingType.MILL, basePath + "Building_Mill");
+            paths.Add(BuildingType.BARRACKS, basePath + "Building_Barracks");
 
             return paths;
         }

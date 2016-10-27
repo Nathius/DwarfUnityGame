@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Assets.Models.Econemy;
+using UnityEngine;
 
 namespace Assets.Models.Buildings
 {
@@ -13,6 +14,7 @@ namespace Assets.Models.Buildings
         WOOD_CUTTER,
         FARMER,
         MILL,
+        BARRACKS,
         COUNT
     }
 
@@ -34,7 +36,12 @@ namespace Assets.Models.Buildings
 
         public static BuildingDefinition GetBuildingDefinitionForType(BuildingType inBuildingType)
         {
-            return allDefinitions.Where(x => x.BuildingType == inBuildingType).FirstOrDefault();
+            var definition = allDefinitions.Where(x => x.BuildingType == inBuildingType).FirstOrDefault();
+            if (definition == null)
+            {
+                Debug.Log("No building definition found for type: " + inBuildingType.ToString());
+            }
+            return definition;
         }
 
         //city center
@@ -48,7 +55,7 @@ namespace Assets.Models.Buildings
         public static BuildingDefinition WoodCutter = new BuildingDefinition
         {
             BuildingType = BuildingType.WOOD_CUTTER,
-            Conversion = new Conversion(2,
+            Conversion = new Conversion("Cut Wood", 2,
                 new ResourceBundle(new ResourceAmmount(RESOURCE_TYPE.WOOD, 1)),
                 new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.WOOD, 1), true, 6)
                 ),
@@ -59,7 +66,7 @@ namespace Assets.Models.Buildings
         public static BuildingDefinition Farmer = new BuildingDefinition
         {
             BuildingType = BuildingType.FARMER,
-            Conversion = new Conversion(5,
+            Conversion = new Conversion("Harvest Wheat", 5,
                 new ResourceBundle(new ResourceAmmount(RESOURCE_TYPE.WHEAT, 2))
                 ),
             BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 15)
@@ -69,11 +76,19 @@ namespace Assets.Models.Buildings
         public static BuildingDefinition Mill = new BuildingDefinition
         {
             BuildingType = BuildingType.MILL,
-            Conversion = new Conversion(8,
+            Conversion = new Conversion("Mill Flour", 8,
                 new ResourceBundle(new ResourceAmmount(RESOURCE_TYPE.FLOUR, 6)),
                 new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.WHEAT, 32))
                 ),
             BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 15)
+        };
+
+        //Barracks
+        public static BuildingDefinition Barracks = new BuildingDefinition
+        {
+            BuildingType = BuildingType.BARRACKS,
+            Conversion = null,
+            BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 20)
         };
 	}
 }

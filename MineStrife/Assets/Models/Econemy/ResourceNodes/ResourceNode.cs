@@ -95,5 +95,13 @@ namespace Assets.Models.Econemy.ResourceNodes
 
             return nodeList;
         }
+
+        public override string ToString()
+        {
+            return "Building " + BuildingType.ToString() + "\n" +
+                ammountRemaining + " " + Resource.ToString() + "\n" +
+                " (" + Math.Round(Position.x, 2) + "," + Math.Round(Position.y, 2) + ")," + "\n" +
+                " size (" + tileWidth + "," + tileHeight + ")";
+        }
 	}
 }

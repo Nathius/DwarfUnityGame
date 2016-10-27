@@ -8,7 +8,7 @@ namespace Assets.Models.Buildings
 {
 	public class Conversion
 	{
-
+        public string Description { get; set; }
         public float TimeTaken { get; set; }
 
         public ResourceBundle Result { get; set; }
@@ -20,15 +20,17 @@ namespace Assets.Models.Buildings
             Requirements = new List<ConversionRequirement>();
         }
 
-        public Conversion(float inTimeTaken, ResourceBundle inResult, List<ConversionRequirement> inRequirements)
+        public Conversion(string inDescription, float inTimeTaken, ResourceBundle inResult, List<ConversionRequirement> inRequirements)
         {
+            Description = inDescription;
             TimeTaken = inTimeTaken;
             Result = inResult;
             Requirements = inRequirements;
         }
 
-        public Conversion(float inTimeTaken, ResourceBundle inResult, ConversionRequirement inRequirement = null)
+        public Conversion(string inDescription, float inTimeTaken, ResourceBundle inResult, ConversionRequirement inRequirement = null)
         {
+            Description = inDescription;
             TimeTaken = inTimeTaken;
             Result = inResult;
             Requirements = new List<ConversionRequirement>();

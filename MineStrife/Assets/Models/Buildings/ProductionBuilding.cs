@@ -142,7 +142,7 @@ namespace Assets.Models.Buildings
             var displayStr = "Production building " + BuildingType.ToString() + "\n";
             if (Conversion != null)
             {
-                displayStr += "Conversion: " + ProductionBar() + "\n";
+                displayStr +=  Conversion.Description + ": " + ProductionBar() + "\n";
             }
 
             displayStr += " (" + Math.Round(Position.x, 2) + "," + Math.Round(Position.y, 2) + ")," + "\n";
