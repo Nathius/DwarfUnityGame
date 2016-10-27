@@ -31,7 +31,7 @@ namespace Assets.Controllers
         {
             if (Instance != null)
             {
-                Debug.LogError("Display controller already instanced");
+                Debug.LogError(this.GetType().ToString() + " already instanced");
             }
             Instance = this;
         }
@@ -110,14 +110,17 @@ namespace Assets.Controllers
         {
             //format production display string
             string display = string.Join(", ", inBundle.resources.Select(x => "+ " + x.ToString()).ToArray());
+            CreateProductionLable(inPos, display);
+        }
 
+
+        public void CreateProductionLable(Vector2 inPos, string inText)
+        {
             GameObject number = Instantiate(ProductionNumberPrefab);
             number.transform.SetParent(Canvas.transform, true);
             number.transform.position = inPos;
-            //number.transform.localScale = new Vector3(1, 1, 1);
             var text = number.GetComponent<Text>();
-            text.text = display;
+            text.text = inText;
         }
-
     }
 }

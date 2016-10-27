@@ -29,5 +29,14 @@ namespace Assets.UnityWrappers
         {
             ViewObject.GetComponent<SpriteRenderer>().color = inColour;
         }
+
+        public void SetBoundSize(float inX, float inY)
+        {
+            var box = ViewObject.GetComponent<BoxCollider2D>();
+            if(box != null)
+            {
+                box.size = new Vector2(inX, inY);
+            }
+        }
 	}
 }

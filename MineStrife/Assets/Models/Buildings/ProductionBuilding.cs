@@ -132,8 +132,18 @@ namespace Assets.Models.Buildings
             {
                 currentlyProcessing = false;
 
-                World.Instance.Stockpile.AddStock(Conversion.Result);
-                DisplayController.Instance.CreateProductionNumber(Position, Conversion.Result);
+                //action any resource bundle results of the conversion
+                if (Conversion.Result.ResourceBundle != null)
+                {
+                    World.Instance.Stockpile.AddStock(Conversion.Result.ResourceBundle);
+                    DisplayController.Instance.CreateProductionNumber(Position, Conversion.Result.ResourceBundle);
+                }
+                if(Conversion.Result.UnitType != null)
+                {
+                    UnitController.Instance.CreateUnitAt(Position, Conversion.Result.UnitType.Value);
+                    DisplayController.Instance.CreateProductionLable(Position, "+1 " + Conversion.Result.UnitType.ToString());
+                }
+                
             }
         }
 

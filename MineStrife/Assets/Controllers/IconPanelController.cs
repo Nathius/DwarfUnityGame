@@ -14,7 +14,7 @@ public class IconPanelController : MonoBehaviour {
 	void Start () {
         if (Instance != null)
         {
-            Debug.LogError("Display controller already instanced");
+            Debug.LogError(this.GetType().ToString() + " already instanced");
         }
         Instance = this;
 

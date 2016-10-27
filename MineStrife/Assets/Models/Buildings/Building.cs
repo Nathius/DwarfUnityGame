@@ -21,6 +21,7 @@ namespace Assets.Models
             tileWidth = inWidth;
             tileHeight = inHeight;
             BuildingType = inBuildingType;
+            viewObject.SetBoundSize(inWidth, inHeight);
         }
 
         public override string ToString()

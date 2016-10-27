@@ -20,8 +20,8 @@ namespace Assets.Controllers
         void Start()
         {
             if (Instance != null)
-            { 
-                Debug.LogError("World controller already instanced");
+            {
+                Debug.LogError(this.GetType().ToString() + " already instanced");
             }
             Instance = this;
             buildingGhost = Instantiate(buildingGhostPrefab);

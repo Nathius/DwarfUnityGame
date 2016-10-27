@@ -46,7 +46,7 @@ namespace Assets.Models
             _stockpile.AddStock(RESOURCE_TYPE.WOOD, 60);
             _stockpile.AddStock(RESOURCE_TYPE.STONE, 60);
             _stockpile.AddStock(RESOURCE_TYPE.WHEAT, 30);
-            _stockpile.AddStock(RESOURCE_TYPE.BREAD, 150);
+            _stockpile.AddStock(RESOURCE_TYPE.BREAD, 500);
 
             width = inWidth;
             height = inHeight;

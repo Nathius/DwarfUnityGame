@@ -56,7 +56,9 @@ namespace Assets.Models.Buildings
         {
             BuildingType = BuildingType.WOOD_CUTTER,
             Conversion = new Conversion("Cut Wood", 2,
-                new ResourceBundle(new ResourceAmmount(RESOURCE_TYPE.WOOD, 1)),
+                new ConversionResult(
+                    new ResourceBundle(new ResourceAmmount(RESOURCE_TYPE.WOOD, 1)),
+                    null),
                 new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.WOOD, 1), true, 6)
                 ),
             BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 10)
@@ -67,7 +69,9 @@ namespace Assets.Models.Buildings
         {
             BuildingType = BuildingType.FARMER,
             Conversion = new Conversion("Harvest Wheat", 5,
-                new ResourceBundle(new ResourceAmmount(RESOURCE_TYPE.WHEAT, 2))
+                new ConversionResult(
+                    new ResourceBundle(new ResourceAmmount(RESOURCE_TYPE.WHEAT, 2)),
+                    null)
                 ),
             BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 15)
         };
@@ -77,7 +81,9 @@ namespace Assets.Models.Buildings
         {
             BuildingType = BuildingType.MILL,
             Conversion = new Conversion("Mill Flour", 8,
-                new ResourceBundle(new ResourceAmmount(RESOURCE_TYPE.FLOUR, 6)),
+                new ConversionResult(
+                    new ResourceBundle(new ResourceAmmount(RESOURCE_TYPE.FLOUR, 6)),
+                    null),
                 new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.WHEAT, 32))
                 ),
             BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 15)
@@ -87,7 +93,12 @@ namespace Assets.Models.Buildings
         public static BuildingDefinition Barracks = new BuildingDefinition
         {
             BuildingType = BuildingType.BARRACKS,
-            Conversion = null,
+            Conversion = new Conversion("Train Worker", 1,
+                new ConversionResult(
+                    null,
+                    UnitType.WORKER),
+                new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.BREAD, 10))
+                ),
             BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 20)
         };
 	}

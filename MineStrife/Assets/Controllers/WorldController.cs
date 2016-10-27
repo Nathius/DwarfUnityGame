@@ -28,7 +28,7 @@ namespace Assets.Controllers
         {
             if (Instance != null)
             {
-                Debug.LogError("World controller already instanced");
+                Debug.LogError(this.GetType().ToString() + " already instanced");
             }
             Instance = this;
             World = new World(40, 40);

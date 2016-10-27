@@ -53,6 +53,7 @@
      <Compile Include="Assets\Controllers\PrefabControllers\BuildingPrefabController.cs" />
      <Compile Include="Assets\Controllers\PrefabControllers\PrefabAssetController.cs" />
      <Compile Include="Assets\Controllers\PrefabControllers\UnitPrefabController.cs" />
+     <Compile Include="Assets\Controllers\UnitController.cs" />
      <Compile Include="Assets\Controllers\WorldController.cs" />
      <Compile Include="Assets\Models\Buildings\Building.cs" />
      <Compile Include="Assets\Models\Buildings\BuildingDefinition.cs" />
@@ -60,6 +61,7 @@
      <Compile Include="Assets\Models\Display\Icon.cs" />
      <Compile Include="Assets\Models\Econemy\ResourceBundles\Conversion.cs" />
      <Compile Include="Assets\Models\Econemy\ResourceBundles\ConversionRequirement.cs" />
+     <Compile Include="Assets\Models\Econemy\ResourceBundles\ConversionResult.cs" />
      <Compile Include="Assets\Models\Econemy\ResourceBundles\ResourceAmmount.cs" />
      <Compile Include="Assets\Models\Econemy\ResourceBundles\ResourceBundle.cs" />
      <Compile Include="Assets\Models\Econemy\ResourceNodes\ResourceNode.cs" />
