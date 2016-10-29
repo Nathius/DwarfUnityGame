@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Assets.Models;
 using System;
 using Assets.Models.Buildings;
+using Assets.Units;
 
 namespace Assets.Controllers
 {
@@ -84,6 +85,14 @@ namespace Assets.Controllers
             if (selecting)
             {
                 DrawBandBox();   
+            }
+
+            if(Input.GetMouseButtonUp(1) &&
+                WorldController.Instance.CurrentSelection != null &&
+                WorldController.Instance.CurrentSelection.GetType() == typeof(Unit))
+            {
+                Debug.Log("Give order");
+                ((Unit)WorldController.Instance.CurrentSelection).SetTargetPosition(new Vector2(currentMousePosOnFloor.x, currentMousePosOnFloor.y));
             }
 
             //allow the user to drag the screen

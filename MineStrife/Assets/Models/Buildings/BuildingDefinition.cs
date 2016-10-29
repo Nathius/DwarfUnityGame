@@ -84,7 +84,7 @@ namespace Assets.Models.Buildings
                 new ConversionResult(
                     new ResourceBundle(new ResourceAmmount(RESOURCE_TYPE.FLOUR, 6)),
                     null),
-                new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.WHEAT, 32))
+                new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.BREAD, 15))
                 ),
             BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 15)
         };

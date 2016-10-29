@@ -8,6 +8,7 @@ using Assets.Models.Buildings;
 using Assets.Models.Display;
 using Assets.Models;
 using System.Collections.Generic;
+using Assets.Units;
 
 namespace Assets.Controllers
 {
@@ -36,11 +37,12 @@ namespace Assets.Controllers
             Instance = this;
         }
 
-        private void UpdateSelectionPanel(WorldEntity inWorldEntity)
+        private void UpdateSelectionPanel()
         {
-            if (inWorldEntity != null)
+            var worldEntity = WorldController.Instance.CurrentSelection;
+            if (worldEntity != null)
             {
-                InfoPanelText.text = "Selected " + inWorldEntity.ToString();
+                InfoPanelText.text = "Selected " + worldEntity.ToString();
             }
             else
             {
@@ -89,7 +91,7 @@ namespace Assets.Controllers
 
             UpdateStockpileReadout();
 
-            UpdateSelectionPanel(WorldController.Instance.CurrentSelection);
+            UpdateSelectionPanel();
 
             if (WorldController.Instance.CurrentSelection != null)
             {
@@ -98,7 +100,18 @@ namespace Assets.Controllers
                     Hilight = Instantiate(SelectionHilightPrefab);
                 }
                 Hilight.SetActive(true);
-                Hilight.transform.position = WorldController.Instance.CurrentSelection.Position;
+                var selectedObj = WorldController.Instance.CurrentSelection;
+                Hilight.transform.position = selectedObj.Position;
+
+                //scale the hilight ring to the size of the unit
+                if (WorldController.Instance.CurrentSelection.GetType() == typeof(Unit))
+                {
+                    Hilight.transform.localScale = (selectedObj.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>().bounds.size / 1.2f);
+                }
+                else
+                {
+                    Hilight.transform.localScale = (selectedObj.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>().bounds.size / 2.0f);
+                }
             }
             else if(Hilight != null)
             {

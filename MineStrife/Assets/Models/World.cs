@@ -10,6 +10,8 @@ namespace Assets.Models
         public static World Instance;
         private Stockpile _stockpile;
         public Stockpile Stockpile { get { return _stockpile; } }
+        public int PopCap { get; set; }
+        public int CurrentPop { get; set; }
 
         public Building CityCenter { get; set; }
 
@@ -37,6 +39,8 @@ namespace Assets.Models
         public World(int inWidth = 10, int inHeight = 10)
         {
             Instance = this;
+            PopCap = 4;
+            CurrentPop = 0;
 
             //new empty list of game objects
             all_worldEntity = new List<WorldEntity>();
@@ -56,9 +60,9 @@ namespace Assets.Models
 
         public void Update(float inTimeDelta)
         {
-            foreach(var entity in all_worldEntity)
+            for (var i = 0; i < all_worldEntity.Count; i++ )
             {
-                entity.Update(inTimeDelta);
+                all_worldEntity[i].Update(inTimeDelta);
             }
         }
 

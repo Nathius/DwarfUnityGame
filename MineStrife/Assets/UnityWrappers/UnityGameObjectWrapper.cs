@@ -30,12 +30,30 @@ namespace Assets.UnityWrappers
             ViewObject.GetComponent<SpriteRenderer>().color = inColour;
         }
 
-        public void SetBoundSize(float inX, float inY)
+        public Vector2? GetBoundSize()
+        {
+            var box = ViewObject.GetComponent<BoxCollider2D>();
+            if (box != null)
+            {
+                return box.size;
+            }
+            return null;
+        }
+
+        public void SetDisplaySize(float inWidth, float inHeight)
+        {
+            //get sprite size
+            //find scale to achieve size
+            //update bounds if relavent
+            //update scale
+        }
+
+        public void SetBoundSize(float inWidth, float inHeight)
         {
             var box = ViewObject.GetComponent<BoxCollider2D>();
             if(box != null)
             {
-                box.size = new Vector2(inX, inY);
+                box.size = new Vector2(inWidth, inHeight);
             }
         }
 	}

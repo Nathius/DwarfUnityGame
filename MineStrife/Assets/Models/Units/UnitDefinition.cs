@@ -14,7 +14,7 @@ namespace Assets.Models.Buildings
 
     public class UnitDefinition
     {
-        public int Health{ get; set; }
+        public int MaxHealth{ get; set; }
         public ResourceAmmount Cost { get; set; }
         public UnitType UnitType { get; set; }
 

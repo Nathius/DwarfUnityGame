@@ -47,8 +47,8 @@ namespace Assets.Controllers
 
         public bool IsPositionFree(Vector2 inPosition)
         {
-            var allGameObjects = World.all_worldEntity.Select(x => x.ViewObject.GetUnityGameObject()).ToList();
-            Debug.Log("Search pos (" + inPosition.x + " : " + inPosition.y + ")");
+            var allGameObjects = World.all_worldEntity.AsReadOnly().Select(x => x.ViewObject.GetUnityGameObject()).ToList();
+            //Debug.Log("Search pos (" + inPosition.x + " : " + inPosition.y + ")");
 
             foreach (var obj in allGameObjects)
             {

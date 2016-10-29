@@ -130,20 +130,25 @@ namespace Assets.Models.Buildings
 
             if (TimeRemaining <= 0)
             {
-                currentlyProcessing = false;
+                TimeRemaining = 0;
+                if ((Conversion.Result.UnitType == null) || 
+                    (Conversion.Result.UnitType != null && World.Instance.CurrentPop < World.Instance.PopCap))
+                {
+                    currentlyProcessing = false;
 
-                //action any resource bundle results of the conversion
-                if (Conversion.Result.ResourceBundle != null)
-                {
-                    World.Instance.Stockpile.AddStock(Conversion.Result.ResourceBundle);
-                    DisplayController.Instance.CreateProductionNumber(Position, Conversion.Result.ResourceBundle);
+                    //action any resource bundle results of the conversion
+                    if (Conversion.Result.ResourceBundle != null)
+                    {
+                        World.Instance.Stockpile.AddStock(Conversion.Result.ResourceBundle);
+                        DisplayController.Instance.CreateProductionNumber(Position, Conversion.Result.ResourceBundle);
+                    }
+                    if (Conversion.Result.UnitType != null)
+                    {
+                        World.Instance.CurrentPop++;
+                        UnitController.Instance.CreateUnitAt(Position, Conversion.Result.UnitType.Value);
+                        DisplayController.Instance.CreateProductionLable(Position, "+1 " + Conversion.Result.UnitType.ToString());
+                    }
                 }
-                if(Conversion.Result.UnitType != null)
-                {
-                    UnitController.Instance.CreateUnitAt(Position, Conversion.Result.UnitType.Value);
-                    DisplayController.Instance.CreateProductionLable(Position, "+1 " + Conversion.Result.UnitType.ToString());
-                }
-                
             }
         }
 
