@@ -17,8 +17,8 @@ namespace Assets.Units
         public int Health { get; set; }
         public float MoveSpeed { get; set; }
 
-        public Unit(UnityObjectWrapper viewObject, UnitType inUnitType)
-            : base(viewObject)
+        public Unit(UnityObjectWrapper viewObject, Vector2 inPosition, UnitType inUnitType)
+            : base(viewObject, inPosition)
         {
             UnitType = inUnitType;
             MoveSpeed = 0.02f;
@@ -36,7 +36,7 @@ namespace Assets.Units
             {
                 Vector2 directionOfTravel = TargetPosition.Value - this.Position;
                 var distance = directionOfTravel.magnitude;
-                if (distance <= 0.5)
+                if (distance <= 0.1f)
                 {
                     TargetPosition = null;
                 }

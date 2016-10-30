@@ -35,7 +35,7 @@ namespace Assets.Models
         }
 
         public Tile(UnityObjectWrapper viewObject, Vector2 inPosition)
-            : base(viewObject)
+            : base(viewObject, inPosition)
         {
             Position = inPosition;
         }

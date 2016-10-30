@@ -20,7 +20,7 @@ namespace Assets.Controllers
         public Sprite floorSprite;
         public GameObject TreeSpritePrefab;
 
-        public WorldEntity CurrentSelection;
+        public List<WorldEntity> CurrentSelection;
 
 
         // Use this for initialization
@@ -32,6 +32,7 @@ namespace Assets.Controllers
             }
             Instance = this;
             World = new World(40, 40);
+            CurrentSelection = new List<WorldEntity>();
 
             //generate the other controllers
             InitControllers();
@@ -88,8 +89,9 @@ namespace Assets.Controllers
                 var newTree = Instantiate(TreeSpritePrefab);
                 newTree.transform.SetParent(this.transform, true);
 
-                var newTreeData = new ResourceNode(new UnityObjectWrapper(newTree), RESOURCE_TYPE.WOOD, 20);
-                newTreeData.Position = new Vector3(UnityEngine.Random.value * World.Width, UnityEngine.Random.value * World.Height);
+                var newTreeData = new ResourceNode(new UnityObjectWrapper(newTree),
+                    new Vector3(UnityEngine.Random.value * World.Width, UnityEngine.Random.value * World.Height),
+                    RESOURCE_TYPE.WOOD, 20);
             }
         }
 

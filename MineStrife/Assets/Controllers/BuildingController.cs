@@ -45,9 +45,7 @@ namespace Assets.Controllers
                     building_go.name = "building";
 
                     //create a new building data object
-                    var newBuilding = new ProductionBuilding(new UnityObjectWrapper(building_go), 3, 3, inBuildingType.BuildingType, inBuildingType.Conversion);
-                    Vector2 position = new Vector2(inPos.x, inPos.y);
-                    newBuilding.Position = position;
+                    var newBuilding = new ProductionBuilding(new UnityObjectWrapper(building_go), new Vector2(inPos.x, inPos.y), 3, 3, inBuildingType.BuildingType, inBuildingType.Conversion);
 
                     //withdraw the required resources
                     WorldController.Instance.World.Stockpile.RemoveStock(inBuildingType.BuildingCost);

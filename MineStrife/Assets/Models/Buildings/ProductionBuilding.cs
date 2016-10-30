@@ -19,8 +19,8 @@ namespace Assets.Models.Buildings
         public Conversion Conversion { get; set; }
         public bool currentlyProcessing { get; set; }
 
-        public ProductionBuilding(UnityObjectWrapper viewObject, int inWidth, int inHeignt, BuildingType inBuildingType, Conversion inConversion)
-            : base(viewObject, inWidth, inHeignt, inBuildingType)
+        public ProductionBuilding(UnityObjectWrapper viewObject, Vector2 inPosition, int inWidth, int inHeignt, BuildingType inBuildingType, Conversion inConversion)
+            : base(viewObject, inPosition, inWidth, inHeignt, inBuildingType)
         {
             currentlyProcessing = false;
             //automatically start their first conversion

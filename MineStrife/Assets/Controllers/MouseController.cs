@@ -65,19 +65,30 @@ namespace Assets.Controllers
             else if (Input.GetMouseButtonUp(0))
             {
                 ClearBandBox();
-                //check if the mouse was released over a unit or icon
-                BuildingDefinition outBld;
-                if (IconPanelController.Instance.CheckForClick(currentMousePosOnFloor, out outBld))
+                var selection = GetSelection(startSelectionBox, currentMousePosOnFloor);
+                if (selection.Count > 0)
                 {
-                    placing = true;
-                    buildingSelected = outBld;
-                    DisplayController.Instance.BuildingCostText.text = buildingSelected.BuildingType.ToString() + " " + buildingSelected.BuildingCost.ToString();
+                    Select(selection);
                 }
-                else 
+                else
                 {
-                    //check if a unit of building was clicked
-                    var clickedEntity = WorldController.Instance.World.EntityAtPosition(currentMousePosOnFloor);
-                    WorldController.Instance.CurrentSelection = clickedEntity;
+                    //check if the mouse was released over a unit or icon
+                    BuildingDefinition outBld;
+                    if (IconPanelController.Instance.CheckForClick(currentMousePosOnFloor, out outBld))
+                    {
+                        placing = true;
+                        buildingSelected = outBld;
+                        DisplayController.Instance.BuildingCostText.text = buildingSelected.BuildingType.ToString() + " " + buildingSelected.BuildingCost.ToString();
+                    }
+                    else
+                    {
+                        //check if a unit of building was clicked
+                        var clickedEntity = WorldController.Instance.World.EntityAtPosition(currentMousePosOnFloor);
+                        if (clickedEntity != null)
+                        {
+                            Select(clickedEntity);
+                        }
+                    }
                 }
             }
 
@@ -87,12 +98,19 @@ namespace Assets.Controllers
                 DrawBandBox();   
             }
 
-            if(Input.GetMouseButtonUp(1) &&
-                WorldController.Instance.CurrentSelection != null &&
-                WorldController.Instance.CurrentSelection.GetType() == typeof(Unit))
+            if(Input.GetMouseButtonUp(1))
             {
-                Debug.Log("Give order");
-                ((Unit)WorldController.Instance.CurrentSelection).SetTargetPosition(new Vector2(currentMousePosOnFloor.x, currentMousePosOnFloor.y));
+                if(WorldController.Instance.CurrentSelection.Count > 0)
+                {
+                    Debug.Log("Give order");
+                    foreach (var obj in WorldController.Instance.CurrentSelection)
+                    {
+                        if(obj.GetType() == typeof(Unit))
+                        {
+                            ((Unit)obj).SetTargetPosition(new Vector2(currentMousePosOnFloor.x, currentMousePosOnFloor.y));
+                        }
+                    }
+                } 
             }
 
             //allow the user to drag the screen
@@ -100,9 +118,44 @@ namespace Assets.Controllers
             UpdateZoomLevel();
         }
 
+        public List<WorldEntity> GetSelection(Vector3 inA, Vector3 inB)
+        {
+            var size = new Vector3(
+                (Math.Max(inA.x, inB.x) - Math.Min(inA.x, inB.x)),
+                (Math.Max(inA.y, inB.y) - Math.Min(inA.y, inB.y)));
+            var center = new Vector3(
+                (Math.Min(inA.x, inB.x) + (size.x / 2.0f)),
+                (Math.Min(inA.y, inB.y) + (size.y / 2.0f))
+                );
+
+            var selected = new List<WorldEntity>();
+            var selectionBox = new Bounds(center, size);
+
+            foreach(var obj in World.all_worldEntity)
+            {
+                if(obj.GetType() == typeof(Unit))
+                {
+                    var objBounds = obj.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>();
+                    if (objBounds != null && objBounds.bounds.Intersects(selectionBox))
+                    {
+                        selected.Add(obj);
+                    }
+                }
+            }
+            Debug.Log("units selected: " + selected.Count);
+
+            return selected;
+        }
+
         public void Select(WorldEntity inWorldEntity)
         {
-            WorldController.Instance.CurrentSelection = inWorldEntity;
+            WorldController.Instance.CurrentSelection.Clear();
+            WorldController.Instance.CurrentSelection.Add(inWorldEntity);
+        }
+        public void Select(List<WorldEntity> inWorldEntitys)
+        {
+            WorldController.Instance.CurrentSelection.Clear();
+            WorldController.Instance.CurrentSelection.AddRange(inWorldEntitys);
         }
 
         private void CancelPlacement()

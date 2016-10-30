@@ -23,7 +23,7 @@ namespace Assets.Controllers
         public GameObject ProductionNumberPrefab;
         public GameObject Canvas;
         public GameObject SelectionHilightPrefab;
-        private GameObject Hilight { get; set; }
+        private List<GameObject> Hilights { get; set; }
 
         private bool HaveInitIconPanel;
 
@@ -35,14 +35,18 @@ namespace Assets.Controllers
                 Debug.LogError(this.GetType().ToString() + " already instanced");
             }
             Instance = this;
+            Hilights = new List<GameObject>();
         }
 
         private void UpdateSelectionPanel()
         {
-            var worldEntity = WorldController.Instance.CurrentSelection;
-            if (worldEntity != null)
+            if (WorldController.Instance.CurrentSelection.Count > 1)
             {
-                InfoPanelText.text = "Selected " + worldEntity.ToString();
+                InfoPanelText.text = "Selected " + WorldController.Instance.CurrentSelection.Count + " entities";
+            }
+            else if (WorldController.Instance.CurrentSelection.Count == 1)
+            {
+                InfoPanelText.text = "Selected " + WorldController.Instance.CurrentSelection.First().ToString();
             }
             else
             {
@@ -93,31 +97,45 @@ namespace Assets.Controllers
 
             UpdateSelectionPanel();
 
-            if (WorldController.Instance.CurrentSelection != null)
+            //very bad for performance, should keep all hilights actuve and move them, 
+            //only creating or deleting when required
+            //could also put hilight objects in a pool
+            ClearHilights();
+            if (WorldController.Instance.CurrentSelection.Count > 0)
             {
-                if (Hilight == null)
+                foreach (var obj in WorldController.Instance.CurrentSelection)
                 {
-                    Hilight = Instantiate(SelectionHilightPrefab);
+                    if(obj.Position != null)
+                    {
+                        var hilight = Instantiate(SelectionHilightPrefab);
+                        hilight.transform.position = obj.Position;
+                        //scale the hilight ring to the size of the unit
+                        if (obj.GetType() == typeof(Unit))
+                        {
+                            hilight.transform.localScale = (obj.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>().bounds.size / 1.2f);
+                        }
+                        else
+                        {
+                            hilight.transform.localScale = (obj.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>().bounds.size / 2.0f);
+                        }
+                        Hilights.Add(hilight);
+                    }
+                    
                 }
-                Hilight.SetActive(true);
-                var selectedObj = WorldController.Instance.CurrentSelection;
-                Hilight.transform.position = selectedObj.Position;
-
-                //scale the hilight ring to the size of the unit
-                if (WorldController.Instance.CurrentSelection.GetType() == typeof(Unit))
-                {
-                    Hilight.transform.localScale = (selectedObj.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>().bounds.size / 1.2f);
-                }
-                else
-                {
-                    Hilight.transform.localScale = (selectedObj.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>().bounds.size / 2.0f);
-                }
-            }
-            else if(Hilight != null)
-            {
-                Hilight.SetActive(false);
             }
 	    }
+
+        public void ClearHilights()
+        {
+            while(Hilights.Count > 0)
+            {
+                var obj = Hilights.First();
+                Hilights.RemoveAt(0);
+                Destroy(obj.gameObject);
+                Destroy(obj);
+                
+            }
+        }
 
         public void CreateProductionNumber(Vector2 inPos, ResourceBundle inBundle)
         {

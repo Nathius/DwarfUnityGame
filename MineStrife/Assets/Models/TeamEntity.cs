@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Assets.UnityWrappers;
+using UnityEngine;
 
 namespace Assets.Models
 {
@@ -10,8 +11,8 @@ namespace Assets.Models
 	{
         private int team;
 
-        public TeamEntity(UnityObjectWrapper viewObject)
-            : base(viewObject)
+        public TeamEntity(UnityObjectWrapper viewObject, Vector2 inPosition)
+            : base(viewObject, inPosition)
         {
         }
 

@@ -14,10 +14,11 @@ namespace Assets.Models
 
         public UnityObjectWrapper ViewObject { get; set; }
 
-        public WorldEntity(UnityObjectWrapper viewObject)
+        public WorldEntity(UnityObjectWrapper viewObject, Vector2 inPosition)
         {
             World.all_worldEntity.Add(this);
             ViewObject = viewObject;
+            Position = inPosition;
         }
 
         public virtual void Update(float inTimeDelta)

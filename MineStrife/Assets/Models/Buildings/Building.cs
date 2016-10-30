@@ -2,6 +2,7 @@
 using System;
 using Assets.UnityWrappers;
 using Assets.Models.Buildings;
+using UnityEngine;
 
 namespace Assets.Models
 {
@@ -13,10 +14,11 @@ namespace Assets.Models
         public BuildingType BuildingType { get; set; }
 
         public Building(UnityObjectWrapper viewObject,
+            Vector2 inPosition,
             int inWidth, 
             int inHeight, 
             BuildingType inBuildingType)
-            : base(viewObject)
+            : base(viewObject, inPosition)
         {
             tileWidth = inWidth;
             tileHeight = inHeight;

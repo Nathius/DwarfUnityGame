@@ -39,9 +39,7 @@ namespace Assets.Controllers
                 unit_go.name = "Unit";
 
                 //create a new building data object
-                var newBuilding = new Unit(new UnityObjectWrapper(unit_go), inUnitType);
-                Vector2 position = spawnPos.Value;
-                newBuilding.Position = position;
+                var newUnit = new Unit(new UnityObjectWrapper(unit_go), spawnPos.Value, inUnitType);
             }         
         }
 

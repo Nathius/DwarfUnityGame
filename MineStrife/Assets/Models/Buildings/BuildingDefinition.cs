@@ -82,9 +82,9 @@ namespace Assets.Models.Buildings
             BuildingType = BuildingType.MILL,
             Conversion = new Conversion("Mill Flour", 8,
                 new ConversionResult(
-                    new ResourceBundle(new ResourceAmmount(RESOURCE_TYPE.FLOUR, 6)),
+                    new ResourceBundle(new ResourceAmmount(RESOURCE_TYPE.BREAD, 6)),
                     null),
-                new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.BREAD, 15))
+                new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.WHEAT, 15))
                 ),
             BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 15)
         };
