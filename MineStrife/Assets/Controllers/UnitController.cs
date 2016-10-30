@@ -38,8 +38,8 @@ namespace Assets.Controllers
                 unit_go.transform.SetParent(this.transform, true);
                 unit_go.name = "Unit";
 
-                //create a new building data object
-                var newUnit = new Unit(new UnityObjectWrapper(unit_go), spawnPos.Value, inUnitType);
+                //create a new unit
+                new Unit(new UnityObjectWrapper(unit_go), spawnPos.Value, inUnitType);
             }         
         }
 

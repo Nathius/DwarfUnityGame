@@ -89,7 +89,7 @@ namespace Assets.Controllers
                 var newTree = Instantiate(TreeSpritePrefab);
                 newTree.transform.SetParent(this.transform, true);
 
-                var newTreeData = new ResourceNode(new UnityObjectWrapper(newTree),
+                new ResourceNode(new UnityObjectWrapper(newTree),
                     new Vector3(UnityEngine.Random.value * World.Width, UnityEngine.Random.value * World.Height),
                     RESOURCE_TYPE.WOOD, 20);
             }

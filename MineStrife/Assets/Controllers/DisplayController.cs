@@ -52,7 +52,7 @@ namespace Assets.Controllers
             {
                 InfoPanelText.text = "";
             }
-            
+
         }
 
         private void InitBuildingIconPannel()
@@ -85,7 +85,7 @@ namespace Assets.Controllers
         }
 
         // Update is called once per frame
-        void Update() 
+        void Update()
         {
             if (!HaveInitIconPanel && IconPanelController.Instance != null)
             {
@@ -105,35 +105,31 @@ namespace Assets.Controllers
             {
                 foreach (var obj in WorldController.Instance.CurrentSelection)
                 {
-                    if(obj.Position != null)
+                    var hilight = Instantiate(SelectionHilightPrefab);
+                    hilight.transform.position = obj.Position;
+                    //scale the hilight ring to the size of the unit
+                    if (obj.GetType() == typeof(Unit))
                     {
-                        var hilight = Instantiate(SelectionHilightPrefab);
-                        hilight.transform.position = obj.Position;
-                        //scale the hilight ring to the size of the unit
-                        if (obj.GetType() == typeof(Unit))
-                        {
-                            hilight.transform.localScale = (obj.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>().bounds.size / 1.2f);
-                        }
-                        else
-                        {
-                            hilight.transform.localScale = (obj.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>().bounds.size / 2.0f);
-                        }
-                        Hilights.Add(hilight);
+                        hilight.transform.localScale = (obj.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>().bounds.size / 1.2f);
                     }
-                    
+                    else
+                    {
+                        hilight.transform.localScale = (obj.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>().bounds.size / 2.0f);
+                    }
+                    Hilights.Add(hilight);
                 }
             }
-	    }
+        }
 
         public void ClearHilights()
         {
-            while(Hilights.Count > 0)
+            while (Hilights.Count > 0)
             {
                 var obj = Hilights.First();
                 Hilights.RemoveAt(0);
                 Destroy(obj.gameObject);
                 Destroy(obj);
-                
+
             }
         }
 

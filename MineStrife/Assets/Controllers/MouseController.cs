@@ -5,6 +5,8 @@ using Assets.Models;
 using System;
 using Assets.Models.Buildings;
 using Assets.Units;
+using Assets.Scripts;
+using System.Linq;
 
 namespace Assets.Controllers
 {
@@ -103,11 +105,19 @@ namespace Assets.Controllers
                 if(WorldController.Instance.CurrentSelection.Count > 0)
                 {
                     Debug.Log("Give order");
-                    foreach (var obj in WorldController.Instance.CurrentSelection)
+                    
+
+                    var positions = FormationCalculator.findPositionsForFormation(
+                        WorldController.Instance.CurrentSelection.Select(x => x.Position).ToList(),
+                        new Vector2(currentMousePosOnFloor.x, currentMousePosOnFloor.y),
+                        0.6f
+                        );
+
+                    for (int i = 0; i < WorldController.Instance.CurrentSelection.Count; i++ )
                     {
-                        if(obj.GetType() == typeof(Unit))
+                        if (WorldController.Instance.CurrentSelection[i].GetType() == typeof(Unit))
                         {
-                            ((Unit)obj).SetTargetPosition(new Vector2(currentMousePosOnFloor.x, currentMousePosOnFloor.y));
+                            ((Unit)WorldController.Instance.CurrentSelection[i]).SetTargetPosition(positions[i]);
                         }
                     }
                 } 
