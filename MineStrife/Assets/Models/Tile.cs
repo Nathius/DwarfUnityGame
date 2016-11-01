@@ -14,7 +14,7 @@ namespace Assets.Models
 
     public class Tile : WorldEntity
     {
-
+        public int Cost { get; set; }
         Action<Tile> TileTypeChangedCB;
         private TileType tileType = TileType.NONE;
         public TileType TileType

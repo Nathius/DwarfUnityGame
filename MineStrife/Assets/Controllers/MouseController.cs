@@ -109,9 +109,6 @@ namespace Assets.Controllers
             {
                 if(WorldController.Instance.CurrentSelection.Count > 0)
                 {
-                    Debug.Log("Give order");
-                    
-
                     var positions = FormationCalculator.findPositionsForFormation(
                         WorldController.Instance.CurrentSelection.Select(x => x.Position).ToList(),
                         new Vector2(currentMousePosOnFloor.x, currentMousePosOnFloor.y),
@@ -160,7 +157,6 @@ namespace Assets.Controllers
                     }
                 }
             }
-            Debug.Log("units selected: " + selected.Count);
 
             return selected;
         }
