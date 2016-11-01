@@ -6,6 +6,7 @@ using UnityEngine;
 using Assets.Models;
 using Assets.UnityWrappers;
 using Assets.Models.Buildings;
+using Assets.Models.AI;
 
 namespace Assets.Units
 {
@@ -13,44 +14,32 @@ namespace Assets.Units
 	{
         public Vector2? TargetPosition { get; set; }
         public UnitType UnitType { get; set; }
+        public AI Ai { get; set; }
 
         public int Health { get; set; }
         public float MoveSpeed { get; set; }
 
-        public Unit(UnityObjectWrapper viewObject, Vector2 inPosition, UnitType inUnitType)
+        public Unit(UnityObjectWrapper viewObject, Vector2 inPosition, UnitType inUnitType, AI inAi)
             : base(viewObject, inPosition)
         {
             UnitType = inUnitType;
             MoveSpeed = 0.02f;
-        }
-
-        public void SetTargetPosition(Vector2 inTargetPosition)
-        {
-            TargetPosition = inTargetPosition;
+            Ai = inAi;
         }
 
         public override void Update(float inTimeDelta)
         {
-            //target seeking behaviour
+            Ai.Update(this);
+            
+            //if the ai gives a target position, seek towards it
             if (TargetPosition != null)
             {
                 Vector2 directionOfTravel = TargetPosition.Value - this.Position;
-                var distance = directionOfTravel.magnitude;
-                if (distance <= 0.1f)
-                {
-                    TargetPosition = null;
-                }
-                else
-                {
-                    directionOfTravel.Normalize();
-                    var movement = directionOfTravel * MoveSpeed;
-                    this.Position += movement;
-                }
-
-
+                directionOfTravel.Normalize();
+                var movement = directionOfTravel * MoveSpeed;
+                this.Position += movement;
             }
            
-
 
             base.Update(inTimeDelta);
         }

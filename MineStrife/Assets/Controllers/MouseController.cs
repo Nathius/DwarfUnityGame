@@ -7,6 +7,7 @@ using Assets.Models.Buildings;
 using Assets.Units;
 using Assets.Scripts;
 using System.Linq;
+using Assets.Models.AI;
 
 namespace Assets.Controllers
 {
@@ -90,6 +91,10 @@ namespace Assets.Controllers
                         {
                             Select(clickedEntity);
                         }
+                        else
+                        {
+                            ClearSelection();
+                        }
                     }
                 }
             }
@@ -117,7 +122,10 @@ namespace Assets.Controllers
                     {
                         if (WorldController.Instance.CurrentSelection[i].GetType() == typeof(Unit))
                         {
-                            ((Unit)WorldController.Instance.CurrentSelection[i]).SetTargetPosition(positions[i]);
+                            ((Unit)WorldController.Instance.CurrentSelection[i]).Ai.AddCommand(
+                                new Command(CommandTypes.MOVE, positions[i], null, false),
+                                Input.GetKey(KeyCode.LeftShift)
+                                );
                         }
                     }
                 } 
@@ -166,6 +174,10 @@ namespace Assets.Controllers
         {
             WorldController.Instance.CurrentSelection.Clear();
             WorldController.Instance.CurrentSelection.AddRange(inWorldEntitys);
+        }
+        public void ClearSelection()
+        {
+            WorldController.Instance.CurrentSelection.Clear();
         }
 
         private void CancelPlacement()

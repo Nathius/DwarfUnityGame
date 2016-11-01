@@ -15,7 +15,7 @@ namespace Assets.Models.Econemy
         {
             MaxStockLevel = 500;
             Stocks = new Dictionary<RESOURCE_TYPE, int>();
-            for (int i = 0; i < (int)RESOURCE_TYPE.COUNT; i++ )
+            for (int i = 0; i < (int)RESOURCE_TYPE._COUNT; i++ )
             {
                 Stocks.Add((RESOURCE_TYPE)i, 0);
             }

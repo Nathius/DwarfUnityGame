@@ -9,6 +9,7 @@ using Assets.UnityWrappers;
 using Assets.Models.Econemy.ResourceNodes;
 using Assets.Controllers.PrefabControllers;
 using Assets.Units;
+using Assets.Models.AI;
 
 namespace Assets.Controllers
 {
@@ -32,6 +33,7 @@ namespace Assets.Controllers
             if (spawnPos != null)
             {
                 var prefab = UnitPrefabController.Instance.GetPrefab(inUnitType);
+                var definition = UnitDefinition.GetDefinitionForType(inUnitType);
 
                 //instance a new build prefab and place it on the screen
                 GameObject unit_go = Instantiate(prefab);
@@ -39,7 +41,8 @@ namespace Assets.Controllers
                 unit_go.name = "Unit";
 
                 //create a new unit
-                new Unit(new UnityObjectWrapper(unit_go), spawnPos.Value, inUnitType);
+                var ai = new AI(definition.Behaviours);
+                new Unit(new UnityObjectWrapper(unit_go), spawnPos.Value, inUnitType, ai);
             }         
         }
 

@@ -15,7 +15,7 @@ namespace Assets.Models.Buildings
         FARMER,
         MILL,
         BARRACKS,
-        COUNT
+        _COUNT
     }
 
 	public class BuildingDefinition

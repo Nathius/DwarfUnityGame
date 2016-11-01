@@ -9,6 +9,7 @@ namespace Assets.Models
     {
         NONE,
         DIRT,
+        _COUNT
     }
 
     public class Tile : WorldEntity

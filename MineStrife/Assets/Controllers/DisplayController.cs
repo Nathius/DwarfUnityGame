@@ -77,7 +77,7 @@ namespace Assets.Controllers
         private void UpdateStockpileReadout()
         {
             string tempText = "";
-            for (int i = 0; i < (int)RESOURCE_TYPE.COUNT; i++)
+            for (int i = 0; i < (int)RESOURCE_TYPE._COUNT; i++)
             {
                 tempText += (((RESOURCE_TYPE)i).ToString()) + ": " + WorldController.Instance.World.Stockpile.GetStockLevel((RESOURCE_TYPE)i) + "\n";
             }

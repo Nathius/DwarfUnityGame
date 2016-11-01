@@ -75,6 +75,7 @@
     <Compile Include="Assets\Controllers\PrefabControllers\UnitPrefabController.cs" />
     <Compile Include="Assets\Controllers\UnitController.cs" />
     <Compile Include="Assets\Controllers\WorldController.cs" />
+    <Compile Include="Assets\Models\AI\Command.cs" />
     <Compile Include="Assets\Models\Buildings\Building.cs" />
     <Compile Include="Assets\Models\Buildings\BuildingDefinition.cs" />
     <Compile Include="Assets\Models\Buildings\ProductionBuilding.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Assets\Models\Econemy\Stockpile.cs" />
     <Compile Include="Assets\Models\TeamEntity.cs" />
     <Compile Include="Assets\Models\Tile.cs" />
+    <Compile Include="Assets\Models\AI\AI.cs" />
     <Compile Include="Assets\Models\Units\Unit.cs" />
     <Compile Include="Assets\Models\Units\UnitDefinition.cs" />
     <Compile Include="Assets\Models\World.cs" />

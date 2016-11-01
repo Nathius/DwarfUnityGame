@@ -13,6 +13,6 @@ namespace Assets.Models.Econemy
         FLOUR,
         ORE,
         BREAD,
-        COUNT
+        _COUNT
     }
 }

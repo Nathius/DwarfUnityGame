@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Assets.Models.Econemy;
+using Assets.Models.AI;
 
 namespace Assets.Models.Buildings
 {
     public enum UnitType
     {
         WORKER,
-        COUNT
+        _COUNT
     }
 
     public class UnitDefinition
@@ -17,6 +18,7 @@ namespace Assets.Models.Buildings
         public int MaxHealth{ get; set; }
         public ResourceAmmount Cost { get; set; }
         public UnitType UnitType { get; set; }
+        public List<CommandTypes> Behaviours { get; set; }
 
         public static List<UnitDefinition> allDefinitions { get; set; }
         public UnitDefinition()
@@ -37,7 +39,8 @@ namespace Assets.Models.Buildings
         public static UnitDefinition Worker = new UnitDefinition
         {
             UnitType = UnitType.WORKER,
-            Cost = new ResourceAmmount(RESOURCE_TYPE.BREAD, 20)
+            Cost = new ResourceAmmount(RESOURCE_TYPE.BREAD, 20),
+            Behaviours = new List<CommandTypes>() { CommandTypes.MOVE }
         };
     }
 }

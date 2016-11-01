@@ -39,7 +39,7 @@ namespace Assets.Models
         public World(int inWidth = 10, int inHeight = 10)
         {
             Instance = this;
-            PopCap = 4;
+            PopCap = 1;
             CurrentPop = 0;
 
             //new empty list of game objects
