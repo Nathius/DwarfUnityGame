@@ -15,7 +15,7 @@ namespace Assets.Models
 
         public Building CityCenter { get; set; }
 
-        Tile[,] tiles;
+        public Tile[,] tiles;
         public static List<WorldEntity> all_worldEntity;
         int width;
         int height;
@@ -39,7 +39,7 @@ namespace Assets.Models
         public World(int inWidth = 10, int inHeight = 10)
         {
             Instance = this;
-            PopCap = 1;
+            PopCap = 4;
             CurrentPop = 0;
 
             //new empty list of game objects

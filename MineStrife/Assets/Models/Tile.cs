@@ -9,6 +9,7 @@ namespace Assets.Models
     {
         NONE,
         DIRT,
+        BLOCKED,
         _COUNT
     }
 
@@ -39,6 +40,8 @@ namespace Assets.Models
             : base(viewObject, inPosition)
         {
             Position = inPosition;
+            Cost = 1;
+
         }
 
         public void RegisterTileTypeChangedCB(Action<Tile> inCallBack)
@@ -50,6 +53,12 @@ namespace Assets.Models
         {
             //registers multiple callabacks so many systems can hook into updates
             TileTypeChangedCB -= inCallBack;
+        }
+
+        public override string ToString()
+        {
+            return "Tile entity " + "\n" +
+                " (" + Math.Round(Position.x, 2) + "," + Math.Round(Position.y, 2) + ")";
         }
     }
 }

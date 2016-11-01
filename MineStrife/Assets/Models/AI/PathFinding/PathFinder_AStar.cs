@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Assets.Models.AI.PathFinding
 {
@@ -48,12 +49,12 @@ namespace Assets.Models.AI.PathFinding
 	        m_iterationLimit = 100;
         }
 
-        void setIterationLimit(int inIterationLimit)
+        public void setIterationLimit(int inIterationLimit)
         {
 	        m_iterationLimit = inIterationLimit;
         }
 
-        List<Tile> findPath(Tile inStart, Tile inEnd)
+        public List<Tile> findPath(Tile inStart, Tile inEnd)
         {
             m_path = new List<Tile>();
             m_openList = new List<PathingNode>();
@@ -71,21 +72,25 @@ namespace Assets.Models.AI.PathFinding
 	        PathingNode currentNode;
 	        int iterations = 0;
 
+            //Debug.Log("StartingPathing from:" + inStart.ToString() + " to:" + inEnd.ToString());
+
 	        //while there are still nodes to look at
 	        while((iterations < m_iterationLimit) && (m_openList.Count > 0))
 	        {
 		        iterations++;
-		        //cout << m_openList.size() << " " << m_closedList.size() << endl;
+                //Debug.Log(m_openList.Count + " " + m_closedList.Count);
 		        //chose the next closest node to the end
 		        currentNode = findClosestNode();
 
 		        //if at end return path, else find next path step
 		        if(currentNode.m_node == inEnd)
 		        {
+                    //Debug.Log("at end");
 			        PathingNode tempNode = currentNode;
 
 			        while(tempNode.m_parent != null)
 			        {
+                        //Debug.Log("build return path");
 				        m_path.Add(tempNode.m_node);
 				        tempNode = tempNode.m_parent;
 			        }
@@ -100,6 +105,7 @@ namespace Assets.Models.AI.PathFinding
 			        {
 				        if(m_openList[i] == currentNode)
 				        {
+                            //Debug.Log("remove current node from open list");
 					        m_openList.RemoveAt(i);
 					        found = true;
 				        }
@@ -139,6 +145,7 @@ namespace Assets.Models.AI.PathFinding
 			        }
 			        else
 			        {
+                        //Debug.Log("check adjacent nodes");
 				        //only check straight adjectent squares
 				        for(int i = 0; i < NUM_DIRECTIONS; i++)
 				        {
@@ -153,6 +160,7 @@ namespace Assets.Models.AI.PathFinding
 					        if((yDif == 1) && currentNode.m_node.Position.y >= (M_MAP_HEIGHT - 1)) {search = false;}
 					        if((yDif == -1) && currentNode.m_node.Position.y <= 0) {search = false;}
 
+                            //Debug.Log("should search next: " + search.ToString());
 					        if(search)
 					        {
 						        tempNextPathNode = new PathingNode(m_mapRef[((int)currentNode.m_node.Position.x) + xDif, ((int)currentNode.m_node.Position.y) + yDif]);
@@ -172,14 +180,14 @@ namespace Assets.Models.AI.PathFinding
         }
 
         //Filled
-        int findFScore(PathingNode inPathNode)
+        private int findFScore(PathingNode inPathNode)
         {
 	        //returns dist to node from start, plus guess distance from node to end
 	        return (int)(inPathNode.m_gScore + findHScore(inPathNode));
         }
 
         //Filled
-        float findHScore(PathingNode inPathNode)
+        private float findHScore(PathingNode inPathNode)
         {
             //WARNING cast losing precscision, should round insted??
 	        int xDist = (int)Math.Abs(inPathNode.m_node.Position.x - m_endNode.Position.x);
@@ -198,7 +206,7 @@ namespace Assets.Models.AI.PathFinding
         }
 
         //filled
-        PathingNode findClosestNode()
+        private PathingNode findClosestNode()
         {
 	        int lowestNode = -1;
 	        float lowestFScore = -1;
@@ -222,7 +230,7 @@ namespace Assets.Models.AI.PathFinding
         }
 
         //filled
-        bool inOpenList(PathingNode inPathNode)
+        private bool inOpenList(PathingNode inPathNode)
         {
 	        for(int i = 0; (i < m_openList.Count); i++)
 	        {
@@ -236,7 +244,7 @@ namespace Assets.Models.AI.PathFinding
         }
 
         //filled
-        bool inClosedList(PathingNode inPathNode)
+        private bool inClosedList(PathingNode inPathNode)
         {
 	        for(int i = 0; (i < m_closedList.Count); i++)
 	        {
@@ -250,18 +258,23 @@ namespace Assets.Models.AI.PathFinding
         }
 
         //filled, ?optamised?
-        void look(PathingNode inPathNode, PathingNode inPrevPathNode)
+        private void look(PathingNode inPathNode, PathingNode inPrevPathNode)
         {
+            //Debug.Log("looking at next node");
 	        //bool used = false;
 	        //if node is not in closed list, and can be traversed
+            //Debug.Log("isInClosedList: " + inClosedList(inPathNode).ToString() + " has cost: " + inPathNode.m_node.Cost);
 	        if(!inClosedList(inPathNode) && (inPathNode.m_node.Cost > 0))
 	        {
+                //Debug.Log("node not in closed list");
 		        // if the node is not in the open list, or is but can be reached faster via the new path
 		        if(!inOpenList(inPathNode) || (inOpenList(inPathNode) && (inPrevPathNode.m_gScore + inPathNode.m_node.Cost < inPathNode.m_gScore)))
 		        {
+                    //Debug.Log("node can be looked at");
 			        //cout << "Look() newPathLenght: " << (inPrevNode->gScore + inNode->cost) << " Look() oldPathLength: " << inNode->gScore << endl;
 			        if(!inOpenList(inPathNode))
 			        {
+                        //Debug.Log("add looked at node to open list");
 				        //add it to the list only if it is not already on it
 				        m_openList.Add(inPathNode);
 				        //used = true;
@@ -281,7 +294,8 @@ namespace Assets.Models.AI.PathFinding
 
         }
 
-        void displayMap()
+        //probably not needed in a unity application
+        private void displayMap()
         {
 	        //cout << endl;
 	        //PathingNode tempPathNode;
@@ -298,7 +312,7 @@ namespace Assets.Models.AI.PathFinding
 				        {
 					        if(m_closedList[i].m_node.Position.x == x && m_closedList[i].m_node.Position.y == y )
 					        {
-						        int temp = (int)m_closedList[i].m_hScore;
+						        //int temp = (int)m_closedList[i].m_hScore;
 						        //cout << temp;
                                 //if(m_closedList[i].m_hScore < 10)
                                 //{
@@ -312,7 +326,7 @@ namespace Assets.Models.AI.PathFinding
 				        {
 					        if(m_openList[i].m_node.Position.x == x && m_openList[i].m_node.Position.y == y )
 					        {
-						        int temp = (int)m_openList[i].m_hScore;
+						        //int temp = (int)m_openList[i].m_hScore;
                                 //cout << temp;
                                 //if(m_openList[i]->getHScore() < 10)
                                 //{

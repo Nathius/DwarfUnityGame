@@ -18,7 +18,11 @@ namespace Assets.Controllers
 
         public World World { get; protected set; }
         public Sprite floorSprite;
+        public Sprite BlockedSprite;
         public GameObject TreeSpritePrefab;
+
+        private const int WorldSize = 40;
+        private const int TreeNumber = 80;
 
         public List<WorldEntity> CurrentSelection;
 
@@ -31,7 +35,7 @@ namespace Assets.Controllers
                 Debug.LogError(this.GetType().ToString() + " already instanced");
             }
             Instance = this;
-            World = new World(40, 40);
+            World = new World(WorldSize, WorldSize);
             CurrentSelection = new List<WorldEntity>();
 
             //generate the other controllers
@@ -83,22 +87,38 @@ namespace Assets.Controllers
 
         public void GenerateTrees()
         {
-            int numToGen = 80;
-            for (int i = 0; i < numToGen; i++)
+            for (int i = 0; i < TreeNumber; i++)
             {
                 var newTree = Instantiate(TreeSpritePrefab);
                 newTree.transform.SetParent(this.transform, true);
 
-                new ResourceNode(new UnityObjectWrapper(newTree),
-                    new Vector3(UnityEngine.Random.value * World.Width, UnityEngine.Random.value * World.Height),
+                var x = (UnityEngine.Random.value * (World.Width - 4)) + 2;
+                var y = (UnityEngine.Random.value * (World.Height - 4)) + 2;
+
+                var node = new ResourceNode(new UnityObjectWrapper(newTree),
+                    new Vector3(x, y),
                     RESOURCE_TYPE.WOOD, 20);
+
+                World.Instance.GetTileAt((int)x, (int)y).Cost = 0;
+                World.Instance.GetTileAt((int)x, (int)y).TileType = TileType.BLOCKED;
+
+                World.Instance.GetTileAt((int)x + 1, (int)y).Cost = 0;
+                World.Instance.GetTileAt((int)x + 1, (int)y).TileType = TileType.BLOCKED;
+
+                World.Instance.GetTileAt((int)x, (int)y + 1).Cost = 0;
+                World.Instance.GetTileAt((int)x, (int)y + 1).TileType = TileType.BLOCKED;
             }
         }
 
         public void OnTileTypeChanges(Tile inTileData, GameObject inTileGO)
         {
             var sr = inTileGO.GetComponent<SpriteRenderer>();
-            //if (inTileData.TileType == TileType.DIRT)
+            if (inTileData.TileType == TileType.BLOCKED)
+            {
+                sr.sprite = BlockedSprite;
+                sr.enabled = true;
+            }
+            else
             {
                 sr.sprite = floorSprite;
                 sr.enabled = true;
