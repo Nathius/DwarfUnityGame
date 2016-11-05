@@ -72,25 +72,20 @@ namespace Assets.Models.AI.PathFinding
 	        PathingNode currentNode;
 	        int iterations = 0;
 
-            //Debug.Log("StartingPathing from:" + inStart.ToString() + " to:" + inEnd.ToString());
-
 	        //while there are still nodes to look at
 	        while((iterations < m_iterationLimit) && (m_openList.Count > 0))
 	        {
 		        iterations++;
-                //Debug.Log(m_openList.Count + " " + m_closedList.Count);
 		        //chose the next closest node to the end
 		        currentNode = findClosestNode();
 
 		        //if at end return path, else find next path step
 		        if(currentNode.m_node == inEnd)
 		        {
-                    //Debug.Log("at end");
 			        PathingNode tempNode = currentNode;
 
 			        while(tempNode.m_parent != null)
 			        {
-                        //Debug.Log("build return path");
 				        m_path.Add(tempNode.m_node);
 				        tempNode = tempNode.m_parent;
 			        }
@@ -105,7 +100,6 @@ namespace Assets.Models.AI.PathFinding
 			        {
 				        if(m_openList[i] == currentNode)
 				        {
-                            //Debug.Log("remove current node from open list");
 					        m_openList.RemoveAt(i);
 					        found = true;
 				        }
@@ -145,7 +139,6 @@ namespace Assets.Models.AI.PathFinding
 			        }
 			        else
 			        {
-                        //Debug.Log("check adjacent nodes");
 				        //only check straight adjectent squares
 				        for(int i = 0; i < NUM_DIRECTIONS; i++)
 				        {
@@ -170,28 +163,22 @@ namespace Assets.Models.AI.PathFinding
 				        }
 			        }
 		        }
-
-		        //displayMap();
-		        //system("PAUSE");
 	        }
-	        //deletePath();
 	        //end node not found
 	        return null;
         }
 
-        //Filled
         private int findFScore(PathingNode inPathNode)
         {
 	        //returns dist to node from start, plus guess distance from node to end
-	        return (int)(inPathNode.m_gScore + findHScore(inPathNode));
+	        return (int)Math.Round(inPathNode.m_gScore + findHScore(inPathNode));
         }
 
-        //Filled
         private float findHScore(PathingNode inPathNode)
         {
             //WARNING cast losing precscision, should round insted??
-	        int xDist = (int)Math.Abs(inPathNode.m_node.Position.x - m_endNode.Position.x);
-            int yDist = (int)Math.Abs(inPathNode.m_node.Position.y - m_endNode.Position.y);
+	        int xDist = (int)Math.Round(Math.Abs(inPathNode.m_node.Position.x - m_endNode.Position.x));
+            int yDist = (int)Math.Round(Math.Abs(inPathNode.m_node.Position.y - m_endNode.Position.y));
 
 	        //pythagorus a^2 + b^2 = c^2
 	        double hypotDist = (xDist * xDist) + (yDist * yDist);
@@ -205,7 +192,6 @@ namespace Assets.Models.AI.PathFinding
 	        return (float)hypotDist;
         }
 
-        //filled
         private PathingNode findClosestNode()
         {
 	        int lowestNode = -1;
@@ -229,7 +215,6 @@ namespace Assets.Models.AI.PathFinding
 
         }
 
-        //filled
         private bool inOpenList(PathingNode inPathNode)
         {
 	        for(int i = 0; (i < m_openList.Count); i++)
@@ -243,7 +228,6 @@ namespace Assets.Models.AI.PathFinding
 	        return false;
         }
 
-        //filled
         private bool inClosedList(PathingNode inPathNode)
         {
 	        for(int i = 0; (i < m_closedList.Count); i++)
@@ -257,103 +241,27 @@ namespace Assets.Models.AI.PathFinding
 	        return false;
         }
 
-        //filled, ?optamised?
         private void look(PathingNode inPathNode, PathingNode inPrevPathNode)
         {
-            //Debug.Log("looking at next node");
-	        //bool used = false;
 	        //if node is not in closed list, and can be traversed
-            //Debug.Log("isInClosedList: " + inClosedList(inPathNode).ToString() + " has cost: " + inPathNode.m_node.Cost);
 	        if(!inClosedList(inPathNode) && (inPathNode.m_node.Cost > 0))
 	        {
-                //Debug.Log("node not in closed list");
 		        // if the node is not in the open list, or is but can be reached faster via the new path
 		        if(!inOpenList(inPathNode) || (inOpenList(inPathNode) && (inPrevPathNode.m_gScore + inPathNode.m_node.Cost < inPathNode.m_gScore)))
 		        {
-                    //Debug.Log("node can be looked at");
-			        //cout << "Look() newPathLenght: " << (inPrevNode->gScore + inNode->cost) << " Look() oldPathLength: " << inNode->gScore << endl;
 			        if(!inOpenList(inPathNode))
 			        {
-                        //Debug.Log("add looked at node to open list");
 				        //add it to the list only if it is not already on it
 				        m_openList.Add(inPathNode);
-				        //used = true;
 			        }
 			        //then update it's distance scores based on the new path data
 			        inPathNode.m_gScore = (inPrevPathNode.m_gScore + inPathNode.m_node.Cost);
 			        inPathNode.m_hScore = (findHScore(inPathNode));
-			        inPathNode.m_fScore = (int)(inPathNode.m_gScore + inPathNode.m_hScore);
+			        inPathNode.m_fScore = (int)Math.Round(inPathNode.m_gScore + inPathNode.m_hScore);
 			        inPathNode.m_parent = inPrevPathNode;
 		        }
 		
 	        }
-            //if(!used)
-            //{
-            //    delete inPathNode;
-            //}
-
         }
-
-        //probably not needed in a unity application
-        private void displayMap()
-        {
-	        //cout << endl;
-	        //PathingNode tempPathNode;
-	        bool placed = false;
-	        for(int y = 0; y < M_MAP_HEIGHT; y++)
-	        {
-		        for(int x = 0; x < M_MAP_WIDTH; x++)
-		        {
-			        if(m_mapRef[x, y].Cost > 0)
-			        {
-				        placed = false;
-				
-				        for(int i = 0; i < m_closedList.Count && !placed; i++)
-				        {
-					        if(m_closedList[i].m_node.Position.x == x && m_closedList[i].m_node.Position.y == y )
-					        {
-						        //int temp = (int)m_closedList[i].m_hScore;
-						        //cout << temp;
-                                //if(m_closedList[i].m_hScore < 10)
-                                //{
-                                //    //cout << " ";
-                                //}
-						        placed = true;
-					        }
-					
-				        }
-				        for(int i = 0; i < m_openList.Count && !placed; i++)
-				        {
-					        if(m_openList[i].m_node.Position.x == x && m_openList[i].m_node.Position.y == y )
-					        {
-						        //int temp = (int)m_openList[i].m_hScore;
-                                //cout << temp;
-                                //if(m_openList[i]->getHScore() < 10)
-                                //{
-                                //    cout << " ";
-                                //}
-						        placed = true;
-					        }
-					
-				        }
-                        //if(!placed)
-                        //{
-                        //    cout << ". " ;
-                        //}
-				
-				        //cout << tempPathNode->getHScore();
-			        }
-                    //else
-                    //{
-                    //    cout << char(254);
-                    //}
-			        //cout << " ";
-		        }
-		        //cout << endl;
-	        }
-	        //cout << endl;
-        }
-
-
 	}
 }

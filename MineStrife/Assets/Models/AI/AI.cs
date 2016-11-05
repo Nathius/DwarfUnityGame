@@ -40,28 +40,16 @@ namespace Assets.Models.AI
                         {
                             if (CurrentPath == null)
                             {
-                                var pathingEngin = new PathFinder_AStar(World.Instance.Width, World.Instance.Height, World.Instance.tiles, false);
-                                var path = pathingEngin.findPath(World.Instance.GetTileAt((int)inBody.Position.x, (int)inBody.Position.y),
-                                    World.Instance.GetTileAt((int)CurrentCommand.TargetPosition.Value.x, (int)CurrentCommand.TargetPosition.Value.y));
-                                if (path == null)
-                                {
-                                    Debug.Log("No path found");
-                                }
-                                else
-                                {
-                                    path.Reverse();
-                                    CurrentPath = path;
-                                }
-
+                                UpdateCurrentPath(new Vector2((int)inBody.Position.x, (int)inBody.Position.y));
                             }
                             else
                             {
-                                //find the next position in the pathing to the target
+                                //find the next position in the path to the target
                                 Vector2 directionOfTravel = CurrentPath.First().Position - inBody.Position;
                                 var distance = directionOfTravel.magnitude;
 
                                 //set the target position if not given
-                                if(inBody.TargetPosition == null && CurrentPath.First() != null)
+                                //if(inBody.TargetPosition == null && CurrentPath.First() != null)
                                 {
                                     inBody.TargetPosition = CurrentPath.First().Position;
                                 }
@@ -105,6 +93,7 @@ namespace Assets.Models.AI
 
             if(CurrentCommand == null)
             {
+                inBody.TargetPosition = null;
                 //if more orders are in the que, continue on with the first
                 if(QuedCommands.Any())
                 {
@@ -113,6 +102,22 @@ namespace Assets.Models.AI
                 }
             }
 
+        }
+
+        private void UpdateCurrentPath(Vector2 inCurrentPosition)
+        {
+            var pathingEngin = new PathFinder_AStar(World.Instance.Width, World.Instance.Height, World.Instance.tiles, false);
+            var path = pathingEngin.findPath(World.Instance.GetTileAt(inCurrentPosition),
+                World.Instance.GetTileAt((int)CurrentCommand.TargetPosition.Value.x, (int)CurrentCommand.TargetPosition.Value.y));
+            if (path == null)
+            {
+                Debug.Log("No path found");
+            }
+            else
+            {
+                path.Reverse();
+                CurrentPath = path;
+            }
         }
 
         private void FinishCurrentCommand(Unit inBody)

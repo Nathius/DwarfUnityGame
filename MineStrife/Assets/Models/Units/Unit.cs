@@ -23,7 +23,7 @@ namespace Assets.Units
             : base(viewObject, inPosition)
         {
             UnitType = inUnitType;
-            MoveSpeed = 0.02f;
+            MoveSpeed = 2.2f;
             Ai = inAi;
         }
 
@@ -36,12 +36,23 @@ namespace Assets.Units
             {
                 Vector2 directionOfTravel = TargetPosition.Value - this.Position;
                 directionOfTravel.Normalize();
-                var movement = directionOfTravel * MoveSpeed;
+                var speedThisFrame = (MoveSpeed * inTimeDelta);
+                var movement = directionOfTravel * speedThisFrame;
                 this.Position += movement;
             }
            
-
             base.Update(inTimeDelta);
+        }
+
+        public override string ToString()
+        {
+            var display = "Unit entity " + "\n" +
+                " (" + Math.Round(Position.x, 2) + "," + Math.Round(Position.y, 2) + ") \n";
+            if(TargetPosition != null)
+            {
+                display += " (" + Math.Round(TargetPosition.Value.x, 2) + "," + Math.Round(TargetPosition.Value.y, 2) + ")";
+            }
+            return display;
         }
 
 	}

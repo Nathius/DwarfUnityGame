@@ -66,6 +66,11 @@ namespace Assets.Models
             }
         }
 
+        public Tile GetTileAt(Vector2 inPosition)
+        {
+            return GetTileAt((int)inPosition.x, (int)inPosition.y);
+        }
+
         public Tile GetTileAt(int inX, int inY)
         {
             if (PointInGrid(inX, inY))
