@@ -54,6 +54,7 @@ namespace Assets.UnityWrappers
             if(box != null)
             {
                 box.size = new Vector2(inWidth, inHeight);
+                box.offset = new Vector2(inWidth / 2.0f, inHeight / 2.0f);
             }
         }
 	}

@@ -15,7 +15,7 @@ namespace Assets.Models.AI
         private static readonly int MaxComments = 10;
 
         private Command CurrentCommand { get; set; }
-        private List<Tile> CurrentPath { get; set; }
+        private List<Vector2> CurrentPath { get; set; }
         private const float ArrivalDistance = 0.1f;
 
         public Unit Body { get; set; }
@@ -32,7 +32,7 @@ namespace Assets.Models.AI
         {
             if(CurrentPath != null && CurrentPath.Any())
             {
-                Body.DrawPath(CurrentPath.Select(x => x.Position).ToList());
+                Body.DrawPath(CurrentPath.ToList());
             }
             
 
@@ -93,8 +93,8 @@ namespace Assets.Models.AI
         private void MoveAllongPath()
         {
             //find the next position in the path to the target
-            Body.TargetPosition = CurrentPath.First().Position;
-            Vector2 directionOfTravel = CurrentPath.First().Position - Body.Position;
+            Body.TargetPosition = CurrentPath.First();
+            Vector2 directionOfTravel = CurrentPath.First() - Body.Position;
             var distance = directionOfTravel.magnitude;
 
             if (distance <= ArrivalDistance)
@@ -102,7 +102,8 @@ namespace Assets.Models.AI
                 CurrentPath.RemoveAt(0);
                 if (CurrentPath.Count >= 1)
                 {
-                    Body.TargetPosition = CurrentPath.First().Position;
+                    var targerPosition = CurrentPath.First();
+                    Body.TargetPosition = new Vector2(targerPosition.x + 0.5f, targerPosition.y + 0.5f);
                 }
                 else
                 {
@@ -127,8 +128,7 @@ namespace Assets.Models.AI
                 Debug.Log("Found path length: " + path.Count);
                 var smoothPath = PathSmoother.SmoothPath(path);
                 Debug.Log("Smoothed path to: " + smoothPath.Count);
-                CurrentPath = smoothPath;
-
+                CurrentPath = smoothPath.Select(x => x.Position).ToList();
             }
         }
 

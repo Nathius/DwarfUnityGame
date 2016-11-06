@@ -99,7 +99,7 @@
     <Compile Include="Assets\Models\World.cs" />
     <Compile Include="Assets\Models\WorldEntity.cs" />
     <Compile Include="Assets\Scripts\FormationCalculator.cs" />
-    <Compile Include="Assets\Scripts\GridPositionHelper.cs" />
+    <Compile Include="Assets\Scripts\GridHelper.cs" />
     <Compile Include="Assets\Scripts\MathHelper.cs" />
     <Compile Include="Assets\Scripts\ProductionNumber.cs" />
     <Compile Include="Assets\Scripts\VectorHelper.cs" />

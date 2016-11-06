@@ -13,35 +13,16 @@ namespace Assets.Scripts
 
         public static Vector2 SnapBuildingToGridPosition(Vector2 inPosition, int inWidth, int inHeight)
         {
-            float clippedX = (int)inPosition.x;
-            float clippedY = (int)inPosition.y;
-
-            //offset even sized sides with tile intersects, insted of tile centers
-            if(MathHelper.IsEven(inWidth))
-            {
-                clippedX -= (TileSize * 0.5f);
-            }
-            if (MathHelper.IsEven(inHeight))
-            {
-                clippedY += (TileSize * 0.5f);
-            }
-
-            Vector2 clippedPosition = new Vector2(clippedX, clippedY);
+            Vector2 clippedPosition = new Vector2((int)inPosition.x, (int)inPosition.y);
             return clippedPosition;
         }
 
         public static void AddBuildingToCollisionMap(Vector2 inPosition, int inWidth, int inHeight)
         {
-            //assume width and height are even
-            //find the lower left corner
-            var lowerLeft = new Vector2(
-                FindLowerOrdinate(inPosition.x, inWidth),
-                FindLowerOrdinate(inPosition.y, inHeight));
-
             //count up by width and height
-            for (int w = (int)lowerLeft.x; w < (int)(lowerLeft.x + inWidth); w++)
+            for (int w = (int)inPosition.x; w < (int)(inPosition.x + inWidth); w++)
             {
-                for (int h = (int)lowerLeft.y; h < (int)(lowerLeft.y + inHeight); h++)
+                for (int h = (int)inPosition.y; h < (int)(inPosition.y + inHeight); h++)
                 {
                     World.Instance.tiles[w, h].Cost = 0;
                     World.Instance.tiles[w, h].TileType = TileType.BLOCKED;
