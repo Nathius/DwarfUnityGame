@@ -44,6 +44,26 @@ namespace Assets.Units
             base.Update(inTimeDelta);
         }
 
+        public void DrawPath(List<Vector2> inPath)
+        {
+            var lineRenderer = ViewObject.GetUnityGameObject().GetComponent<LineRenderer>();
+            if (lineRenderer != null)
+            {
+                lineRenderer.material.color = Color.cyan;
+                List<Vector3> points = new List<Vector3>();
+                points.Add(new Vector3(Position.x, Position.y, 1));
+
+                foreach (var point in inPath)
+                {
+                    points.Add(new Vector3(point.x, point.y, 1));
+                }
+                lineRenderer.SetVertexCount(points.Count);
+                lineRenderer.SetWidth(0.2f, 0.2f);
+                lineRenderer.SetPositions(points.ToArray());
+                
+            }
+        }
+
         public override string ToString()
         {
             var display = "Unit entity " + "\n" +

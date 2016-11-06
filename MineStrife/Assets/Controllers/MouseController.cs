@@ -25,6 +25,7 @@ namespace Assets.Controllers
         void Start()
         {
             buildingSelected = null;
+            Camera.main.orthographicSize = 10;
         }
 
         // Update is called once per frame
