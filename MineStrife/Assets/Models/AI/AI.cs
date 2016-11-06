@@ -28,6 +28,12 @@ namespace Assets.Models.AI
 
         public void Update(Unit inBody)
         {
+            if(CurrentPath != null && CurrentPath.Any())
+            {
+                inBody.DrawPath(CurrentPath.Select(x => x.Position).ToList());
+            }
+            
+
             if(CurrentCommand != null)
             {
                 //check if command is finished
@@ -35,7 +41,6 @@ namespace Assets.Models.AI
                 {
                     case CommandTypes.MOVE:
                         //move tracks towards a position
-                        //should use pathing
                         if (CurrentCommand.TargetPosition != null)
                         {
                             if (CurrentPath == null)
@@ -44,28 +49,8 @@ namespace Assets.Models.AI
                             }
                             else
                             {
-                                //find the next position in the path to the target
-                                Vector2 directionOfTravel = CurrentPath.First().Position - inBody.Position;
-                                var distance = directionOfTravel.magnitude;
-
-                                //set the target position if not given
-                                //if(inBody.TargetPosition == null && CurrentPath.First() != null)
-                                {
-                                    inBody.TargetPosition = CurrentPath.First().Position;
-                                }
-
-                                if (distance <= ArrivalDistance)
-                                {
-                                    CurrentPath.RemoveAt(0);
-                                    if (CurrentPath.Count >= 1)
-                                    {
-                                        inBody.TargetPosition = CurrentPath.First().Position;
-                                    }
-                                    else
-                                    {
-                                        FinishCurrentCommand(inBody);
-                                    }
-                                }
+                                MoveAllongPath(inBody);
+                                
                             }
                         }
                         else
@@ -104,6 +89,27 @@ namespace Assets.Models.AI
 
         }
 
+        private void MoveAllongPath(Unit inBody)
+        {
+            //find the next position in the path to the target
+            inBody.TargetPosition = CurrentPath.First().Position;
+            Vector2 directionOfTravel = CurrentPath.First().Position - inBody.Position;
+            var distance = directionOfTravel.magnitude;
+
+            if (distance <= ArrivalDistance)
+            {
+                CurrentPath.RemoveAt(0);
+                if (CurrentPath.Count >= 1)
+                {
+                    inBody.TargetPosition = CurrentPath.First().Position;
+                }
+                else
+                {
+                    FinishCurrentCommand(inBody);
+                }
+            }
+        }
+
         private void UpdateCurrentPath(Vector2 inCurrentPosition)
         {
             var pathingEngin = new PathFinder_AStar(World.Instance.Width, World.Instance.Height, World.Instance.tiles, false);
@@ -116,7 +122,9 @@ namespace Assets.Models.AI
             else
             {
                 path.Reverse();
-                CurrentPath = path;
+                var smoothPath = PathSmoother.SmoothPath(path);
+                CurrentPath = smoothPath;
+                //CurrentPath = path;
             }
         }
 
