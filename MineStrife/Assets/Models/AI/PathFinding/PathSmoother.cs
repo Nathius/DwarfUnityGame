@@ -27,7 +27,6 @@ namespace Assets.Models.AI.PathFinding
                 loopCounter++;
             }
 
-            Debug.Log("smoothed path length: " + smoothedPath.Count);
             return smoothedPath;
         }
 
@@ -58,7 +57,6 @@ namespace Assets.Models.AI.PathFinding
                 );
 
             bool canPath = !foundCollisions;
-            Debug.Log("Can path: " + canPath.ToString() + " Hit point: " + hitInfo.point + " at distance " + hitInfo.distance);
 
             return canPath;
         }

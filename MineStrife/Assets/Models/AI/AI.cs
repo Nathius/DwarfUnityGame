@@ -18,6 +18,8 @@ namespace Assets.Models.AI
         private List<Tile> CurrentPath { get; set; }
         private const float ArrivalDistance = 0.1f;
 
+        public Unit Body { get; set; }
+
         public AI(List<CommandTypes> inSupportedBehaviours)
         {
             SupportedBehaviours = inSupportedBehaviours;
@@ -26,11 +28,11 @@ namespace Assets.Models.AI
             CurrentCommand = null;
         }
 
-        public void Update(Unit inBody)
+        public void Update()
         {
             if(CurrentPath != null && CurrentPath.Any())
             {
-                inBody.DrawPath(CurrentPath.Select(x => x.Position).ToList());
+                Body.DrawPath(CurrentPath.Select(x => x.Position).ToList());
             }
             
 
@@ -45,17 +47,16 @@ namespace Assets.Models.AI
                         {
                             if (CurrentPath == null)
                             {
-                                UpdateCurrentPath(new Vector2((int)inBody.Position.x, (int)inBody.Position.y));
+                                UpdateCurrentPath(Body.Position);
                             }
                             else
                             {
-                                MoveAllongPath(inBody);
-                                
+                                MoveAllongPath();
                             }
                         }
                         else
                         {
-                            FinishCurrentCommand(inBody);
+                            FinishCurrentCommand();
                         }
 
                         break;
@@ -78,7 +79,7 @@ namespace Assets.Models.AI
 
             if(CurrentCommand == null)
             {
-                inBody.TargetPosition = null;
+                Body.TargetPosition = null;
                 //if more orders are in the que, continue on with the first
                 if(QuedCommands.Any())
                 {
@@ -89,11 +90,11 @@ namespace Assets.Models.AI
 
         }
 
-        private void MoveAllongPath(Unit inBody)
+        private void MoveAllongPath()
         {
             //find the next position in the path to the target
-            inBody.TargetPosition = CurrentPath.First().Position;
-            Vector2 directionOfTravel = CurrentPath.First().Position - inBody.Position;
+            Body.TargetPosition = CurrentPath.First().Position;
+            Vector2 directionOfTravel = CurrentPath.First().Position - Body.Position;
             var distance = directionOfTravel.magnitude;
 
             if (distance <= ArrivalDistance)
@@ -101,11 +102,11 @@ namespace Assets.Models.AI
                 CurrentPath.RemoveAt(0);
                 if (CurrentPath.Count >= 1)
                 {
-                    inBody.TargetPosition = CurrentPath.First().Position;
+                    Body.TargetPosition = CurrentPath.First().Position;
                 }
                 else
                 {
-                    FinishCurrentCommand(inBody);
+                    FinishCurrentCommand();
                 }
             }
         }
@@ -118,17 +119,20 @@ namespace Assets.Models.AI
             if (path == null)
             {
                 Debug.Log("No path found");
+                FinishCurrentCommand();
             }
             else
             {
                 path.Reverse();
+                Debug.Log("Found path length: " + path.Count);
                 var smoothPath = PathSmoother.SmoothPath(path);
+                Debug.Log("Smoothed path to: " + smoothPath.Count);
                 CurrentPath = smoothPath;
-                //CurrentPath = path;
+
             }
         }
 
-        private void FinishCurrentCommand(Unit inBody)
+        private void FinishCurrentCommand()
         {
             if(CurrentCommand != null)
             {
@@ -137,7 +141,7 @@ namespace Assets.Models.AI
                     QuedCommands.Add(CurrentCommand);
                 }
                 CurrentCommand = null;
-                inBody.TargetPosition = null;
+                Body.TargetPosition = null;
             }
             CurrentPath = null;
         }

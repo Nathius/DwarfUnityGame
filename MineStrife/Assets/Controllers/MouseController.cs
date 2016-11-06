@@ -110,18 +110,19 @@ namespace Assets.Controllers
             {
                 if(WorldController.Instance.CurrentSelection.Count > 0)
                 {
-                    var positions = FormationCalculator.findPositionsForFormation(
-                        WorldController.Instance.CurrentSelection.Select(x => x.Position).ToList(),
-                        new Vector2(currentMousePosOnFloor.x, currentMousePosOnFloor.y),
-                        0.6f
-                        );
+                    //formations are just causing issues with pathfinding
+                    //var positions = FormationCalculator.findPositionsForFormation(
+                    //    WorldController.Instance.CurrentSelection.Select(x => x.Position).ToList(),
+                    //    new Vector2(currentMousePosOnFloor.x, currentMousePosOnFloor.y),
+                    //    0.6f
+                    //    );
 
                     for (int i = 0; i < WorldController.Instance.CurrentSelection.Count; i++ )
                     {
                         if (WorldController.Instance.CurrentSelection[i].GetType() == typeof(Unit))
                         {
                             ((Unit)WorldController.Instance.CurrentSelection[i]).Ai.AddCommand(
-                                new Command(CommandTypes.MOVE, positions[i], null, false),
+                                new Command(CommandTypes.MOVE, new Vector2(currentMousePosOnFloor.x, currentMousePosOnFloor.y), null, false),
                                 Input.GetKey(KeyCode.LeftShift)
                                 );
                         }

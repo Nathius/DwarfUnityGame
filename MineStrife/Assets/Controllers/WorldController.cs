@@ -8,6 +8,7 @@ using Assets.UnityWrappers;
 using Assets.Models.Econemy;
 using Assets.Controllers.PrefabControllers;
 using Assets.Models.Buildings;
+using Assets.Scripts;
 
 namespace Assets.Controllers
 {
@@ -92,21 +93,16 @@ namespace Assets.Controllers
                 var newTree = Instantiate(TreeSpritePrefab);
                 newTree.transform.SetParent(this.transform, true);
 
-                var x = (UnityEngine.Random.value * (World.Width - 4)) + 2;
-                var y = (UnityEngine.Random.value * (World.Height - 4)) + 2;
+                var randomX = (UnityEngine.Random.value * (World.Width - 4)) + 2;
+                var randomY = (UnityEngine.Random.value * (World.Height - 4)) + 2;
+
+                var gridPosition = GridHelper.SnapBuildingToGridPosition(new Vector2(randomX, randomY), 2, 2);
 
                 var node = new ResourceNode(new UnityObjectWrapper(newTree),
-                    new Vector3(x, y),
+                    VectorHelper.ToVector3(gridPosition),
                     RESOURCE_TYPE.WOOD, 20);
 
-                World.Instance.GetTileAt((int)x, (int)y).Cost = 0;
-                World.Instance.GetTileAt((int)x, (int)y).TileType = TileType.BLOCKED;
-
-                World.Instance.GetTileAt((int)x + 1, (int)y).Cost = 0;
-                World.Instance.GetTileAt((int)x + 1, (int)y).TileType = TileType.BLOCKED;
-
-                World.Instance.GetTileAt((int)x, (int)y + 1).Cost = 0;
-                World.Instance.GetTileAt((int)x, (int)y + 1).TileType = TileType.BLOCKED;
+                GridHelper.AddBuildingToCollisionMap(gridPosition, 2, 2);
             }
         }
 

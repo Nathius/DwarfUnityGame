@@ -95,6 +95,11 @@ namespace Assets.Models
             return true;
         }
 
+        public void AddCollisionAreaToTileMap(Vector2 inPosition, int inWidth, int inHeight)
+        {
+            
+        }
+
         public WorldEntity EntityAtPosition(Vector3 inPosition)
         {
             //collision checking against all entities to see if the point is contained in any bounding box

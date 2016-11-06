@@ -25,11 +25,12 @@ namespace Assets.Units
             UnitType = inUnitType;
             MoveSpeed = 2.2f;
             Ai = inAi;
+            Ai.Body = this;
         }
 
         public override void Update(float inTimeDelta)
         {
-            Ai.Update(this);
+            Ai.Update();
             
             //if the ai gives a target position, seek towards it
             if (TargetPosition != null)

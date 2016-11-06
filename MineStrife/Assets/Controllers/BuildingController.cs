@@ -8,6 +8,7 @@ using Assets.Models.Buildings;
 using Assets.UnityWrappers;
 using Assets.Models.Econemy.ResourceNodes;
 using Assets.Controllers.PrefabControllers;
+using Assets.Scripts;
 
 namespace Assets.Controllers
 {
@@ -45,7 +46,8 @@ namespace Assets.Controllers
                     building_go.name = "building";
 
                     //create a new building data object
-                    var newBuilding = new ProductionBuilding(new UnityObjectWrapper(building_go), new Vector2(inPos.x, inPos.y), 3, 3, inBuildingType.BuildingType, inBuildingType.Conversion);
+                    Vector2 buildingPosition = new Vector2(inPos.x, inPos.y);
+                    var newBuilding = new ProductionBuilding(new UnityObjectWrapper(building_go), buildingPosition, 3, 3, inBuildingType.BuildingType, inBuildingType.Conversion);
 
                     //withdraw the required resources
                     WorldController.Instance.World.Stockpile.RemoveStock(inBuildingType.BuildingCost);
@@ -55,6 +57,9 @@ namespace Assets.Controllers
                         WorldController.Instance.World.CityCenter = (Building)newBuilding;
                         IconPanelController.Instance.RemoveIconForBuildingType(BuildingType.CITY_CENTER);
                     }
+
+                    //add building to the grid collision map
+                    GridHelper.AddBuildingToCollisionMap(buildingPosition, 3, 3);
 
                 }
             }          
