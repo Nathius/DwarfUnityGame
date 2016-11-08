@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using Assets.UnityWrappers;
+using Assets.Scripts;
 
 namespace Assets.Models
 {
@@ -31,8 +32,8 @@ namespace Assets.Models
 
         public override string ToString()
         {
-            return "World entity " +  "\n" +
-                " (" + Math.Round(Position.x, 2) + "," + Math.Round(Position.y, 2) + ")";
+            return "World entity " + "\n" +
+                " Position: " + VectorHelper.ToString(Position) + "\n";
         }
 	}
 }

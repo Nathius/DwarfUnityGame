@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using Assets.Models;
+using Assets.Models.Econemy;
+using Assets.Models.Econemy.ResourceNodes;
 
 namespace Assets.Scripts
 {
@@ -35,5 +37,9 @@ namespace Assets.Scripts
             return new Vector2(inPosition.x - (int)(0.5f * inSize.x), inPosition.y - (int)(0.5f * inSize.y));
         }
 
+        public static Vector2 BuildingCenter(Vector2 inPosition, Vector2 inSize)
+        {
+            return new Vector2(inPosition.x + (0.5f * inSize.x), inPosition.y + (0.5f * inSize.y));
+        }
 	}
 }

@@ -191,9 +191,9 @@ namespace Assets.Controllers
             DisplayController.Instance.BuildingCostText.text = "";
         }
 
-        public static Vector3 MousePositionToGridPosition(Vector3 inPosition)
+        public static Vector2 MousePositionToGridPosition(Vector3 inPosition)
         {
-            Vector3 newPos = new Vector3((int)(inPosition.x), (int)(inPosition.y), 0);
+            Vector2 newPos = new Vector3((int)(inPosition.x), (int)(inPosition.y));
             return newPos;
         }
 

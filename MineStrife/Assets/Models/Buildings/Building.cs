@@ -26,6 +26,11 @@ namespace Assets.Models
             GridHelper.AddBuildingToCollisionMap(inPosition, Size);
         }
 
+        public Vector2 ReferencePosition()
+        {
+            return GridHelper.BuildingCenter(Position, Size);
+        }
+
         private void SetBuildingSize()
         {
             var definition = BuildingDefinition.GetBuildingDefinitionForType(BuildingType);
@@ -42,8 +47,8 @@ namespace Assets.Models
         public override string ToString()
         {
             return "Building " + BuildingType.ToString() + "\n" +
-                " (" + Math.Round(Position.x, 2) + "," + Math.Round(Position.y, 2) + ")," + "\n" +
-                " size (" + Size.x + "," + Size.y + ")";
+                " Position: " + VectorHelper.ToString(Position) + "\n" +
+                " Size: " + VectorHelper.ToString(Size) + "\n";
         }
     }
 }

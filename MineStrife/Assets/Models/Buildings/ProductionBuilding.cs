@@ -8,6 +8,7 @@ using UnityEngine;
 using Assets.UnityWrappers;
 using Assets.Models.Econemy.ResourceNodes;
 using Assets.Controllers;
+using Assets.Scripts;
 
 namespace Assets.Models.Buildings
 {
@@ -31,59 +32,80 @@ namespace Assets.Models.Buildings
             }
         }
 
-        public void CheckCanStartProcessing()
+        public void TryStartProcessing()
         {
             //should only be checked if not processing
-            if (Conversion != null)
+            if (Conversion == null || currentlyProcessing)
             {
-                bool canAfford_fromStockpile = true;
-                bool canAfford_fromNodes = true;
-                var foundNodes = new Dictionary<RESOURCE_TYPE, ResourceNode>();
-
-                //check any stockpile requirements
-                if (Conversion.RequiresStockpileResources())
-                {
-                    var requiredStock = Conversion.StockpileRequirements();
-                    for (int r = 0; r < requiredStock.Count() && canAfford_fromStockpile; r++ )
-                    {
-                        //check if the stockpile can support all resource requirements
-                        if ( ! World.Instance.Stockpile.CanAfford(requiredStock[r].resourceAmmount))
-                        {
-                            canAfford_fromStockpile = false;
-                        }
-                    }
-                }
-
-                //check any node requirements
-                if (canAfford_fromStockpile && Conversion.RequiresNodeResources())
-                {
-                    var requiredNodes = Conversion.NodeRequirements();
-
-                    //check that we can get the required resources from every node
-                    for (int n = 0; n < requiredNodes.Count() && canAfford_fromNodes; n++)
-                    {
-                        //get resource node within range
-                        var node = ResourceNode.ClosestNodeToPoint(Position, requiredNodes[n].harvestDistance, requiredNodes[n].resourceAmmount.ResourceType);
-                        //check if the node can support the required harvest ammount
-                        if (node != null && node.CanExtractResource(requiredNodes[n].resourceAmmount.Ammount))
-                        {
-                            foundNodes.Add(requiredNodes[n].resourceAmmount.ResourceType, node);
-                        }
-                        else
-                        {
-                            canAfford_fromNodes = false;
-                        }
-                    }
-                }
-                
-                //if can afford process start prcessing
-                if (canAfford_fromStockpile && canAfford_fromNodes)
-                {
-                    StartConversion(foundNodes);
-                }
+                return;
             }
 
+            //check any stockpile requirements
+            bool canAfford_fromStockpile = AreStockpileRequirementsMet(Conversion);
+            if(!canAfford_fromStockpile)
+            {
+                return;
+            }
+
+            //check any node requirements
+            Dictionary<RESOURCE_TYPE, ResourceNode> foundNodes = null;
+            bool canAfford_fromNodes = AreResourceNodeRequirementsMet(Conversion, out foundNodes);
+            if(!canAfford_fromNodes)
+            {
+                return;
+            }
+    
+
+            //if can afford process start prcessing
+            StartConversion(foundNodes);
         }
+
+        private bool AreStockpileRequirementsMet(Conversion inConversion)
+        {
+            bool canAfford_fromStockpile = true;
+            if (inConversion.RequiresStockpileResources())
+            {
+                var requiredStock = inConversion.StockpileRequirements();
+                for (int r = 0; r < requiredStock.Count() && canAfford_fromStockpile; r++)
+                {
+                    //check if the stockpile can support all resource requirements
+                    if (!World.Instance.Stockpile.CanAfford(requiredStock[r].resourceAmmount))
+                    {
+                        canAfford_fromStockpile = false;
+                    }
+                }
+            }
+            return canAfford_fromStockpile;
+        }
+        private bool AreResourceNodeRequirementsMet(Conversion inConversion, out Dictionary<RESOURCE_TYPE, ResourceNode> foundNodes)
+        {
+            bool canAfford_fromNodes = true;
+            foundNodes = new Dictionary<RESOURCE_TYPE, ResourceNode>();
+
+            if (inConversion.RequiresNodeResources())
+            {
+                var requiredNodes = inConversion.NodeRequirements();
+
+                //check that we can get the required resources from every node
+                for (int n = 0; n < requiredNodes.Count() && canAfford_fromNodes; n++)
+                {
+                    //get resource node within range
+                    var node = ResourceNode.ClosestNodeToPoint(ReferencePosition(), requiredNodes[n].harvestDistance, requiredNodes[n].resourceAmmount.ResourceType);
+
+                    //check if the node can support the required harvest ammount
+                    if (node != null && node.CanExtractResource(requiredNodes[n].resourceAmmount.Ammount))
+                    {
+                        foundNodes.Add(requiredNodes[n].resourceAmmount.ResourceType, node);
+                    }
+                    else
+                    {
+                        canAfford_fromNodes = false;
+                    }
+                }
+            }
+            return canAfford_fromNodes;
+        }
+
 
         private void StartConversion(Dictionary<RESOURCE_TYPE, ResourceNode> inFoundNodes)
         {
@@ -120,7 +142,7 @@ namespace Assets.Models.Buildings
             }
             else
             {
-                CheckCanStartProcessing();
+                TryStartProcessing();
             }
         }
 
@@ -140,7 +162,7 @@ namespace Assets.Models.Buildings
                     if (Conversion.Result.ResourceBundle != null)
                     {
                         World.Instance.Stockpile.AddStock(Conversion.Result.ResourceBundle);
-                        DisplayController.Instance.CreateProductionNumber(Position, Conversion.Result.ResourceBundle);
+                        DisplayController.Instance.CreateProductionNumber(ReferencePosition(), Conversion.Result.ResourceBundle);
                     }
                     if (Conversion.Result.UnitType != null)
                     {
@@ -160,8 +182,8 @@ namespace Assets.Models.Buildings
                 displayStr +=  Conversion.Description + ": " + ProductionBar() + "\n";
             }
 
-            displayStr += " (" + Math.Round(Position.x, 2) + "," + Math.Round(Position.y, 2) + ")," + "\n";
-            displayStr += " size (" + Size.x + "," + Size.y + ")";
+            displayStr += " position: " + VectorHelper.ToString(Position) + "\n";
+            displayStr += " size: " + VectorHelper.ToString(Size) + "\n";
 
             return displayStr;
         }

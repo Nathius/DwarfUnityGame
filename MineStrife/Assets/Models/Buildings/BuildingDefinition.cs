@@ -45,6 +45,13 @@ namespace Assets.Models.Buildings
             return definition;
         }
 
+        //resource node
+        public static BuildingDefinition ResourceNode = new BuildingDefinition
+        {
+            BuildingType = BuildingType.RESOURCE_NODE,
+            Size = new Vector2(2, 2)
+        };
+
         //city center
         public static BuildingDefinition CityCenter = new BuildingDefinition
         {

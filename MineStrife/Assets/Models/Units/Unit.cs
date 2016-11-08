@@ -7,6 +7,7 @@ using Assets.Models;
 using Assets.UnityWrappers;
 using Assets.Models.Buildings;
 using Assets.Models.AI;
+using Assets.Scripts;
 
 namespace Assets.Units
 {
@@ -68,10 +69,10 @@ namespace Assets.Units
         public override string ToString()
         {
             var display = "Unit entity " + "\n" +
-                " (" + Math.Round(Position.x, 2) + "," + Math.Round(Position.y, 2) + ") \n";
+                " Position: " + VectorHelper.ToString(Position) + "\n";
             if(TargetPosition != null)
             {
-                display += " (" + Math.Round(TargetPosition.Value.x, 2) + "," + Math.Round(TargetPosition.Value.y, 2) + ")";
+                display += " Target: " + VectorHelper.ToString(TargetPosition.Value) + "\n";
             }
             return display;
         }

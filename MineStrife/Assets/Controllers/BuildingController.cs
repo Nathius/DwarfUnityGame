@@ -73,15 +73,15 @@ namespace Assets.Controllers
             return centerOfset;
         }
 
-        public void updateGhostPosition(Vector3 inPos, BuildingDefinition inBuildingDefinition)
+        public void updateGhostPosition(Vector2 inMouseOnGridPosition, BuildingDefinition inBuildingDefinition)
         {
             ClearLine();
             if(buildingGhost != null)
             {
                 buildingGhost.SetActive(true);
 
-                var ofsetPos = GetBuildingPositionFromMousePosition(inPos, inBuildingDefinition.Size);
-                buildingGhost.transform.position = ofsetPos;
+                var buildingPlacementPosition = GetBuildingPositionFromMousePosition(inMouseOnGridPosition, inBuildingDefinition.Size);
+                buildingGhost.transform.position = buildingPlacementPosition;
 
                 if (CanPlaceBuildingAt(buildingGhost, inBuildingDefinition))
                 {
@@ -92,29 +92,14 @@ namespace Assets.Controllers
                     }
                     else
                     {
-                        var requiredNodes = inBuildingDefinition.Conversion.NodeRequirements();
-                        bool foundAllRequiredNodes = true;
-                        var foundNodes = new List<ResourceNode>();
-
-                        //check that we can get the required resources from every node
-                        foreach (var nodeReq in requiredNodes)
-                        {
-                            //get resource node within range
-                            var nodes = ResourceNode.NodesWithinProximityOfPoint(inPos, nodeReq.harvestDistance, nodeReq.resourceAmmount.ResourceType);
-                            if (nodes != null && nodes.Count > 0)
-                            {
-                                foundNodes.AddRange(nodes);
-                            }
-                            else
-                            {
-                                foundAllRequiredNodes = false;
-                            }
-                        }
+                        List<Vector2> foundNodePositions = null;
+                        var buildingReferencePoint = GridHelper.BuildingCenter(buildingPlacementPosition, inBuildingDefinition.Size);
+                        var foundAllRequiredNodes = HasRequiredResourceNodes(buildingReferencePoint, inBuildingDefinition, out foundNodePositions);
 
                         //if node required and available
                         if (foundAllRequiredNodes)
                         {
-                            var points = GetLineList(inPos, foundNodes.Select(x => x.Position).ToList());
+                            var points = GetLineList(buildingReferencePoint, foundNodePositions);
                             DrawLine(points);
                             buildingGhost.GetComponent<SpriteRenderer>().color = Color.green;                            
                         }
@@ -129,6 +114,31 @@ namespace Assets.Controllers
                     buildingGhost.GetComponent<SpriteRenderer>().color = Color.red;
                 }
             }
+        }
+
+        public bool HasRequiredResourceNodes(Vector2 inPosition, BuildingDefinition inBuildingDefinition, out List<Vector2> outNodePositions)
+        {
+            var requiredNodes = inBuildingDefinition.Conversion.NodeRequirements();
+            bool foundAllRequiredNodes = true;
+            var foundNodes = new List<ResourceNode>();
+
+            //check that we can get the required resources from every node
+            foreach (var nodeReq in requiredNodes)
+            {
+                //get resource node within range
+                var nodes = ResourceNode.NodesWithinProximityOfPoint(inPosition, nodeReq.harvestDistance, nodeReq.resourceAmmount.ResourceType);
+                if (nodes != null && nodes.Count > 0)
+                {
+                    foundNodes.AddRange(nodes);
+                }
+                else
+                {
+                    foundAllRequiredNodes = false;
+                }
+            }
+
+            outNodePositions = foundNodes.Select(x => x.ReferencePosition()).ToList();
+            return foundAllRequiredNodes;
         }
 
         public bool CanPlaceBuildingAt(GameObject inBuilding_go, BuildingDefinition inBuildingType)
@@ -177,8 +187,8 @@ namespace Assets.Controllers
             var lineList = new List<Vector3>();
             foreach(var point in inPoints)
             {
-                lineList.Add(new Vector3(inBuildingPos.x, inBuildingPos.y, 0));
-                lineList.Add(new Vector3(point.x, point.y, 0));
+                lineList.Add(VectorHelper.ToVector3(inBuildingPos));
+                lineList.Add(VectorHelper.ToVector3(point));
             }
             return lineList;
         }

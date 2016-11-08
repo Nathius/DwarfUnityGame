@@ -125,7 +125,6 @@ namespace Assets.Controllers
                 Hilights.RemoveAt(0);
                 Destroy(obj.gameObject);
                 Destroy(obj);
-
             }
         }
 

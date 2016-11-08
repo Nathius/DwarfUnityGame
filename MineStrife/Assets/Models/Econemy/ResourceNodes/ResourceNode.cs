@@ -5,6 +5,7 @@ using System.Text;
 using Assets.UnityWrappers;
 using UnityEngine;
 using Assets.Models.Buildings;
+using Assets.Scripts;
 
 namespace Assets.Models.Econemy.ResourceNodes
 {
@@ -67,14 +68,14 @@ namespace Assets.Models.Econemy.ResourceNodes
                 .Where(x => x is ResourceNode)
                 .Where(x => ((ResourceNode)x).Resource == inResourceType)
                 .OrderBy(x => ((ResourceNode)x).IsDepeleted)
-                .ThenBy(x => Vector2.Distance(x.Position, inPosition))
+                .ThenBy(x => Vector2.Distance(((ResourceNode)x).ReferencePosition(), inPosition))
                 .FirstOrDefault();
 
             ResourceNode node = (ResourceNode)closestNode;
 
             if (node != null)
             {
-                if (Vector2.Distance(node.Position, inPosition) <= inDistance)
+                if (Vector2.Distance(node.ReferencePosition(), inPosition) <= inDistance)
                 {
                     return node;
                 }
@@ -88,8 +89,8 @@ namespace Assets.Models.Econemy.ResourceNodes
                 .Where(x => x is ResourceNode)
                 .Where(x => ((ResourceNode)x).Resource == inResourceType)
                 .Where(x => ((ResourceNode)x).IsDepeleted == false)
-                .Where(x => Vector2.Distance(x.Position, inPosition) <= inDistance)
-                .OrderBy(x => Vector2.Distance(x.Position, inPosition))
+                .Where(x => Vector2.Distance(((ResourceNode)x).ReferencePosition(), inPosition) <= inDistance)
+                .OrderBy(x => Vector2.Distance(((ResourceNode)x).ReferencePosition(), inPosition))
                 .Select(x => (ResourceNode)x)
                 .ToList<ResourceNode>();
 
@@ -100,8 +101,8 @@ namespace Assets.Models.Econemy.ResourceNodes
         {
             return "Building " + BuildingType.ToString() + "\n" +
                 ammountRemaining + " " + Resource.ToString() + "\n" +
-                " (" + Math.Round(Position.x, 2) + "," + Math.Round(Position.y, 2) + ")," + "\n" +
-                " size (" + Size.x + "," + Size.y + ")";
+                " Position: " + VectorHelper.ToString(Position) + "\n" +
+                " Size: " + VectorHelper.ToString(Size) + "\n";
         }
 	}
 }
