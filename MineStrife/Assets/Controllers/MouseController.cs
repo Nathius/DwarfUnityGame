@@ -45,8 +45,11 @@ namespace Assets.Controllers
                 //if clicking place a building
                 if (Input.GetMouseButtonUp(0))
                 {
+                    var buildingDefinition = BuildingDefinition.GetBuildingDefinitionForType(buildingSelected.BuildingType);
+                    var buildingSize = buildingDefinition.Size;
+
                     var gridPosition = MousePositionToGridPosition(currentMousePosOnFloor);
-                    var buildingPosition = BuildingController.GetBuildingPositionFromMousePosition(gridPosition, 3, 3);
+                    var buildingPosition = BuildingController.GetBuildingPositionFromMousePosition(gridPosition, buildingSize);
                     BuildingController.Instance.CreateBuildingAt(buildingPosition, buildingSelected);
                     if (!Input.GetKey(KeyCode.LeftShift))
                     {

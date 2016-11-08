@@ -48,8 +48,6 @@ namespace Assets.Models.AI.PathFinding
 
         private static bool CanPathSegment(Vector2 inStart, Vector2 inEnd)
         {
-            RaycastHit hitInfo = new RaycastHit();
-
             //check if the ray passes over any tile which is blocked
             bool foundCollisions = Physics2D.Linecast(
                 inStart,

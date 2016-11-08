@@ -48,13 +48,13 @@ namespace Assets.UnityWrappers
             //update scale
         }
 
-        public void SetBoundSize(float inWidth, float inHeight)
+        public void SetBoundSize(Vector2 inSize)
         {
             var box = ViewObject.GetComponent<BoxCollider2D>();
-            if(box != null)
+            if (box != null)
             {
-                box.size = new Vector2(inWidth, inHeight);
-                box.offset = new Vector2(inWidth / 2.0f, inHeight / 2.0f);
+                box.size = inSize;
+                box.offset = inSize * 0.5f;
             }
         }
 	}

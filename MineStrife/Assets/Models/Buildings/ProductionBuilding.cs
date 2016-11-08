@@ -19,8 +19,8 @@ namespace Assets.Models.Buildings
         public Conversion Conversion { get; set; }
         public bool currentlyProcessing { get; set; }
 
-        public ProductionBuilding(UnityObjectWrapper viewObject, Vector2 inPosition, int inWidth, int inHeignt, BuildingType inBuildingType, Conversion inConversion)
-            : base(viewObject, inPosition, inWidth, inHeignt, inBuildingType)
+        public ProductionBuilding(UnityObjectWrapper viewObject, Vector2 inPosition, BuildingType inBuildingType, Conversion inConversion)
+            : base(viewObject, inPosition, inBuildingType)
         {
             currentlyProcessing = false;
             //automatically start their first conversion
@@ -161,7 +161,7 @@ namespace Assets.Models.Buildings
             }
 
             displayStr += " (" + Math.Round(Position.x, 2) + "," + Math.Round(Position.y, 2) + ")," + "\n";
-            displayStr += " size (" + tileWidth + "," + tileHeight + ")";
+            displayStr += " size (" + Size.x + "," + Size.y + ")";
 
             return displayStr;
         }

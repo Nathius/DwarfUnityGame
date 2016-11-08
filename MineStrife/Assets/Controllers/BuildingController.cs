@@ -47,7 +47,7 @@ namespace Assets.Controllers
 
                     //create a new building data object
                     Vector2 buildingPosition = new Vector2(inPos.x, inPos.y);
-                    var newBuilding = new ProductionBuilding(new UnityObjectWrapper(building_go), buildingPosition, 3, 3, inBuildingType.BuildingType, inBuildingType.Conversion);
+                    var newBuilding = new ProductionBuilding(new UnityObjectWrapper(building_go), buildingPosition, inBuildingType.BuildingType, inBuildingType.Conversion);
 
                     //withdraw the required resources
                     WorldController.Instance.World.Stockpile.RemoveStock(inBuildingType.BuildingCost);
@@ -57,10 +57,6 @@ namespace Assets.Controllers
                         WorldController.Instance.World.CityCenter = (Building)newBuilding;
                         IconPanelController.Instance.RemoveIconForBuildingType(BuildingType.CITY_CENTER);
                     }
-
-                    //add building to the grid collision map
-                    GridHelper.AddBuildingToCollisionMap(buildingPosition, 3, 3);
-
                 }
             }          
         }
@@ -71,31 +67,32 @@ namespace Assets.Controllers
             ClearLine();
         }
 
-        public static Vector2 GetBuildingPositionFromMousePosition(Vector2 inPosition, int inWidth, int inHeight)
+        public static Vector2 GetBuildingPositionFromMousePosition(Vector2 inPosition, Vector2 inSize)
         {
-            var centerOfset = GridHelper.OffsetToBuildingCenter(inPosition, inWidth, inHeight);
+            var centerOfset = GridHelper.OffsetToBuildingCenter(inPosition, inSize);
             return centerOfset;
         }
 
-        public void updateGhostPosition(Vector3 inPos, BuildingDefinition inBuildingType)
+        public void updateGhostPosition(Vector3 inPos, BuildingDefinition inBuildingDefinition)
         {
             ClearLine();
             if(buildingGhost != null)
             {
                 buildingGhost.SetActive(true);
-                var ofsetPos = GetBuildingPositionFromMousePosition(inPos, 3, 3);
+
+                var ofsetPos = GetBuildingPositionFromMousePosition(inPos, inBuildingDefinition.Size);
                 buildingGhost.transform.position = ofsetPos;
 
-                if (CanPlaceBuildingAt(buildingGhost, inBuildingType))
+                if (CanPlaceBuildingAt(buildingGhost, inBuildingDefinition))
                 {
                     //if no node required
-                    if (inBuildingType.Conversion == null || ( ! inBuildingType.Conversion.RequiresNodeResources()))
+                    if (inBuildingDefinition.Conversion == null || ( ! inBuildingDefinition.Conversion.RequiresNodeResources()))
                     {
                         buildingGhost.GetComponent<SpriteRenderer>().color = Color.green;
                     }
                     else
                     {
-                        var requiredNodes = inBuildingType.Conversion.NodeRequirements();
+                        var requiredNodes = inBuildingDefinition.Conversion.NodeRequirements();
                         bool foundAllRequiredNodes = true;
                         var foundNodes = new List<ResourceNode>();
 

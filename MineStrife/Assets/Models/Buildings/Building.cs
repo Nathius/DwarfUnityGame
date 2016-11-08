@@ -3,34 +3,47 @@ using System;
 using Assets.UnityWrappers;
 using Assets.Models.Buildings;
 using UnityEngine;
+using Assets.Scripts;
 
 namespace Assets.Models
 {
 
     public class Building : TeamEntity
     {
-        public int tileWidth { get; set; }
-        public int tileHeight { get; set; }
+        private static readonly Vector2 DefaultSize = new Vector2(2, 2);
         public BuildingType BuildingType { get; set; }
+        public Vector2 Size { get; set; }
 
         public Building(UnityObjectWrapper viewObject,
             Vector2 inPosition,
-            int inWidth, 
-            int inHeight, 
             BuildingType inBuildingType)
             : base(viewObject, inPosition)
         {
-            tileWidth = inWidth;
-            tileHeight = inHeight;
             BuildingType = inBuildingType;
-            viewObject.SetBoundSize(inWidth, inHeight);
+            SetBuildingSize();
+
+            viewObject.SetBoundSize(Size);
+            GridHelper.AddBuildingToCollisionMap(inPosition, Size);
+        }
+
+        private void SetBuildingSize()
+        {
+            var definition = BuildingDefinition.GetBuildingDefinitionForType(BuildingType);
+            if (definition != null)
+            {
+                Size = definition.Size;
+            }
+            else
+            {
+                Size = DefaultSize;
+            }
         }
 
         public override string ToString()
         {
             return "Building " + BuildingType.ToString() + "\n" +
                 " (" + Math.Round(Position.x, 2) + "," + Math.Round(Position.y, 2) + ")," + "\n" +
-                " size (" + tileWidth + "," + tileHeight + ")";
+                " size (" + Size.x + "," + Size.y + ")";
         }
     }
 }

@@ -96,13 +96,11 @@ namespace Assets.Controllers
                 var randomX = (UnityEngine.Random.value * (World.Width - 4)) + 2;
                 var randomY = (UnityEngine.Random.value * (World.Height - 4)) + 2;
 
-                var gridPosition = GridHelper.SnapBuildingToGridPosition(new Vector2(randomX, randomY), 2, 2);
+                var gridPosition = GridHelper.SnapBuildingToGridPosition(new Vector2(randomX, randomY));
 
                 var node = new ResourceNode(new UnityObjectWrapper(newTree),
                     VectorHelper.ToVector3(gridPosition),
                     RESOURCE_TYPE.WOOD, 20);
-
-                GridHelper.AddBuildingToCollisionMap(gridPosition, 2, 2);
             }
         }
 

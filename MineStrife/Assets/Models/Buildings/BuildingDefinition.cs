@@ -23,6 +23,7 @@ namespace Assets.Models.Buildings
         public Conversion Conversion{ get; set; }
         public ResourceAmmount BuildingCost { get; set; }
         public BuildingType BuildingType { get; set; }
+        public Vector2 Size { get; set; }
 
         public static List<BuildingDefinition> allDefinitions { get; set; }
         public BuildingDefinition()
@@ -48,7 +49,8 @@ namespace Assets.Models.Buildings
         public static BuildingDefinition CityCenter = new BuildingDefinition
         {
             BuildingType = BuildingType.CITY_CENTER,
-            BuildingCost = new ResourceAmmount(RESOURCE_TYPE.STONE, 20)
+            BuildingCost = new ResourceAmmount(RESOURCE_TYPE.STONE, 20),
+            Size = new Vector2(3, 3)
         };
 
         //woodcutter
@@ -61,7 +63,8 @@ namespace Assets.Models.Buildings
                     null),
                 new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.WOOD, 1), true, 6)
                 ),
-            BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 10)
+            BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 10),
+            Size = new Vector2(3, 3)
         };
 
         //farmer
@@ -73,7 +76,8 @@ namespace Assets.Models.Buildings
                     new ResourceBundle(new ResourceAmmount(RESOURCE_TYPE.WHEAT, 2)),
                     null)
                 ),
-            BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 15)
+            BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 15),
+            Size = new Vector2(3, 3)
         };
 
         //mill
@@ -86,7 +90,8 @@ namespace Assets.Models.Buildings
                     null),
                 new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.WHEAT, 15))
                 ),
-            BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 15)
+            BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 15),
+            Size = new Vector2(3, 3)
         };
 
         //Barracks
@@ -99,7 +104,8 @@ namespace Assets.Models.Buildings
                     UnitType.WORKER),
                 new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.BREAD, 10))
                 ),
-            BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 20)
+            BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 20),
+            Size = new Vector2(3, 3)
         };
 	}
 }

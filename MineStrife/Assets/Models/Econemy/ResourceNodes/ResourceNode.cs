@@ -16,7 +16,7 @@ namespace Assets.Models.Econemy.ResourceNodes
         public RESOURCE_TYPE Resource { get; set; }
 
         public ResourceNode(UnityObjectWrapper viewObject, Vector2 inPosition, RESOURCE_TYPE inResource, int startingAmmount)
-            : base(viewObject, inPosition, 2, 2, BuildingType.RESOURCE_NODE)
+            : base(viewObject, inPosition, BuildingType.RESOURCE_NODE)
         {
             Resource = inResource;
             ammountRemaining = startingAmmount;
@@ -101,7 +101,7 @@ namespace Assets.Models.Econemy.ResourceNodes
             return "Building " + BuildingType.ToString() + "\n" +
                 ammountRemaining + " " + Resource.ToString() + "\n" +
                 " (" + Math.Round(Position.x, 2) + "," + Math.Round(Position.y, 2) + ")," + "\n" +
-                " size (" + tileWidth + "," + tileHeight + ")";
+                " size (" + Size.x + "," + Size.y + ")";
         }
 	}
 }
