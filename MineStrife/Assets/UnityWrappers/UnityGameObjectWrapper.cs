@@ -40,6 +40,26 @@ namespace Assets.UnityWrappers
             return null;
         }
 
+        public Vector2? GetSpriteSize()
+        {
+            var renderer = ViewObject.GetComponent<SpriteRenderer>();
+            if (renderer != null)
+            {
+                return new Vector2(renderer.bounds.extents.x * 2, renderer.bounds.extents.y * 2);
+            }
+            return null;
+        }
+
+        public Vector2? GetSpriteCenter()
+        {
+            var renderer = ViewObject.GetComponent<SpriteRenderer>();
+            if (renderer != null)
+            {
+                return new Vector2(renderer.bounds.center.x, renderer.bounds.center.y);
+            }
+            return null;
+        }
+
         public void SetDisplaySize(float inWidth, float inHeight)
         {
             //get sprite size

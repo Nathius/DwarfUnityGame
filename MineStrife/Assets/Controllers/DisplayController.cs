@@ -106,16 +106,12 @@ namespace Assets.Controllers
                 foreach (var obj in WorldController.Instance.CurrentSelection)
                 {
                     var hilight = Instantiate(SelectionHilightPrefab);
-                    hilight.transform.position = obj.Position;
+                    hilight.transform.position = obj.ViewObject.GetSpriteCenter().Value;
+
                     //scale the hilight ring to the size of the unit
-                    if (obj.GetType() == typeof(Unit))
-                    {
-                        hilight.transform.localScale = (obj.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>().bounds.size / 1.2f);
-                    }
-                    else
-                    {
-                        hilight.transform.localScale = (obj.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>().bounds.size / 2.0f);
-                    }
+                    var spriteSize = obj.ViewObject.GetSpriteSize().Value * 0.5f;
+                    hilight.transform.localScale = new Vector3(spriteSize.x, spriteSize.y);
+
                     Hilights.Add(hilight);
                 }
             }
