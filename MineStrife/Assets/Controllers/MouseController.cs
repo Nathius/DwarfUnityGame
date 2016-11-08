@@ -45,7 +45,9 @@ namespace Assets.Controllers
                 //if clicking place a building
                 if (Input.GetMouseButtonUp(0))
                 {
-                    BuildingController.Instance.CreateBuildingAt(MousePositionToGridPosition(currentMousePosOnFloor), buildingSelected);
+                    var gridPosition = MousePositionToGridPosition(currentMousePosOnFloor);
+                    var buildingPosition = BuildingController.GetBuildingPositionFromMousePosition(gridPosition, 3, 3);
+                    BuildingController.Instance.CreateBuildingAt(buildingPosition, buildingSelected);
                     if (!Input.GetKey(KeyCode.LeftShift))
                     {
                         CancelPlacement();
@@ -188,7 +190,7 @@ namespace Assets.Controllers
 
         public static Vector3 MousePositionToGridPosition(Vector3 inPosition)
         {
-            Vector3 newPos = new Vector3((float)Math.Round(inPosition.x), (float)Math.Round(inPosition.y), 0);
+            Vector3 newPos = new Vector3((int)(inPosition.x), (int)(inPosition.y), 0);
             return newPos;
         }
 

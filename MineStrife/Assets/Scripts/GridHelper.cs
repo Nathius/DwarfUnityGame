@@ -30,25 +30,10 @@ namespace Assets.Scripts
             }
         }
 
-        private static float FindLowerOrdinate(float inValue, int inSize)
+        public static Vector2 OffsetToBuildingCenter(Vector2 inPosition, int inWidth, int inHeight)
         {
-            //finds the lower edge of a buildings collision box on the grid
-            //even size ordinates live on grid intersects, odd sized ordinates live on grid centers
-            if (MathHelper.IsEven(inSize))
-            {
-                var clampedPosition = (int)inValue;
-                var centerOfset = (int)((inSize / 2.0f) - 1);
-                var lowerOrdinate = inValue - centerOfset;
-                return lowerOrdinate;
-            }
-            else
-            {
-                var centerOfset = (int)(inSize / 2.0f);
-                var lowerOrdinate = inValue - centerOfset;
-                return lowerOrdinate;
-            }
+            return new Vector2(inPosition.x - (int)(0.5f * inWidth), inPosition.y - (int)(0.5f * inHeight));
         }
-
 
 	}
 }

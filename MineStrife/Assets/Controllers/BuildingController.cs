@@ -71,13 +71,20 @@ namespace Assets.Controllers
             ClearLine();
         }
 
+        public static Vector2 GetBuildingPositionFromMousePosition(Vector2 inPosition, int inWidth, int inHeight)
+        {
+            var centerOfset = GridHelper.OffsetToBuildingCenter(inPosition, inWidth, inHeight);
+            return centerOfset;
+        }
+
         public void updateGhostPosition(Vector3 inPos, BuildingDefinition inBuildingType)
         {
             ClearLine();
             if(buildingGhost != null)
             {
                 buildingGhost.SetActive(true);
-                buildingGhost.transform.position = inPos;
+                var ofsetPos = GetBuildingPositionFromMousePosition(inPos, 3, 3);
+                buildingGhost.transform.position = ofsetPos;
 
                 if (CanPlaceBuildingAt(buildingGhost, inBuildingType))
                 {
