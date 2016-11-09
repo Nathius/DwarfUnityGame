@@ -54,9 +54,12 @@ namespace Assets.Models.AI.PathFinding
 	        m_iterationLimit = inIterationLimit;
         }
 
-        public List<Vector2> findPath(Tile inStart, Tile inEnd)
+        public List<Vector2> findPath(Vector2 inStart, Vector2 inEnd)
         {
-            var tilePath = findTilePath(inStart, inEnd);
+            var startTile = World.Instance.GetTileAt(inStart);
+            var endTile = World.Instance.GetTileAt(inEnd);
+
+            var tilePath = findTilePath(startTile, endTile);
             if(tilePath == null || tilePath.Count <= 0)
             {
                 return null;
@@ -64,7 +67,6 @@ namespace Assets.Models.AI.PathFinding
 
             var positionPath = new List<Vector2>();
             tilePath.Reverse();
-
             positionPath = tilePath.Select(x => x.Position).ToList();
             return positionPath;
         }

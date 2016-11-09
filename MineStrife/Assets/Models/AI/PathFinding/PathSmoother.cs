@@ -48,10 +48,13 @@ namespace Assets.Models.AI.PathFinding
 
         private static bool CanPathSegment(Vector2 inStart, Vector2 inEnd)
         {
+            var layerMask = ConvertLayerToLayerMask("Buildings");
+
             //check if the ray passes over any tile which is blocked
             bool foundCollisions = Physics2D.Linecast(
                 inStart,
-                inEnd
+                inEnd,
+                layerMask
                 );
 
             bool canPath = !foundCollisions;
@@ -59,5 +62,12 @@ namespace Assets.Models.AI.PathFinding
             return canPath;
         }
 
+        private static int ConvertLayerToLayerMask(string LayerName)
+        {
+            //http://answers.unity3d.com/questions/8715/how-do-i-use-layermasks.html
+            var layer = LayerMask.NameToLayer(LayerName);
+            var layerMask = 1 << layer;
+            return layerMask;
+        }
 	}
 }

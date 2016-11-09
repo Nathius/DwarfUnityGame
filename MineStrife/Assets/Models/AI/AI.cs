@@ -116,8 +116,7 @@ namespace Assets.Models.AI
         private void UpdateCurrentPath(Vector2 inCurrentPosition)
         {
             var pathingEngin = new PathFinder_AStar(World.Instance.Width, World.Instance.Height, World.Instance.tiles, false);
-            var path = pathingEngin.findPath(World.Instance.GetTileAt(inCurrentPosition),
-                World.Instance.GetTileAt((int)CurrentCommand.TargetPosition.Value.x, (int)CurrentCommand.TargetPosition.Value.y));
+            var path = pathingEngin.findPath(inCurrentPosition, CurrentCommand.TargetPosition.Value);
             if (path == null)
             {
                 Debug.Log("No path found");
@@ -125,12 +124,16 @@ namespace Assets.Models.AI
             }
             else
             {
-                Debug.Log("Found path length: " + path.Count);
-                //ofset tiule positions to tile center
+                //ofset tile positions to tile center
                 path.ForEach(x => x = x + new Vector2(0.5f, 0.5f));
+                var centeredPath = path.Select(x => GridHelper.PositionToTileCenter(x)).ToList();
 
-                var smoothPath = PathSmoother.SmoothPath(path.Select(x => GridHelper.PositionToTileCenter(x)).ToList());
-                Debug.Log("Smoothed path to: " + smoothPath.Count);
+                //add the start and end pos back onto the path list
+                centeredPath.Insert(0, inCurrentPosition);
+                centeredPath.Add(CurrentCommand.TargetPosition.Value);
+
+                var smoothPath = PathSmoother.SmoothPath(centeredPath);
+                Debug.Log("smoothPath " + string.Join(" -> ", smoothPath.Select(x => VectorHelper.ToString(x)).ToArray<string>())); 
                 CurrentPath = smoothPath;
             }
         }
