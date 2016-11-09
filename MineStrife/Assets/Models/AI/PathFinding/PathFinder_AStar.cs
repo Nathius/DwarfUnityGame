@@ -46,7 +46,7 @@ namespace Assets.Models.AI.PathFinding
 	        M_MAP_WIDTH = inWidth;
 	        M_MAP_HEIGHT = inHeight;
 	        m_mapRef = inMap;
-	        m_iterationLimit = 100;
+	        m_iterationLimit = 1000;
         }
 
         public void setIterationLimit(int inIterationLimit)
@@ -54,7 +54,22 @@ namespace Assets.Models.AI.PathFinding
 	        m_iterationLimit = inIterationLimit;
         }
 
-        public List<Tile> findPath(Tile inStart, Tile inEnd)
+        public List<Vector2> findPath(Tile inStart, Tile inEnd)
+        {
+            var tilePath = findTilePath(inStart, inEnd);
+            if(tilePath == null || tilePath.Count <= 0)
+            {
+                return null;
+            }
+
+            var positionPath = new List<Vector2>();
+            tilePath.Reverse();
+
+            positionPath = tilePath.Select(x => x.Position).ToList();
+            return positionPath;
+        }
+
+        private List<Tile> findTilePath(Tile inStart, Tile inEnd)
         {
             m_path = new List<Tile>();
             m_openList = new List<PathingNode>();

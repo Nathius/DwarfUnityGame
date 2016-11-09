@@ -9,10 +9,10 @@ namespace Assets.Models.AI.PathFinding
 {
 	public class PathSmoother
 	{
-        public static List<Tile> SmoothPath(List<Tile> inPath)
+        public static List<Vector2> SmoothPath(List<Vector2> inPath)
         {
             //set currentSegmentStart as start of list
-            List<Tile> smoothedPath = new List<Tile>();
+            List<Vector2> smoothedPath = new List<Vector2>();
             int currentIndex = 0;
 
             smoothedPath.Add(inPath[currentIndex]);
@@ -30,14 +30,14 @@ namespace Assets.Models.AI.PathFinding
             return smoothedPath;
         }
 
-        public static int GetNextSegmentEndIndex(int startIndex, List<Tile> inPath)
+        public static int GetNextSegmentEndIndex(int startIndex, List<Vector2> inPath)
         {
             bool pathClear = true;
             int lastValidIndex = startIndex;
             for (int i = startIndex; (i < inPath.Count && pathClear); i++)
             {
                 //find the end of the next segment
-                pathClear = CanPathSegment(inPath[startIndex].Position, inPath[i].Position);
+                pathClear = CanPathSegment(inPath[startIndex], inPath[i]);
                 if(pathClear)
                 {
                     lastValidIndex = i;

@@ -37,6 +37,11 @@ namespace Assets.Scripts
             return new Vector2(inPosition.x - (int)(0.5f * inSize.x), inPosition.y - (int)(0.5f * inSize.y));
         }
 
+        public static Vector2 PositionToTileCenter(Vector2 inPosition)
+        {
+            return inPosition + new Vector2(TileSize * 0.5f, TileSize * 0.5f);
+        }
+
         public static Vector2 BuildingCenter(Vector2 inPosition, Vector2 inSize)
         {
             return new Vector2(inPosition.x + (0.5f * inSize.x), inPosition.y + (0.5f * inSize.y));

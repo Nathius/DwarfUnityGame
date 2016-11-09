@@ -5,6 +5,7 @@ using System.Text;
 using Assets.Units;
 using UnityEngine;
 using Assets.Models.AI.PathFinding;
+using Assets.Scripts;
 
 namespace Assets.Models.AI
 {
@@ -124,11 +125,13 @@ namespace Assets.Models.AI
             }
             else
             {
-                path.Reverse();
                 Debug.Log("Found path length: " + path.Count);
-                var smoothPath = PathSmoother.SmoothPath(path);
+                //ofset tiule positions to tile center
+                path.ForEach(x => x = x + new Vector2(0.5f, 0.5f));
+
+                var smoothPath = PathSmoother.SmoothPath(path.Select(x => GridHelper.PositionToTileCenter(x)).ToList());
                 Debug.Log("Smoothed path to: " + smoothPath.Count);
-                CurrentPath = smoothPath.Select(x => x.Position).ToList();
+                CurrentPath = smoothPath;
             }
         }
 
