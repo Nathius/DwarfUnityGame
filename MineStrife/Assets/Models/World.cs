@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Models.Econemy;
 using UnityEngine;
+using Assets.Scripts;
 
 namespace Assets.Models
 {
@@ -39,7 +40,7 @@ namespace Assets.Models
         public World(int inWidth = 10, int inHeight = 10)
         {
             Instance = this;
-            PopCap = 4;
+            PopCap = 8;
             CurrentPop = 0;
 
             //new empty list of game objects
@@ -60,7 +61,7 @@ namespace Assets.Models
 
         public void Update(float inTimeDelta)
         {
-            for (var i = 0; i < all_worldEntity.Count; i++ )
+            for (var i = 0; i < all_worldEntity.Count; i++)
             {
                 all_worldEntity[i].Update(inTimeDelta);
             }
@@ -95,15 +96,10 @@ namespace Assets.Models
             return true;
         }
 
-        public void AddCollisionAreaToTileMap(Vector2 inPosition, int inWidth, int inHeight)
-        {
-            
-        }
-
         public WorldEntity EntityAtPosition(Vector3 inPosition)
         {
             //collision checking against all entities to see if the point is contained in any bounding box
-            foreach(var entity in all_worldEntity)
+            foreach (var entity in all_worldEntity)
             {
                 var collider = entity.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>();
                 if (collider != null && collider.bounds.Contains(inPosition))
@@ -115,5 +111,17 @@ namespace Assets.Models
             return null;
         }
 
+        public List<WorldEntity> EntitiesNearPosition(Vector2 inPosition, float inDistance)
+        {
+            List<WorldEntity> nearbyEntities = new List<WorldEntity>();
+            foreach (var entity in all_worldEntity)
+            {
+                if (VectorHelper.getDistanceBetween(inPosition, entity.Position) <= inDistance)
+                {
+                    nearbyEntities.Add(entity);
+                }
+            }
+            return nearbyEntities;
+        }
     }
 }

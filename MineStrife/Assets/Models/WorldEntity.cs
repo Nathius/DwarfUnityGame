@@ -11,12 +11,18 @@ namespace Assets.Models
 	public class WorldEntity
 	{
         //positions within the world
+        public int EntityId { get; set; }
+        public static int NextId { get; set; }
+
         public Vector2 Position { get; set; }
 
         public UnityObjectWrapper ViewObject { get; set; }
 
         public WorldEntity(UnityObjectWrapper viewObject, Vector2 inPosition)
         {
+            EntityId = NextId;
+            NextId++;
+
             World.all_worldEntity.Add(this);
             ViewObject = viewObject;
             Position = inPosition;
