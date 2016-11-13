@@ -125,7 +125,6 @@ namespace Assets.Models.AI
             else
             {
                 //ofset tile positions to tile center
-                path.ForEach(x => x = x + new Vector2(0.5f, 0.5f));
                 var centeredPath = path.Select(x => GridHelper.PositionToTileCenter(x)).ToList();
 
                 //add the start and end pos back onto the path list
@@ -133,7 +132,7 @@ namespace Assets.Models.AI
                 centeredPath.Add(CurrentCommand.TargetPosition.Value);
 
                 var smoothPath = PathSmoother.SmoothPath(centeredPath);
-                Debug.Log("smoothPath " + string.Join(" -> ", smoothPath.Select(x => VectorHelper.ToString(x)).ToArray<string>())); 
+                //Debug.Log("smoothPath " + string.Join(" -> ", smoothPath.Select(x => VectorHelper.ToString(x)).ToArray<string>())); 
                 CurrentPath = smoothPath;
             }
         }

@@ -10,6 +10,7 @@ using Assets.Models.Econemy.ResourceNodes;
 using Assets.Controllers.PrefabControllers;
 using Assets.Units;
 using Assets.Models.AI;
+using Assets.Scripts;
 
 namespace Assets.Controllers
 {
@@ -38,7 +39,7 @@ namespace Assets.Controllers
                 //instance a new build prefab and place it on the screen
                 GameObject unit_go = Instantiate(prefab);
                 unit_go.transform.SetParent(this.transform, true);
-                unit_go.name = "Unit";
+                unit_go.name = "Unit_" + inUnitType.ToString();
 
                 //create a new unit
                 var ai = new AI(definition.Behaviours);
@@ -46,70 +47,59 @@ namespace Assets.Controllers
             }         
         }
 
-        public bool IsPositionFree(Vector2 inPosition)
+        public Vector2? GetTilePositionIfFree(Vector2 inPosition)
         {
+            var tileCenter = GridHelper.PositionToTileCenter(inPosition);
             var allGameObjects = World.all_worldEntity.AsReadOnly().Select(x => x.ViewObject.GetUnityGameObject()).ToList();
-            //Debug.Log("Search pos (" + inPosition.x + " : " + inPosition.y + ")");
 
             foreach (var obj in allGameObjects)
             {
                 var box = obj.GetComponent<BoxCollider2D>();
                 if(box != null)
                 {
-                    if(box.OverlapPoint(inPosition))
+                    if (box.OverlapPoint(tileCenter))
                     {
-                        return false;
+                        return null;
                     }
                 }
             }
-            return true;
+            return tileCenter;
         }
 
         public Vector2? GetClosestFreePosition(Vector2 inStartPosition)
         {
+            //var tileCenterofset = 
             //starting at the buildings position, 
-            int range = 0;// (int)Math.Min(inBuildingWidth.x, inBuildingWidth.y) - 1;
+            int range = 0;
             Vector2? freePosition = null;
-            while (freePosition == null && range < 10)
+            while ((freePosition == null || freePosition.Value == null) && range < 10)
             {
                 //search from bottom left to bottom right
                 for (int x = (int)(inStartPosition.x - range); x < (inStartPosition.x + range) && (freePosition == null); x++)
                 {
                     var checkPos = new Vector2(x, (int)(inStartPosition.y - range));
-                    if (IsPositionFree(checkPos))
-                    {
-                        freePosition = checkPos;
-                    }
+                    freePosition = GetTilePositionIfFree(checkPos);
                 }
 
                 //search from bottom right to top right
                 for (int y = (int)(inStartPosition.y - range); y < (inStartPosition.y + range) && (freePosition == null); y++)
                 {
                     var checkPos = new Vector2((int)(inStartPosition.x + range), y);
-                    if (IsPositionFree(checkPos))
-                    {
-                        freePosition = checkPos;
-                    }
+                    freePosition = GetTilePositionIfFree(checkPos);
                 }
 
                 //search from top right to top left
                 for (int x = (int)(inStartPosition.x + range); x > (inStartPosition.x - range) && (freePosition == null); x--)
                 {
                     var checkPos = new Vector2(x, (int)(inStartPosition.y + range));
-                    if (IsPositionFree(checkPos))
-                    {
-                        freePosition = checkPos;
-                    }
+                    freePosition = GetTilePositionIfFree(checkPos);
                 }
 
                 //search from top left to bottom right
                 for (int y = (int)(inStartPosition.y + range); y > (inStartPosition.y - range) && (freePosition == null); y--)
                 {
                     var checkPos = new Vector2((int)(inStartPosition.x - range), y);
-                    if (IsPositionFree(checkPos))
-                    {
-                        freePosition = checkPos;
-                    }
+                    freePosition = GetTilePositionIfFree(checkPos);
                 }
 
                 range++;

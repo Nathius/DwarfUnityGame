@@ -167,7 +167,7 @@ namespace Assets.Models.Buildings
                     if (Conversion.Result.UnitType != null)
                     {
                         World.Instance.CurrentPop++;
-                        UnitController.Instance.CreateUnitAt(Position, Conversion.Result.UnitType.Value);
+                        UnitController.Instance.CreateUnitAt(GridHelper.BuildingCenter(Position, Size), Conversion.Result.UnitType.Value);
                         DisplayController.Instance.CreateProductionLable(Position, "+1 " + Conversion.Result.UnitType.ToString());
                     }
                 }
