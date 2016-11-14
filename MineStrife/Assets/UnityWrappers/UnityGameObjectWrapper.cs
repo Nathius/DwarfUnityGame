@@ -77,5 +77,14 @@ namespace Assets.UnityWrappers
                 box.offset = inSize * 0.5f;
             }
         }
+
+        public void SetColliderState(bool isActive)
+        {
+            var collider = ViewObject.GetComponent<BoxCollider2D>();
+            if(collider != null)
+            {
+                collider.enabled = isActive;
+            }
+        }
 	}
 }

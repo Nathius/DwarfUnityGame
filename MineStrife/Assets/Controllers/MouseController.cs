@@ -119,15 +119,17 @@ namespace Assets.Controllers
                     //var positions = FormationCalculator.findPositionsForFormation(
                     //    WorldController.Instance.CurrentSelection.Select(x => x.Position).ToList(),
                     //    new Vector2(currentMousePosOnFloor.x, currentMousePosOnFloor.y),
-                    //    0.6f
+                    //    0.8f
                     //    );
 
                     for (int i = 0; i < WorldController.Instance.CurrentSelection.Count; i++ )
                     {
                         if (WorldController.Instance.CurrentSelection[i].GetType() == typeof(Unit))
                         {
+                            //var closestPosition = positions.OrderBy(x => VectorHelper.getDistanceBetween(x, WorldController.Instance.CurrentSelection[i].Position)).First();
+                            //positions.Remove(closestPosition);
                             ((Unit)WorldController.Instance.CurrentSelection[i]).Ai.AddCommand(
-                                new Command(CommandTypes.MOVE, new Vector2(currentMousePosOnFloor.x, currentMousePosOnFloor.y), null, false),
+                                new Command(CommandTypes.MOVE, VectorHelper.ToVector2(currentMousePosOnFloor), null, false),
                                 Input.GetKey(KeyCode.LeftShift)
                                 );
                         }

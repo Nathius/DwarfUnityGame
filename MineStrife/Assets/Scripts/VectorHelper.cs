@@ -50,6 +50,11 @@ namespace Assets.Scripts
             return new Vector3(inPosition.x, inPosition.y, 0);
         }
 
+        public static Vector3 ToVector2(Vector3 inPosition)
+        {
+            return new Vector2(inPosition.x, inPosition.y);
+        }
+
         public static string ToString(Vector2 inVector, int inPrescision = 2)
         {
             return "(" + Math.Round(inVector.x, inPrescision) + "," + Math.Round(inVector.y, inPrescision) + ")";

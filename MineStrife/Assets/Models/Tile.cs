@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using Assets.UnityWrappers;
+using Assets.Scripts;
 
 namespace Assets.Models
 {
@@ -41,7 +42,8 @@ namespace Assets.Models
         {
             Position = inPosition;
             Cost = 1;
-
+            viewObject.SetColliderState(false);
+            viewObject.SetBoundSize(new Vector2(GridHelper.TileSize, GridHelper.TileSize));
         }
 
         public void RegisterTileTypeChangedCB(Action<Tile> inCallBack)

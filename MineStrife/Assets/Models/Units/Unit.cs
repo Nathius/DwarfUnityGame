@@ -49,7 +49,6 @@ namespace Assets.Units
         private void Move(float inTimeDelta, Vector2 inDirection)
         {
             var personalSpaceSeeking = GetPersonalSpaceForce();
-            Debug.Log("personalSpacing " + VectorHelper.ToString(personalSpaceSeeking));
             var resultDirection = inDirection;
             resultDirection.Normalize();
 
@@ -91,7 +90,6 @@ namespace Assets.Units
                 return new Vector2(0, 0);
             }
 
-            Debug.Log("number neighbours " + nearbyEntities.Count);
             Vector2 avoidanceDirection = new Vector2(0, 0);
 
             foreach (var entity in nearbyEntities)

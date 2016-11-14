@@ -30,7 +30,7 @@ namespace Assets.Controllers
         public void CreateUnitAt(Vector2 inPos, UnitType inUnitType)
         {
             var spawnPos = GetClosestFreePosition(inPos);
-            //if the player can afford the building
+
             if (spawnPos != null)
             {
                 var prefab = UnitPrefabController.Instance.GetPrefab(inUnitType);

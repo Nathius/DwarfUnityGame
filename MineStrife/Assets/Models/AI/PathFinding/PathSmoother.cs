@@ -48,13 +48,16 @@ namespace Assets.Models.AI.PathFinding
 
         private static bool CanPathSegment(Vector2 inStart, Vector2 inEnd)
         {
-            var layerMask = ConvertLayerToLayerMask("Buildings");
+            var buildingMask = ConvertLayerToLayerMask("Buildings");
+            var tileMask = ConvertLayerToLayerMask("Tiles");
+
+            var finalMask = buildingMask | tileMask;
 
             //check if the ray passes over any tile which is blocked
             bool foundCollisions = Physics2D.Linecast(
                 inStart,
                 inEnd,
-                layerMask
+                finalMask
                 );
 
             bool canPath = !foundCollisions;

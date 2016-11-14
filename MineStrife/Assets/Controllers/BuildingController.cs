@@ -172,7 +172,7 @@ namespace Assets.Controllers
             {
                 var otherBuildingColider = allGameObjects[i].GetComponent<BoxCollider2D>();
 
-                if (otherBuildingColider != null && ghostColider.bounds.Intersects(otherBuildingColider.bounds))
+                if (otherBuildingColider != null && otherBuildingColider.enabled && ghostColider.bounds.Intersects(otherBuildingColider.bounds))
                 {
                     canPlace = false;
                 }

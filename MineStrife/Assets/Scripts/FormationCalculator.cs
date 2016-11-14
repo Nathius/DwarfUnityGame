@@ -10,21 +10,18 @@ namespace Assets.Scripts
 	{
         public static List<Vector2> findPositionsForFormation(Vector2 inHeading, int inNumUnits, Vector2 inTargetPosition, float inAvgUnitSize)
         {
-            
-            //add 50% for ship padding
-            inAvgUnitSize *= 1.5f;
             List<Vector2> posList = new List<Vector2>();
             float rootNum = (float)Math.Sqrt(inNumUnits);
 
             //ratio is the width / length, eg r = 2 is twice as wide as long
-            var formationRatio = 1;
+            var formationRatio = 0.5f;
             int width = (int)Math.Round(rootNum + (rootNum * formationRatio));
             if (width <= 0)
             {
                 width = 1;
             }
 
-            int length = (int)Math.Floor((float)inNumUnits / (float)width);
+            int length = (int)Math.Ceiling((float)inNumUnits / (float)width);
 
             //Approximate width of formation
             float formationWidth = (width - 1) * (inAvgUnitSize);
