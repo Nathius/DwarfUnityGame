@@ -102,7 +102,10 @@ namespace Assets.Models
             foreach (var entity in all_worldEntity)
             {
                 var collider = entity.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>();
-                if (collider != null && collider.bounds.Contains(inPosition))
+                if (collider != null && 
+                    collider.enabled && 
+                    collider.bounds.Contains(inPosition) && 
+                    (entity.GetType() != typeof(Tile)))
                 {
                     return entity;
                 }

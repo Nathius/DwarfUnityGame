@@ -112,7 +112,7 @@ namespace Assets.Controllers
 
                 var node = new ResourceNode(new UnityObjectWrapper(newTree),
                     VectorHelper.ToVector3(gridPosition),
-                    RESOURCE_TYPE.WOOD, 20);
+                    RESOURCE_TYPE.WOOD, 200);
             }
         }
 
