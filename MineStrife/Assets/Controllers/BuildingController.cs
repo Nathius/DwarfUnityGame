@@ -187,8 +187,8 @@ namespace Assets.Controllers
             var lineList = new List<Vector3>();
             foreach(var point in inPoints)
             {
-                lineList.Add(VectorHelper.ToVector3(inBuildingPos));
-                lineList.Add(VectorHelper.ToVector3(point));
+                lineList.Add(VectorHelper.ToVector3(inBuildingPos, -1));
+                lineList.Add(VectorHelper.ToVector3(point, -1));
             }
             return lineList;
         }

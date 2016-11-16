@@ -45,9 +45,14 @@ namespace Assets.Scripts
             return inTarget - inPosition;
         }
 
+        public static Vector3 ToVector3(Vector2 inPosition, float inZ)
+        {
+            return new Vector3(inPosition.x, inPosition.y, inZ);
+        }
+
         public static Vector3 ToVector3(Vector2 inPosition)
         {
-            return new Vector3(inPosition.x, inPosition.y, 0);
+            return ToVector3(inPosition, 0);
         }
 
         public static Vector3 ToVector2(Vector3 inPosition)
