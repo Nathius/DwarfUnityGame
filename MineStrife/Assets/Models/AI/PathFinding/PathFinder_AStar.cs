@@ -59,6 +59,11 @@ namespace Assets.Models.AI.PathFinding
             var startTile = World.Instance.GetTileAt(inStart);
             var endTile = World.Instance.GetTileAt(inEnd);
 
+            if(startTile == null || endTile == null)
+            {
+                return null;
+            }
+
             var tilePath = findTilePath(startTile, endTile);
             if(tilePath == null || tilePath.Count <= 0)
             {
