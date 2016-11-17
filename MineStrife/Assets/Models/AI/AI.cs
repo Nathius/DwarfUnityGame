@@ -31,9 +31,13 @@ namespace Assets.Models.AI
 
         public void Update()
         {
-            if(CurrentPath != null && CurrentPath.Any())
+            if (CurrentPath != null && CurrentPath.Any())
             {
                 Body.DrawPath(CurrentPath.ToList());
+            }
+            else
+            {
+                Body.ClearPath();
             }
             
 
