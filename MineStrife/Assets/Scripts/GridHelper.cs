@@ -22,9 +22,9 @@ namespace Assets.Scripts
         public static void AddBuildingToCollisionMap(Vector2 inPosition, Vector2 inSize)
         {
             //count up by width and height
-            for (int w = (int)inPosition.x; (w < (int)(inPosition.x + inSize.x)) && (w < World.Instance.Width); w++)
+            for (int w = (int)inPosition.x; (w < (int)(inPosition.x + inSize.x)) && (w < World.Instance.GetWidth()); w++)
             {
-                for (int h = (int)inPosition.y; (h < (int)(inPosition.y + inSize.y)) && (h < World.Instance.Height); h++)
+                for (int h = (int)inPosition.y; (h < (int)(inPosition.y + inSize.y)) && (h < World.Instance.GetHeight()); h++)
                 {
                     World.Instance.tiles[w, h].Cost = 0;
                     World.Instance.tiles[w, h].TileType = TileType.BLOCKED;

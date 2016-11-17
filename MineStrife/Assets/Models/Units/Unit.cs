@@ -69,7 +69,11 @@ namespace Assets.Units
                 movement = new Vector2(movement.x, 0);
             }
 
+            //clamp position to within map bounds
+
+
             this.Position += movement;
+            this.Position = VectorHelper.Clamp(this.Position, new Vector2(0, 0), World.Instance.Size);
         }
 
         private Vector2 GetPersonalSpaceForce()

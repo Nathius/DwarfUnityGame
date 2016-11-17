@@ -119,9 +119,9 @@ namespace Assets.Models.AI
 
         private void UpdateCurrentPath(Vector2 inCurrentPosition)
         {
-            var pathingEngin = new PathFinder_AStar(World.Instance.Width, World.Instance.Height, World.Instance.tiles, false);
+            var pathingEngin = new PathFinder_AStar(World.Instance.GetWidth(), World.Instance.GetHeight(), World.Instance.tiles, false);
 
-            if (inCurrentPosition == null || CurrentCommand.TargetPosition.HasValue == null)
+            if (inCurrentPosition == null || CurrentCommand.TargetPosition.Value == null)
             {
                 FinishCurrentCommand();
                 return;

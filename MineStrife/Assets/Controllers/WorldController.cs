@@ -57,9 +57,9 @@ namespace Assets.Controllers
         private void GenerateTiles()
         {
 
-            for (int x = 0; x < World.Width; x++)
+            for (int x = 0; x < World.GetWidth(); x++)
             {
-                for (int y = 0; y < World.Height; y++)
+                for (int y = 0; y < World.GetHeight(); y++)
                 {
                     
                     GameObject tile_go = new GameObject();
@@ -105,8 +105,8 @@ namespace Assets.Controllers
                 var newTree = Instantiate(TreeSpritePrefab);
                 newTree.transform.SetParent(this.transform, true);
 
-                var randomX = (UnityEngine.Random.value * (World.Width - 4)) + 2;
-                var randomY = (UnityEngine.Random.value * (World.Height - 4)) + 2;
+                var randomX = (UnityEngine.Random.value * (World.GetWidth()- 4)) + 2;
+                var randomY = (UnityEngine.Random.value * (World.GetHeight() - 4)) + 2;
 
                 var gridPosition = GridHelper.SnapBuildingToGridPosition(new Vector2(randomX, randomY));
 

@@ -18,24 +18,7 @@ namespace Assets.Models
 
         public Tile[,] tiles;
         public static List<WorldEntity> all_worldEntity;
-        int width;
-        int height;
-
-        public int Width
-        {
-            get
-            {
-                return width;
-            }
-        }
-
-        public int Height
-        {
-            get
-            {
-                return height;
-            }
-        }
+        public Vector2 Size;
 
         public World(int inWidth = 10, int inHeight = 10)
         {
@@ -53,10 +36,17 @@ namespace Assets.Models
             _stockpile.AddStock(RESOURCE_TYPE.WHEAT, 30);
             _stockpile.AddStock(RESOURCE_TYPE.BREAD, 60);
 
-            width = inWidth;
-            height = inHeight;
+            Size = new Vector2(inWidth, inHeight);
+            tiles = new Tile[inWidth, inHeight];
+        }
 
-            tiles = new Tile[width, height];
+        public int GetWidth()
+        {
+            return (int)Size.x;
+        }
+        public int GetHeight()
+        {
+            return (int)Size.y;
         }
 
         public void Update(float inTimeDelta)
@@ -89,7 +79,7 @@ namespace Assets.Models
         }
         private bool PointInGrid(int inX, int inY)
         {
-            if (inX >= width || inX < 0 || inY >= height || inY < 0)
+            if (inX >= GetWidth() || inX < 0 || inY >= GetHeight() || inY < 0)
             {
                 return false;
             }

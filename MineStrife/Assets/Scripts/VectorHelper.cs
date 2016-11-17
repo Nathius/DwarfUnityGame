@@ -60,6 +60,16 @@ namespace Assets.Scripts
             return new Vector2(inPosition.x, inPosition.y);
         }
 
+        public static Vector2 Clamp(Vector2 inVector, Vector2 inMin, Vector2 inMax)
+        {
+            var clampedVector = new Vector2(
+                Mathf.Clamp(inVector.x, inMin.x, inMax.x),
+                Mathf.Clamp(inVector.y, inMin.y, inMax.y)
+                );
+
+            return clampedVector;
+        }
+
         public static string ToString(Vector2 inVector, int inPrescision = 2)
         {
             return "(" + Math.Round(inVector.x, inPrescision) + "," + Math.Round(inVector.y, inPrescision) + ")";
