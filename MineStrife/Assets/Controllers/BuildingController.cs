@@ -156,8 +156,8 @@ namespace Assets.Controllers
             if (WorldController.Instance.World.CityCenter != null && inBuildingType.BuildingType != BuildingType.CITY_CENTER)
             {
                 int cityLimitRange = 14;
-                
-                var distance = Vector3.Distance(inBuilding_go.transform.position, WorldController.Instance.World.CityCenter.ViewObject.GetUnityGameObject().transform.position);
+
+                var distance = VectorHelper.getDistanceBetween(VectorHelper.ToVector2(inBuilding_go.transform.position), WorldController.Instance.World.CityCenter.Position);
 
                 if (distance > cityLimitRange)
                 {

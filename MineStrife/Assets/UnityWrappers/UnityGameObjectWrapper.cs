@@ -23,6 +23,16 @@ namespace Assets.UnityWrappers
         public void SetPosition(Vector2 inPosition)
         {
             ViewObject.transform.position = new Vector3(inPosition.x, inPosition.y);
+            SetOrderInLayer(-(int)(inPosition.y * 100));
+        }
+
+        private void SetOrderInLayer(int inZSort)
+        {
+            var renderer = ViewObject.GetComponent<SpriteRenderer>();
+            if (renderer != null)
+            {
+                renderer.sortingOrder = inZSort;
+            }
         }
 
         public void SetColour(Color inColour)
