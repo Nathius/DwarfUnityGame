@@ -94,7 +94,7 @@ namespace Assets.Models
                 var collider = entity.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>();
                 if (collider != null && 
                     collider.enabled && 
-                    collider.bounds.Contains(inPosition) && 
+                    collider.bounds.Contains(new Vector3(inPosition.x, inPosition.y, collider.bounds.center.z)) && 
                     (entity.GetType() != typeof(Tile)))
                 {
                     return entity;

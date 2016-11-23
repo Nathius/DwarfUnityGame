@@ -23,7 +23,7 @@ namespace Assets.Controllers
         public GameObject TreeSpritePrefab;
 
         private const int WorldSize = 40;
-        private const int TreeNumber = 40;
+        private const int TreeNumber = 10;
 
         public List<WorldEntity> CurrentSelection;
 
@@ -38,13 +38,15 @@ namespace Assets.Controllers
             World = new World(WorldSize, WorldSize);
             CurrentSelection = new List<WorldEntity>();
 
-            //generate the other controllers
             InitControllers();
-
-            //generate game object for each tile
             GenerateTiles();
-
             GenerateTrees();
+            CenterCameraOnGrid();
+        }
+
+        private void CenterCameraOnGrid()
+        {
+            Camera.main.transform.position = VectorHelper.ToVector3(GridHelper.GridToIsometric(new Vector2(World.GetWidth() * 0.5f, World.GetHeight() * 0.5f)), Camera.main.transform.position.z);
         }
 
         private void InitControllers()
@@ -80,7 +82,7 @@ namespace Assets.Controllers
                     //register tile update function
                     tile_data.RegisterTileTypeChangedCB((tile) => { OnTileTypeChanges(tile, tile_go); });
 
-                    if (UnityEngine.Random.Range(0, 10) == 1)
+                    if (UnityEngine.Random.Range(0, 20) == 1)
                     {
                         tile_data.TileType = TileType.BLOCKED;
                     }

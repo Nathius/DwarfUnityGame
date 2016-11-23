@@ -74,6 +74,10 @@ namespace Assets.Scripts
         {
             return "(" + Math.Round(inVector.x, inPrescision) + "," + Math.Round(inVector.y, inPrescision) + ")";
         }
+        public static string Vector3ToString(Vector3 inVector, int inPrescision = 2)
+        {
+            return "(" + Math.Round(inVector.x, inPrescision) + "," + Math.Round(inVector.y, inPrescision) + "," + Math.Round(inVector.z, inPrescision) + ")";
+        }
 
     }   
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using Assets.Scripts;
 
 namespace Assets.UnityWrappers
 {
@@ -22,7 +23,8 @@ namespace Assets.UnityWrappers
 
         public void SetPosition(Vector2 inPosition)
         {
-            ViewObject.transform.position = new Vector3(inPosition.x, inPosition.y);
+            var viewPosition = VectorHelper.ToVector3(GridHelper.GridToIsometric(inPosition));
+            ViewObject.transform.position = viewPosition;
             SetOrderInLayer(-(int)(inPosition.y * 100));
         }
 
@@ -84,7 +86,7 @@ namespace Assets.UnityWrappers
             if (box != null)
             {
                 box.size = inSize;
-                box.offset = inSize * 0.5f;
+                box.offset = new Vector2(0, (inSize.y * 0.5f));
             }
         }
 

@@ -46,5 +46,23 @@ namespace Assets.Scripts
         {
             return new Vector2(inPosition.x + (0.5f * inSize.x), inPosition.y + (0.5f * inSize.y));
         }
+
+        public static Vector2 GridToIsometric(Vector2 inGridPosition)
+        {
+            var isometricPosition = new Vector2(
+                (inGridPosition.x - inGridPosition.y) + (World.Instance.GetWidth()),
+                ((inGridPosition.x + inGridPosition.y) * 0.5f) + (World.Instance.GetHeight() * 0.5f));
+
+            return isometricPosition;
+        }
+
+        public static Vector2 IsometricToGrid(Vector2 inIsoPosition)
+        {
+            var gridPosition = new Vector2(
+                (((2 * inIsoPosition.y) + inIsoPosition.x) * 0.5f) - (World.Instance.GetWidth()),
+                ((2 * inIsoPosition.y) - inIsoPosition.x) * 0.5f);
+
+            return gridPosition;
+        }
 	}
 }

@@ -50,6 +50,12 @@ namespace Assets.Controllers
         public Vector2? GetTilePositionIfFree(Vector2 inPosition)
         {
             var tileCenter = GridHelper.PositionToTileCenter(inPosition);
+
+            if (!TileIsPassable(inPosition))
+            {
+                return null;
+            }
+
             var allGameObjects = World.all_worldEntity.AsReadOnly().Select(x => x.ViewObject.GetUnityGameObject()).ToList();
 
             foreach (var obj in allGameObjects)
@@ -64,6 +70,15 @@ namespace Assets.Controllers
                 }
             }
             return tileCenter;
+        }
+
+        private bool TileIsPassable(Vector2 inPosition)
+        {
+            if(World.Instance.GetTileAt(inPosition).TileType == TileType.BLOCKED)
+            {
+                return false;
+            }
+            return true;
         }
 
         public Vector2? GetClosestFreePosition(Vector2 inStartPosition)

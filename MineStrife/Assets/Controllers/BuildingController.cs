@@ -81,7 +81,8 @@ namespace Assets.Controllers
                 buildingGhost.SetActive(true);
 
                 var buildingPlacementPosition = GetBuildingPositionFromMousePosition(inMouseOnGridPosition, inBuildingDefinition.Size);
-                buildingGhost.transform.position = buildingPlacementPosition;
+                var isometricPos = GridHelper.GridToIsometric(buildingPlacementPosition);
+                buildingGhost.transform.position = isometricPos;
 
                 if (CanPlaceBuildingAt(buildingGhost, inBuildingDefinition))
                 {
@@ -157,7 +158,7 @@ namespace Assets.Controllers
             {
                 int cityLimitRange = 14;
 
-                var distance = VectorHelper.getDistanceBetween(VectorHelper.ToVector2(inBuilding_go.transform.position), WorldController.Instance.World.CityCenter.Position);
+                var distance = VectorHelper.getDistanceBetween(GridHelper.IsometricToGrid(VectorHelper.ToVector2(inBuilding_go.transform.position)), WorldController.Instance.World.CityCenter.Position);
 
                 if (distance > cityLimitRange)
                 {
@@ -187,8 +188,8 @@ namespace Assets.Controllers
             var lineList = new List<Vector3>();
             foreach(var point in inPoints)
             {
-                lineList.Add(VectorHelper.ToVector3(inBuildingPos, -1));
-                lineList.Add(VectorHelper.ToVector3(point, -1));
+                lineList.Add(VectorHelper.ToVector3(GridHelper.GridToIsometric(inBuildingPos), -1));
+                lineList.Add(VectorHelper.ToVector3(GridHelper.GridToIsometric(point), -1));
             }
             return lineList;
         }
@@ -198,7 +199,6 @@ namespace Assets.Controllers
             //grab the line renderer 
             var lineRender = GetComponent<LineRenderer>();
             lineRender.sortingLayerName = "Effects";
-            //lineRender.SetColors(Color.red, Color.blue);
             var points = inPoints;
             lineRender.SetVertexCount(points.Count);
             lineRender.SetWidth(0.2f, 0.2f);

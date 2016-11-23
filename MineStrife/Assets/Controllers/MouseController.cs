@@ -15,8 +15,12 @@ namespace Assets.Controllers
     {
         Vector3 lastFramePosition;
         Vector3 startSelectionBox;
-        Vector3 currentMousePosOnFloor;
-        
+        Vector3 MousePosInWorld;
+        Vector3 MousePosOnGrid;
+
+        int MaxCameraZoom = 30;
+        int MinCameraZoom = 3;
+
         bool selecting;
         bool placing;
         BuildingDefinition buildingSelected;
@@ -28,27 +32,40 @@ namespace Assets.Controllers
             Camera.main.orthographicSize = 10;
         }
 
+        private void UpdateDebugTextWithMousePosition(Vector3 inMousePos)
+        {
+            var gridPos = GridHelper.IsometricToGrid(VectorHelper.ToVector2(inMousePos));
+            var isoPos = GridHelper.GridToIsometric(gridPos);
+            var display = "Mouse position iso: " + VectorHelper.Vector3ToString(inMousePos) + "\n" +
+                 "Grid position: " + gridPos + "\n" +
+                 "ismoetric pos: " + isoPos;
+
+            DisplayController.Instance.DebugInfoText.text = display;
+        }
+
         // Update is called once per frame
         void Update()
         {
-            Vector3 currentPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            currentMousePosOnFloor = currentPosition;
-            currentMousePosOnFloor.z = 0;
+            MousePosInWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            UpdateDebugTextWithMousePosition(MousePosInWorld);
 
-            DisplayController.Instance.DebugInfoText.text = currentPosition.ToString();
+            MousePosOnGrid = GridHelper.IsometricToGrid(VectorHelper.ToVector2(MousePosInWorld));
+            MousePosOnGrid.z = 0;
+
+            
 
             //if holding the building key update the ghost sprite
             if (placing)
             {
                 ClearBandBox();
-                BuildingController.Instance.updateGhostPosition(MousePositionToGridPosition(currentMousePosOnFloor), buildingSelected);
+                BuildingController.Instance.updateGhostPosition(MousePositionToGridPosition(MousePosOnGrid), buildingSelected);
                 //if clicking place a building
                 if (Input.GetMouseButtonUp(0))
                 {
                     var buildingDefinition = BuildingDefinition.GetBuildingDefinitionForType(buildingSelected.BuildingType);
                     var buildingSize = buildingDefinition.Size;
 
-                    var gridPosition = MousePositionToGridPosition(currentMousePosOnFloor);
+                    var gridPosition = MousePositionToGridPosition(MousePosOnGrid);
                     var buildingPosition = BuildingController.GetBuildingPositionFromMousePosition(gridPosition, buildingSize);
                     BuildingController.Instance.CreateBuildingAt(buildingPosition, buildingSelected);
                     if (!Input.GetKey(KeyCode.LeftShift))
@@ -69,12 +86,12 @@ namespace Assets.Controllers
             if (Input.GetMouseButtonDown(0) && !placing)
             {
                 selecting = true;
-                startSelectionBox = currentMousePosOnFloor;
+                startSelectionBox = MousePosInWorld;
             }
             else if (Input.GetMouseButtonUp(0))
             {
                 ClearBandBox();
-                var selection = GetSelection(startSelectionBox, currentMousePosOnFloor);
+                var selection = GetSelection(startSelectionBox, MousePosInWorld);
                 if (selection.Count > 0)
                 {
                     Select(selection);
@@ -83,7 +100,7 @@ namespace Assets.Controllers
                 {
                     //check if the mouse was released over a unit or icon
                     BuildingDefinition outBld;
-                    if (IconPanelController.Instance.CheckForClick(currentMousePosOnFloor, out outBld))
+                    if (IconPanelController.Instance.CheckForClick(MousePosInWorld, out outBld))
                     {
                         placing = true;
                         buildingSelected = outBld;
@@ -92,7 +109,7 @@ namespace Assets.Controllers
                     else
                     {
                         //check if a unit of building was clicked
-                        var clickedEntity = WorldController.Instance.World.EntityAtPosition(currentMousePosOnFloor);
+                        var clickedEntity = WorldController.Instance.World.EntityAtPosition(MousePosInWorld);
                         if (clickedEntity != null)
                         {
                             Select(clickedEntity);
@@ -129,7 +146,7 @@ namespace Assets.Controllers
                             //var closestPosition = positions.OrderBy(x => VectorHelper.getDistanceBetween(x, WorldController.Instance.CurrentSelection[i].Position)).First();
                             //positions.Remove(closestPosition);
                             ((Unit)WorldController.Instance.CurrentSelection[i]).Ai.AddCommand(
-                                new Command(CommandTypes.MOVE, VectorHelper.ToVector2(currentMousePosOnFloor), null, false),
+                                new Command(CommandTypes.MOVE, VectorHelper.ToVector2(MousePosOnGrid), null, false),
                                 Input.GetKey(KeyCode.LeftShift)
                                 );
                         }
@@ -138,7 +155,7 @@ namespace Assets.Controllers
             }
 
             //allow the user to drag the screen
-            DragScreen(currentPosition);
+            DragScreen(MousePosInWorld);
             UpdateZoomLevel();
         }
 
@@ -202,7 +219,7 @@ namespace Assets.Controllers
         private void DrawBandBox()
         {
             //only draw if the selection box will be bigger than a single tile
-             var distance = startSelectionBox - currentMousePosOnFloor;
+            var distance = startSelectionBox - MousePosInWorld;
              
             //grab the line renderer 
             var lineRender = GetComponent<LineRenderer>();
@@ -211,15 +228,15 @@ namespace Assets.Controllers
             if (distance.magnitude > 1)
             {
                 points.Add(new Vector3(startSelectionBox.x, startSelectionBox.y, -1));
-                points.Add(new Vector3(currentMousePosOnFloor.x, startSelectionBox.y, -1));
-                points.Add(new Vector3(currentMousePosOnFloor.x, currentMousePosOnFloor.y, -1));
-                points.Add(new Vector3(startSelectionBox.x, currentMousePosOnFloor.y, -1));
+                points.Add(new Vector3(MousePosInWorld.x, startSelectionBox.y, -1));
+                points.Add(new Vector3(MousePosInWorld.x, MousePosInWorld.y, -1));
+                points.Add(new Vector3(startSelectionBox.x, MousePosInWorld.y, -1));
                 points.Add(new Vector3(startSelectionBox.x, startSelectionBox.y, -1));
 
                 points.Add(new Vector3(startSelectionBox.x, startSelectionBox.y, -1));
-                points.Add(new Vector3(startSelectionBox.x, currentMousePosOnFloor.y, -1));
-                points.Add(new Vector3(currentMousePosOnFloor.x, currentMousePosOnFloor.y, -1));
-                points.Add(new Vector3(currentMousePosOnFloor.x, startSelectionBox.y, -1));
+                points.Add(new Vector3(startSelectionBox.x, MousePosInWorld.y, -1));
+                points.Add(new Vector3(MousePosInWorld.x, MousePosInWorld.y, -1));
+                points.Add(new Vector3(MousePosInWorld.x, startSelectionBox.y, -1));
                 points.Add(new Vector3(startSelectionBox.x, startSelectionBox.y, -1));
             }
 
@@ -240,7 +257,7 @@ namespace Assets.Controllers
         private void UpdateZoomLevel()
         {
             Camera.main.orthographicSize -= Camera.main.orthographicSize * Input.GetAxis("Mouse ScrollWheel");
-            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 3, 20);
+            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, MinCameraZoom, MaxCameraZoom);
         }
 
         private void DragScreen(Vector3 currentPosition)
