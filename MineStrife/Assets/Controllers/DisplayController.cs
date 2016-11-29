@@ -9,6 +9,7 @@ using Assets.Models.Display;
 using Assets.Models;
 using System.Collections.Generic;
 using Assets.Units;
+using Assets.Scripts;
 
 namespace Assets.Controllers
 {
@@ -138,9 +139,11 @@ namespace Assets.Controllers
 
         public void CreateProductionLable(Vector2 inPos, string inText)
         {
+            var isoPosition = GridHelper.GridToIsometric(inPos);
+
             GameObject number = Instantiate(ProductionNumberPrefab);
             number.transform.SetParent(Canvas.transform, true);
-            number.transform.position = inPos;
+            number.transform.position = isoPosition;
             var text = number.GetComponent<Text>();
             text.text = inText;
         }

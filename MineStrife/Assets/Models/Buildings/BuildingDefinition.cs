@@ -98,7 +98,7 @@ namespace Assets.Models.Buildings
                 new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.WHEAT, 15))
                 ),
             BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 15),
-            Size = new Vector2(3, 3)
+            Size = new Vector2(2, 2)
         };
 
         //Barracks

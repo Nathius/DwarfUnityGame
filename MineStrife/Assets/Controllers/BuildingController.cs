@@ -15,8 +15,10 @@ namespace Assets.Controllers
     public class BuildingController : MonoBehaviour
 	{
         public static BuildingController Instance { get; protected set; }
-        public GameObject buildingGhostPrefab;
         public GameObject buildingGhost;
+
+        public Sprite Ghost_2x2;
+        public Sprite Ghost_3x3;
 
         void Start()
         {
@@ -25,8 +27,11 @@ namespace Assets.Controllers
                 Debug.LogError(this.GetType().ToString() + " already instanced");
             }
             Instance = this;
-            buildingGhost = Instantiate(buildingGhostPrefab);
+            buildingGhost = new GameObject("BuildingGhost");
+            var render = buildingGhost.AddComponent<SpriteRenderer>();
+            render.sortingLayerName = "UI";
             buildingGhost.transform.position = new Vector3(0, 0, 0);
+            buildingGhost.layer = LayerMask.NameToLayer("UI");
             hideGhost();
         }
 
@@ -67,6 +72,22 @@ namespace Assets.Controllers
             ClearLine();
         }
 
+        private void ActivateGhost(Vector2 inBuildingSize)
+        {
+            buildingGhost.SetActive(true);
+            var render = buildingGhost.GetComponent<SpriteRenderer>();
+            
+            if(inBuildingSize.x == 3 && inBuildingSize.y == 3)
+            {
+                render.sprite = Ghost_3x3;
+            }
+            else if (inBuildingSize.x == 2 && inBuildingSize.y == 2)
+            {
+                render.sprite = Ghost_2x2;
+            }
+
+        }
+
         public static Vector2 GetBuildingPositionFromMousePosition(Vector2 inPosition, Vector2 inSize)
         {
             var centerOfset = GridHelper.OffsetToBuildingCenter(inPosition, inSize);
@@ -76,45 +97,48 @@ namespace Assets.Controllers
         public void updateGhostPosition(Vector2 inMouseOnGridPosition, BuildingDefinition inBuildingDefinition)
         {
             ClearLine();
-            if(buildingGhost != null)
+            if(buildingGhost == null)
             {
-                buildingGhost.SetActive(true);
-                UnityObjectWrapper.AddOrUpdateGridBaseCollider(buildingGhost, buildingGhost.transform.position, inBuildingDefinition.Size);
+                return;
+            }
+            if (!buildingGhost.activeSelf)
+            {
+                ActivateGhost(inBuildingDefinition.Size);
+            }
 
-                var buildingPlacementPosition = GetBuildingPositionFromMousePosition(inMouseOnGridPosition, inBuildingDefinition.Size);
-                var isometricPos = GridHelper.GridToIsometric(buildingPlacementPosition);
-                buildingGhost.transform.position = isometricPos;
+            var buildingPlacementPosition = GetBuildingPositionFromMousePosition(inMouseOnGridPosition, inBuildingDefinition.Size);
+            var isometricPos = GridHelper.GridToIsometric(buildingPlacementPosition);
+            buildingGhost.transform.position = isometricPos;
 
-                if (CanPlaceBuildingAt(buildingPlacementPosition, inBuildingDefinition))
+            if (CanPlaceBuildingAt(buildingPlacementPosition, inBuildingDefinition))
+            {
+                //if no node required
+                if (inBuildingDefinition.Conversion == null || ( ! inBuildingDefinition.Conversion.RequiresNodeResources()))
                 {
-                    //if no node required
-                    if (inBuildingDefinition.Conversion == null || ( ! inBuildingDefinition.Conversion.RequiresNodeResources()))
-                    {
-                        buildingGhost.GetComponent<SpriteRenderer>().color = Color.green;
-                    }
-                    else
-                    {
-                        List<Vector2> foundNodePositions = null;
-                        var buildingReferencePoint = GridHelper.BuildingCenter(buildingPlacementPosition, inBuildingDefinition.Size);
-                        var foundAllRequiredNodes = HasRequiredResourceNodes(buildingReferencePoint, inBuildingDefinition, out foundNodePositions);
-
-                        //if node required and available
-                        if (foundAllRequiredNodes)
-                        {
-                            var points = GetLineList(buildingReferencePoint, foundNodePositions);
-                            DrawLine(points);
-                            buildingGhost.GetComponent<SpriteRenderer>().color = Color.green;                            
-                        }
-                        else 
-                        {
-                            buildingGhost.GetComponent<SpriteRenderer>().color = Color.yellow;
-                        }
-                    }
+                    buildingGhost.GetComponent<SpriteRenderer>().color = Color.green;
                 }
                 else
                 {
-                    buildingGhost.GetComponent<SpriteRenderer>().color = Color.red;
+                    List<Vector2> foundNodePositions = null;
+                    var buildingReferencePoint = GridHelper.BuildingCenter(buildingPlacementPosition, inBuildingDefinition.Size);
+                    var foundAllRequiredNodes = HasRequiredResourceNodes(buildingReferencePoint, inBuildingDefinition, out foundNodePositions);
+
+                    //if node required and available
+                    if (foundAllRequiredNodes)
+                    {
+                        var points = GetLineList(buildingReferencePoint, foundNodePositions);
+                        DrawLine(points);
+                        buildingGhost.GetComponent<SpriteRenderer>().color = Color.green;                            
+                    }
+                    else 
+                    {
+                        buildingGhost.GetComponent<SpriteRenderer>().color = Color.yellow;
+                    }
                 }
+            }
+            else
+            {
+                buildingGhost.GetComponent<SpriteRenderer>().color = Color.red;
             }
         }
 
