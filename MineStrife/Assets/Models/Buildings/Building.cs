@@ -22,7 +22,9 @@ namespace Assets.Models
             BuildingType = inBuildingType;
             SetBuildingSize();
 
-            viewObject.SetBoundSize(Size);
+            
+            //viewObject.SetBoundSize(Size);
+            ViewObject.AddOrUpdateGridBaseCollider(inPosition, Size);
             GridHelper.AddBuildingToCollisionMap(inPosition, Size);
         }
 

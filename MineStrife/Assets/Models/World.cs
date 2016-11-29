@@ -91,10 +91,10 @@ namespace Assets.Models
             //collision checking against all entities to see if the point is contained in any bounding box
             foreach (var entity in all_worldEntity)
             {
-                var collider = entity.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>();
-                if (collider != null && 
-                    collider.enabled && 
-                    collider.bounds.Contains(new Vector3(inPosition.x, inPosition.y, collider.bounds.center.z)) && 
+                var boxCollider = entity.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>();
+                var polygonCollider = entity.ViewObject.GetUnityGameObject().GetComponent<PolygonCollider2D>();
+                if (((boxCollider != null && boxCollider.enabled && boxCollider.bounds.Contains(new Vector3(inPosition.x, inPosition.y, boxCollider.bounds.center.z))) ||
+                    (polygonCollider != null && polygonCollider.enabled && polygonCollider.bounds.Contains(new Vector3(inPosition.x, inPosition.y, polygonCollider.bounds.center.z)))) &&
                     (entity.GetType() != typeof(Tile)))
                 {
                     return entity;

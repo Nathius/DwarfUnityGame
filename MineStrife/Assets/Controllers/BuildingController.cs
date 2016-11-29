@@ -33,7 +33,7 @@ namespace Assets.Controllers
         public void CreateBuildingAt(Vector3 inPos, BuildingDefinition inBuildingType)
         {
             //if the placement is valid
-            if (CanPlaceBuildingAt(buildingGhost, inBuildingType))
+            if (CanPlaceBuildingAt(inPos, inBuildingType))
             {
                 //if the player can afford the building
                 if (WorldController.Instance.World.Stockpile.CanAfford(inBuildingType.BuildingCost))
@@ -79,12 +79,13 @@ namespace Assets.Controllers
             if(buildingGhost != null)
             {
                 buildingGhost.SetActive(true);
+                UnityObjectWrapper.AddOrUpdateGridBaseCollider(buildingGhost, buildingGhost.transform.position, inBuildingDefinition.Size);
 
                 var buildingPlacementPosition = GetBuildingPositionFromMousePosition(inMouseOnGridPosition, inBuildingDefinition.Size);
                 var isometricPos = GridHelper.GridToIsometric(buildingPlacementPosition);
                 buildingGhost.transform.position = isometricPos;
 
-                if (CanPlaceBuildingAt(buildingGhost, inBuildingDefinition))
+                if (CanPlaceBuildingAt(buildingPlacementPosition, inBuildingDefinition))
                 {
                     //if no node required
                     if (inBuildingDefinition.Conversion == null || ( ! inBuildingDefinition.Conversion.RequiresNodeResources()))
@@ -142,45 +143,33 @@ namespace Assets.Controllers
             return foundAllRequiredNodes;
         }
 
-        public bool CanPlaceBuildingAt(GameObject inBuilding_go, BuildingDefinition inBuildingType)
+        public bool CanPlaceBuildingAt(Vector2 inPosition, BuildingDefinition inBuildingType)
         {
-            bool canPlace = true;
-            var ghostColider = inBuilding_go.GetComponent<BoxCollider2D>();
-
             //check if we have a city center or are trying to build ine
-            if (WorldController.Instance.World.CityCenter == null && inBuildingType.BuildingType != BuildingType.CITY_CENTER)
+            //if (WorldController.Instance.World.CityCenter == null && inBuildingType.BuildingType != BuildingType.CITY_CENTER)
+            //{
+            //    return false;
+            //}
+
+            ////check that the building is within range of the city center
+            //if (WorldController.Instance.World.CityCenter != null && inBuildingType.BuildingType != BuildingType.CITY_CENTER)
+            //{
+            //    int cityLimitRange = 14;
+
+            //    var distance = VectorHelper.getDistanceBetween(GridHelper.IsometricToGrid(VectorHelper.ToVector2(inBuilding_go.transform.position)), WorldController.Instance.World.CityCenter.Position);
+
+            //    if (distance > cityLimitRange)
+            //    {
+            //        return false;
+            //    }
+            //}
+
+            if (!GridHelper.CanPlaceBuilding(inPosition, inBuildingType.Size))
             {
                 return false;
             }
 
-            //check that the building is within range of the city center
-            if (WorldController.Instance.World.CityCenter != null && inBuildingType.BuildingType != BuildingType.CITY_CENTER)
-            {
-                int cityLimitRange = 14;
-
-                var distance = VectorHelper.getDistanceBetween(GridHelper.IsometricToGrid(VectorHelper.ToVector2(inBuilding_go.transform.position)), WorldController.Instance.World.CityCenter.Position);
-
-                if (distance > cityLimitRange)
-                {
-                    return false;
-                }
-            }
-
-            var allGameObjects = World.all_worldEntity.Select(x => x.ViewObject.GetUnityGameObject()).ToList();
-
-            //check if the building can be placed
-            for (int i = 0; (i < allGameObjects.Count()) && canPlace; i++)
-            {
-                var otherBuildingColider = allGameObjects[i].GetComponent<BoxCollider2D>();
-
-                if (otherBuildingColider != null && otherBuildingColider.enabled && ghostColider.bounds.Intersects(otherBuildingColider.bounds))
-                {
-                    canPlace = false;
-                }
-            }
-
-
-            return canPlace;
+            return true;
         }
 
         private List<Vector3> GetLineList(Vector3 inBuildingPos, List<Vector2> inPoints)

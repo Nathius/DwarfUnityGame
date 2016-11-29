@@ -63,9 +63,7 @@ namespace Assets.Controllers
             {
                 for (int y = 0; y < World.GetHeight(); y++)
                 {
-                    
                     GameObject tile_go = new GameObject();
-                    tile_go.AddComponent<BoxCollider2D>();
                     tile_go.layer = LayerMask.NameToLayer("Tiles");
                     tile_go.name = "Tile_" + x + "_" + y;
                     Tile tile_data = new Tile(new UnityObjectWrapper(tile_go), new Vector2(x, y));
@@ -125,6 +123,7 @@ namespace Assets.Controllers
             {
                 sr.sprite = BlockedSprite;
                 sr.enabled = true;
+                inTileData.ViewObject.AddOrUpdateGridBaseCollider(inTileData.Position, new Vector2(GridHelper.TileSize, GridHelper.TileSize));
                 inTileData.ViewObject.SetColliderState(true);
                 inTileData.Cost = 0;
             }

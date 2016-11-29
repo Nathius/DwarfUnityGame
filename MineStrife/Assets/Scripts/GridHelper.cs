@@ -32,6 +32,21 @@ namespace Assets.Scripts
             }
         }
 
+        public static bool CanPlaceBuilding(Vector2 inPosition, Vector2 inSize)
+        {
+            for (int w = (int)inPosition.x; (w < (int)(inPosition.x + inSize.x)) && (w < World.Instance.GetWidth()); w++)
+            {
+                for (int h = (int)inPosition.y; (h < (int)(inPosition.y + inSize.y)) && (h < World.Instance.GetHeight()); h++)
+                {
+                    if(World.Instance.tiles[w, h].TileType == TileType.BLOCKED)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         public static Vector2 OffsetToBuildingCenter(Vector2 inPosition, Vector2 inSize)
         {
             return new Vector2(inPosition.x - (int)(0.5f * inSize.x), inPosition.y - (int)(0.5f * inSize.y));
@@ -64,5 +79,7 @@ namespace Assets.Scripts
 
             return gridPosition;
         }
+
+        
 	}
 }

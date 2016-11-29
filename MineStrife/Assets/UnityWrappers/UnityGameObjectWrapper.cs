@@ -90,13 +90,47 @@ namespace Assets.UnityWrappers
             }
         }
 
+        public void AddOrUpdateGridBaseCollider(Vector2 inPosition, Vector2 inSize)
+        {
+            AddOrUpdateGridBaseCollider(ViewObject, inPosition, inSize);           
+        }
+
+        public static List<Vector2> GetGridBaseColliderPosition(Vector2 inPosition, Vector2 inSize)
+        {
+            var points = new List<Vector2>();
+
+            //for each corner of the building add a point
+            points.Add(new Vector2(inPosition.x, inPosition.y));
+            points.Add(new Vector2((inPosition.x + inSize.x), inPosition.y));
+            points.Add(new Vector2((inPosition.x + inSize.x), (inPosition.y + inSize.y)));
+            points.Add(new Vector2(inPosition.x, (inPosition.y + inSize.y)));
+
+            return points;
+        }
+
         public void SetColliderState(bool isActive)
         {
-            var collider = ViewObject.GetComponent<BoxCollider2D>();
+            var collider = ViewObject.GetComponent<PolygonCollider2D>();
             if(collider != null)
             {
                 collider.enabled = isActive;
             }
+        }
+
+        public static void AddOrUpdateGridBaseCollider(GameObject inGameObject, Vector2 inPosition, Vector2 inSize)
+        {
+            var collider = inGameObject.GetComponent<PolygonCollider2D>();
+            if (collider == null)
+            {
+                collider = inGameObject.AddComponent<PolygonCollider2D>();
+            }
+
+            var points = GetGridBaseColliderPosition(inPosition, inSize);
+
+            var isoCenter = GridHelper.GridToIsometric(inPosition);
+            var relativePoints = points.Select(x => GridHelper.GridToIsometric(x) - isoCenter).ToArray();
+
+            collider.points = relativePoints;
         }
 	}
 }

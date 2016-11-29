@@ -144,7 +144,8 @@ namespace Assets.Models.AI
 
                 var smoothPath = PathSmoother.SmoothPath(centeredPath);
                 //Debug.Log("smoothPath " + string.Join(" -> ", smoothPath.Select(x => VectorHelper.ToString(x)).ToArray<string>())); 
-                CurrentPath = smoothPath;
+                //CurrentPath = smoothPath;
+                CurrentPath = centeredPath;
             }
         }
 
