@@ -34,10 +34,19 @@ namespace Assets.Scripts
 
         public static bool CanPlaceBuilding(Vector2 inPosition, Vector2 inSize)
         {
-            for (int w = (int)inPosition.x; (w < (int)(inPosition.x + inSize.x)) && (w < World.Instance.GetWidth()); w++)
+            //for each grid square the building would occupy
+            for (int w = (int)inPosition.x; (w < (int)(inPosition.x + inSize.x)); w++)
             {
-                for (int h = (int)inPosition.y; (h < (int)(inPosition.y + inSize.y)) && (h < World.Instance.GetHeight()); h++)
+                for (int h = (int)inPosition.y; (h < (int)(inPosition.y + inSize.y)); h++)
                 {
+                    //check if index outside of world borders
+                    if (w < 0 || w >= World.Instance.GetWidth() ||
+                        h < 0 || h >= World.Instance.GetHeight())
+                    {
+                        return false;
+                    }
+
+                    //check if grid square is available / valid
                     if(World.Instance.tiles[w, h].TileType == TileType.BLOCKED)
                     {
                         return false;

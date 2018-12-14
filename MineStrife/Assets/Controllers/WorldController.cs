@@ -23,7 +23,7 @@ namespace Assets.Controllers
         public GameObject TreeSpritePrefab;
 
         private const int WorldSize = 40;
-        private const int TreeNumber = 10;
+        private const int TreeNumber = 15;
 
         public List<WorldEntity> CurrentSelection;
 
