@@ -88,6 +88,7 @@ namespace Assets.Controllers
         // Update is called once per frame
         void Update()
         {
+            //only init the icon panel once, after the iconPanelInstance is available.
             if (!HaveInitIconPanel && IconPanelController.Instance != null)
             {
                 InitBuildingIconPannel();

@@ -91,11 +91,24 @@ namespace Assets.Models
             //collision checking against all entities to see if the point is contained in any bounding box
             foreach (var entity in all_worldEntity)
             {
-                var boxCollider = entity.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>();
-                var polygonCollider = entity.ViewObject.GetUnityGameObject().GetComponent<PolygonCollider2D>();
-                if (((boxCollider != null && boxCollider.enabled && boxCollider.bounds.Contains(new Vector3(inPosition.x, inPosition.y, boxCollider.bounds.center.z))) ||
-                    (polygonCollider != null && polygonCollider.enabled && polygonCollider.bounds.Contains(new Vector3(inPosition.x, inPosition.y, polygonCollider.bounds.center.z)))) &&
-                    (entity.GetType() != typeof(Tile)))
+                BoxCollider2D boxCollider = entity.ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>();
+
+                PolygonCollider2D polygonCollider = entity.ViewObject.GetUnityGameObject().GetComponent<PolygonCollider2D>();
+
+                var boxColliderContainsPosition = boxCollider != null 
+                    && boxCollider.enabled 
+                    && boxCollider.bounds.Contains(new Vector3(inPosition.x, inPosition.y, boxCollider.bounds.center.z));
+
+                //polygon collider apparently works using a square bounding box =/
+                //the fucck is the point of a polygon collider then??
+
+                var polygonColliderContainsPosition = polygonCollider != null 
+                    && polygonCollider.enabled 
+                    && polygonCollider.bounds.Contains(new Vector3(inPosition.x, inPosition.y, polygonCollider.bounds.center.z));
+
+                if ((boxColliderContainsPosition 
+                        || polygonColliderContainsPosition) 
+                    && entity.GetType() != typeof(Tile))
                 {
                     return entity;
                 }

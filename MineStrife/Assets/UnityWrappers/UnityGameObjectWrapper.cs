@@ -128,7 +128,7 @@ namespace Assets.UnityWrappers
             var points = GetGridBaseColliderPosition(inPosition, inSize);
 
             var isoCenter = GridHelper.GridToIsometric(inPosition);
-            var relativePoints = points.Select(x => GridHelper.GridToIsometric(x) - isoCenter).ToArray();
+            var relativePoints = points.Select(x => (-1 * isoCenter) + GridHelper.GridToIsometric(x)).ToArray();
 
             collider.points = relativePoints;
         }
