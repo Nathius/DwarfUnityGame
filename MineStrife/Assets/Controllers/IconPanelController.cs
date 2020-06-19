@@ -44,14 +44,21 @@ public class IconPanelController : MonoBehaviour {
 
     public void ShuffelIcons()
     {
-        Debug.Log("shuffeling icons with pos (" + Instance.transform.position.x + "," + Instance.transform.position.y + "), size " + (Camera.main.orthographicSize * 0.18f));
-       
+        var panelWidth = Instance.GetComponent<RectTransform>().rect.width;
+        Debug.Log("shuffeling icons with pos (" + Instance.transform.position.x + "," + Instance.transform.position.y + "), panel width: " + panelWidth + ", size " + (Camera.main.orthographicSize));
+
+        //icon panel position, get x of left border by subtracting half of width
+        var startX = Instance.transform.position.x - (panelWidth * 0.5f);
+
         for(int i = 0; i < CurrentIcons.Count; i++)
         {
-            var thisPos = Instance.transform.position;
+            //each icon object
             var go = CurrentIcons[i].gameObject;
-            var scale = Camera.main.orthographicSize * 0.28f;
-            go.transform.position = new Vector3(thisPos.x + (i * 1.2f * scale), thisPos.y, 0);
+
+            var width = go.GetComponent<SpriteRenderer>().bounds.extents.x * 2;
+
+            // offset each icon allong the icon bar
+            go.transform.position = new Vector3(startX + (i * width), Instance.transform.position.y, 0);
         }
     }
 
@@ -94,7 +101,7 @@ public class IconPanelController : MonoBehaviour {
         }
 
         //only shuffel during an update
-        if (NeedsIconShuffel || Instance.transform.hasChanged)
+        if (NeedsIconShuffel)
         {
             ShuffelIcons();
             NeedsIconShuffel = false;
