@@ -47,6 +47,8 @@ namespace Assets.Controllers
         private void CenterCameraOnGrid()
         {
             Camera.main.transform.position = VectorHelper.ToVector3(GridHelper.GridToIsometric(new Vector2(World.GetWidth() * 0.5f, World.GetHeight() * 0.5f)), Camera.main.transform.position.z);
+            Debug.Log("worldController center camera on grid at ("+ Camera.main.transform.position.x +","+ Camera.main.transform.position.y +")");
+
         }
 
         private void InitControllers()

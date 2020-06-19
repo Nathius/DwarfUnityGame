@@ -10,6 +10,8 @@ public class IconPanelController : MonoBehaviour {
 
     public static IconPanelController Instance { get; protected set; }
 
+    private bool NeedsIconShuffel = false;
+
 	// Use this for initialization
 	void Start () {
         if (Instance != null)
@@ -19,25 +21,36 @@ public class IconPanelController : MonoBehaviour {
         Instance = this;
 
         CurrentIcons = new List<Icon>();
+        NeedsIconShuffel = true;
+        Debug.Log("need shuffel from start");
 	}
 
     public void AddIcon(Icon inIcon, GameObject inPrefab)
     {
         var instance = Instantiate(inPrefab);
-        instance.transform.parent = this.transform;
+        instance.transform.parent = Instance.transform;
         instance.transform.localScale = new Vector3(1.6f, 1.6f);
         inIcon.gameObject = instance;
         CurrentIcons.Add(inIcon);
-        ShuffelIcons();
+        //ShuffelIcons();
+        NeedsIconShuffel = true;
+        Debug.Log("need shuffel from adding icons");
+    }
+
+    public void QueueShuffelIcons()
+    {
+        NeedsIconShuffel = true;
     }
 
     public void ShuffelIcons()
     {
+        Debug.Log("shuffeling icons with pos (" + Instance.transform.position.x + "," + Instance.transform.position.y + "), size " + (Camera.main.orthographicSize * 0.18f));
+       
         for(int i = 0; i < CurrentIcons.Count; i++)
         {
-            var thisPos = this.transform.position;
+            var thisPos = Instance.transform.position;
             var go = CurrentIcons[i].gameObject;
-            var scale = Camera.main.orthographicSize * 0.18f;
+            var scale = Camera.main.orthographicSize * 0.28f;
             go.transform.position = new Vector3(thisPos.x + (i * 1.2f * scale), thisPos.y, 0);
         }
     }
@@ -50,7 +63,8 @@ public class IconPanelController : MonoBehaviour {
             CurrentIcons.Remove(oldIcon);
             Destroy(oldIcon.gameObject);
         }
-        ShuffelIcons();
+        NeedsIconShuffel = true;
+        Debug.Log("need shuffel from removing icons");
     }
 
     //checks is any icon has been clicked
@@ -77,6 +91,14 @@ public class IconPanelController : MonoBehaviour {
         foreach (var icon in CurrentIcons)
         {
             icon.gameObject.transform.position = new Vector3(icon.gameObject.transform.position.x, icon.gameObject.transform.position.y, 0);
+        }
+
+        //only shuffel during an update
+        if (NeedsIconShuffel || Instance.transform.hasChanged)
+        {
+            ShuffelIcons();
+            NeedsIconShuffel = false;
+            Instance.transform.hasChanged = false;
         }
 	}
 }

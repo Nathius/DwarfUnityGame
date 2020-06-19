@@ -52,6 +52,11 @@ namespace Assets.Controllers
             MousePosOnGrid = GridHelper.IsometricToGrid(VectorHelper.ToVector2(MousePosInWorld));
             MousePosOnGrid.z = 0;
 
+            //if press 'k' key update icon panel
+            if(Input.GetKeyDown(KeyCode.K))
+            {
+                IconPanelController.Instance.QueueShuffelIcons();
+            }
             
 
             //if holding the building key update the ghost sprite

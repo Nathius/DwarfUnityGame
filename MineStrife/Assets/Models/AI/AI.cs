@@ -142,9 +142,11 @@ namespace Assets.Models.AI
                 centeredPath.Insert(0, inCurrentPosition);
                 centeredPath.Add(CurrentCommand.TargetPosition.Value);
 
-                var smoothPath = PathSmoother.SmoothPath(centeredPath);
+                // issues with ray tracing making it difficult to smoth the path
+                //var smoothPath = PathSmoother.SmoothPath(centeredPath);
                 //Debug.Log("smoothPath " + string.Join(" -> ", smoothPath.Select(x => VectorHelper.ToString(x)).ToArray<string>())); 
                 //CurrentPath = smoothPath;
+
                 CurrentPath = centeredPath;
             }
         }
