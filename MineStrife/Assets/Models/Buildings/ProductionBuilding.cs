@@ -23,6 +23,9 @@ namespace Assets.Models.Buildings
         public ProductionBuilding(UnityObjectWrapper viewObject, Vector2 inPosition, BuildingType inBuildingType, Conversion inConversion)
             : base(viewObject, inPosition, inBuildingType)
         {
+            this.IsUnderConstruction = true;
+            this.ConstructionProgress = 0;
+
             currentlyProcessing = false;
             //automatically start their first conversion
             if(inConversion != null)
@@ -136,13 +139,15 @@ namespace Assets.Models.Buildings
         {
             base.Update(inTimeDelta);
 
-            if (currentlyProcessing)
-            {
-                CheckFinishConversion(inTimeDelta);
-            }
-            else
-            {
-                TryStartProcessing();
+            if(!IsUnderConstruction){
+                if (currentlyProcessing)
+                {
+                    CheckFinishConversion(inTimeDelta);
+                }
+                else
+                {
+                    TryStartProcessing();
+                }
             }
         }
 
@@ -176,7 +181,13 @@ namespace Assets.Models.Buildings
 
         public override string ToString()
         {
+            if(IsUnderConstruction)
+            {
+                return base.ToString();
+            }
+
             var displayStr = "Production building " + BuildingType.ToString() + "\n";
+
             if (Conversion != null)
             {
                 displayStr +=  Conversion.Description + ": " + ProductionBar() + "\n";

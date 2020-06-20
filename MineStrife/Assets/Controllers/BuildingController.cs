@@ -44,6 +44,10 @@ namespace Assets.Controllers
                 if (WorldController.Instance.World.Stockpile.CanAfford(inBuildingType.BuildingCost))
                 {
                     var prefab = BuildingPrefabController.Instance.GetPrefab(inBuildingType.BuildingType);
+                    if (inBuildingType.Size.x == 3 && inBuildingType.Size.y == 3)
+                    {
+                        prefab = BuildingPrefabController.Instance.GetPrefab(BuildingType.SITE_3X3);
+                    }
 
                     //instance a new build prefab and place it on the screen
                     GameObject building_go = Instantiate(prefab);
@@ -53,6 +57,7 @@ namespace Assets.Controllers
                     //create a new building data object
                     Vector2 buildingPosition = new Vector2(inPos.x, inPos.y);
                     var newBuilding = new ProductionBuilding(new UnityObjectWrapper(building_go), buildingPosition, inBuildingType.BuildingType, inBuildingType.Conversion);
+
 
                     //withdraw the required resources
                     WorldController.Instance.World.Stockpile.RemoveStock(inBuildingType.BuildingCost);
