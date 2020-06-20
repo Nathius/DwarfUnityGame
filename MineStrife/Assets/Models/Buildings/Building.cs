@@ -71,7 +71,9 @@ namespace Assets.Models
         {
             IsUnderConstruction = false;
 
+            //delete old view object
             var oldGO = ViewObject;
+            GameObject.Destroy(oldGO.GetUnityGameObject());
             
             //swap with finished sprite
             var newPrefab = BuildingPrefabController.Instance.GetPrefab(BuildingType);
@@ -79,8 +81,11 @@ namespace Assets.Models
             building_go.transform.SetParent(BuildingController.Instance.transform, true);
             building_go.name = "building";
 
+            //update objects wiew object and set colliders
             this.ViewObject = new UnityObjectWrapper(building_go);
-            GameObject.Destroy(oldGO.GetUnityGameObject());
+            ViewObject.AddOrUpdateGridBaseCollider(Position, Size);
+            GridHelper.AddBuildingToCollisionMap(Position, Size);
+            
         }
 
         public Vector2 ReferencePosition()
