@@ -201,22 +201,13 @@ namespace Assets.Models.Buildings
 
         public string ProductionBar()
         {
-            var bar = "[";
-            if(currentlyProcessing)
+            var bar = "";
+            if (currentlyProcessing)
             {
-                var progress = (Conversion.TimeTaken - TimeRemaining) / Conversion.TimeTaken;
-                var pips = (int)Math.Round(progress * 10);
-                for (int i = 0; i <= pips; i++)
-                {
-                    bar += "+";
-                }
-                for (int i = 0; i < (10 - pips); i++)
-                {
-                    bar += "-";
-                }
+                var progress = Conversion.TimeTaken - TimeRemaining;
+                bar = ProgressBarHelper.GetBar(progress, Conversion.TimeTaken);
             }
-            
-            bar += "]";
+
             return bar;
 
         }

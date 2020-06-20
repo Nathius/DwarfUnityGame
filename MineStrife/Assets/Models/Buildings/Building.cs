@@ -81,7 +81,7 @@ namespace Assets.Models
             building_go.transform.SetParent(BuildingController.Instance.transform, true);
             building_go.name = "building";
 
-            //update objects wiew object and set colliders
+            //update objects view object and set colliders
             this.ViewObject = new UnityObjectWrapper(building_go);
             ViewObject.AddOrUpdateGridBaseCollider(Position, Size);
             GridHelper.AddBuildingToCollisionMap(Position, Size);
@@ -112,7 +112,9 @@ namespace Assets.Models
             
             if (this.IsUnderConstruction)
             {
-                str += this.ConstructionProgress + " out of " + Building.MaxConstructionProgress + " constructed";
+
+
+                str += "Under construction : " + ProgressBarHelper.GetBar(ConstructionProgress, Building.MaxConstructionProgress) + "\n";
             }
 
             str += " Position: " + VectorHelper.ToString(Position) + "\n";

@@ -102,6 +102,7 @@
     <Compile Include="Assets\Scripts\GridHelper.cs" />
     <Compile Include="Assets\Scripts\MathHelper.cs" />
     <Compile Include="Assets\Scripts\ProductionNumber.cs" />
+    <Compile Include="Assets\Scripts\ProgressBarHelper.cs" />
     <Compile Include="Assets\Scripts\VectorHelper.cs" />
     <Compile Include="Assets\UnityWrappers\UnityGameObjectWrapper.cs" />
   </ItemGroup>
