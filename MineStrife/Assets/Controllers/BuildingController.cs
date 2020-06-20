@@ -44,7 +44,12 @@ namespace Assets.Controllers
                 if (WorldController.Instance.World.Stockpile.CanAfford(inBuildingType.BuildingCost))
                 {
                     var prefab = BuildingPrefabController.Instance.GetPrefab(inBuildingType.BuildingType);
-                    if (inBuildingType.Size.x == 3 && inBuildingType.Size.y == 3)
+
+                    if (inBuildingType.Size.x == 2 && inBuildingType.Size.y == 2)
+                    {
+                        prefab = BuildingPrefabController.Instance.GetPrefab(BuildingType.SITE_2X2);
+                    }
+                    else if (inBuildingType.Size.x == 3 && inBuildingType.Size.y == 3)
                     {
                         prefab = BuildingPrefabController.Instance.GetPrefab(BuildingType.SITE_3X3);
                     }

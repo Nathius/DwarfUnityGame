@@ -12,6 +12,7 @@ namespace Assets.Models.Buildings
         RESOURCE_NODE,
         CITY_CENTER,
         SITE_3X3,
+        SITE_2X2,
         WOOD_CUTTER,
         FARMER,
         MILL,
