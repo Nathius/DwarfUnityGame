@@ -25,6 +25,7 @@ namespace Assets.Controllers
                 Debug.LogError(this.GetType().ToString() + " already instanced");
             }
             Instance = this;
+
         }
 
         public void CreateUnitAt(Vector2 inPos, UnitType inUnitType)

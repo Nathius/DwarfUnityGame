@@ -22,7 +22,6 @@ public class IconPanelController : MonoBehaviour {
 
         CurrentIcons = new List<Icon>();
         NeedsIconShuffel = true;
-        Debug.Log("need shuffel from start");
 	}
 
     public void AddIcon(Icon inIcon, GameObject inPrefab)
@@ -34,7 +33,6 @@ public class IconPanelController : MonoBehaviour {
         CurrentIcons.Add(inIcon);
         //ShuffelIcons();
         NeedsIconShuffel = true;
-        Debug.Log("need shuffel from adding icons");
     }
 
     public void QueueShuffelIcons()
@@ -71,7 +69,6 @@ public class IconPanelController : MonoBehaviour {
             Destroy(oldIcon.gameObject);
         }
         NeedsIconShuffel = true;
-        Debug.Log("need shuffel from removing icons");
     }
 
     //checks is any icon has been clicked

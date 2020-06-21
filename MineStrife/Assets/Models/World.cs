@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Assets.Models.Econemy;
 using UnityEngine;
 using Assets.Scripts;
+using Assets.Controllers;
+using Assets.Models.Buildings;
 
 namespace Assets.Models
 {
@@ -20,10 +22,12 @@ namespace Assets.Models
         public static List<WorldEntity> all_worldEntity;
         public Vector2 Size;
 
+        private bool haveSpawnedStartingUnits = false;
+
         public World(int inWidth = 10, int inHeight = 10)
         {
             Instance = this;
-            PopCap = 8;
+            PopCap = 10;
             CurrentPop = 0;
 
             //new empty list of game objects
@@ -40,6 +44,17 @@ namespace Assets.Models
             tiles = new Tile[inWidth, inHeight];
         }
 
+        private void SpawnStartingUnits(int number)
+        {
+            var centerPos = new Vector2(World.Instance.GetWidth() * 0.5f, World.Instance.GetHeight() * 0.5f);
+            for (int i = 0; i < number; i++)
+            {
+                World.Instance.CurrentPop++;
+                UnitController.Instance.CreateUnitAt(centerPos, UnitType.WORKER);
+                centerPos.x = centerPos.x + 1;
+            }
+        }
+
         public int GetWidth()
         {
             return (int)Size.x;
@@ -54,6 +69,13 @@ namespace Assets.Models
             for (var i = 0; i < all_worldEntity.Count; i++)
             {
                 all_worldEntity[i].Update(inTimeDelta);
+            }
+
+            //need to find a better way of initial start up when nothing is ready predictably
+            if(!haveSpawnedStartingUnits)
+            {
+                SpawnStartingUnits(4);
+                haveSpawnedStartingUnits = true;         
             }
         }
 
