@@ -50,8 +50,8 @@ namespace Assets.Models
             for (int i = 0; i < number; i++)
             {
                 World.Instance.CurrentPop++;
-                UnitController.Instance.CreateUnitAt(centerPos, UnitType.WORKER);
-                centerPos.x = centerPos.x + 1;
+                var pos = new Vector2(centerPos.x + UnityEngine.Random.Range(-4, 4), centerPos.y + UnityEngine.Random.Range(-4, 4));
+                UnitController.Instance.CreateUnitAt(pos, UnitType.WORKER);
             }
         }
 
@@ -74,7 +74,7 @@ namespace Assets.Models
             //need to find a better way of initial start up when nothing is ready predictably
             if(!haveSpawnedStartingUnits)
             {
-                SpawnStartingUnits(4);
+                SpawnStartingUnits(7);
                 haveSpawnedStartingUnits = true;         
             }
         }
