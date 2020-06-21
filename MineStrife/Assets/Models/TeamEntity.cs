@@ -11,9 +11,15 @@ namespace Assets.Models
 	{
         private int team;
 
-        public TeamEntity(UnityObjectWrapper viewObject, Vector2 inPosition)
+        public TeamEntity(UnityObjectWrapper viewObject, Vector2 inPosition, int inTeam)
             : base(viewObject, inPosition)
         {
+            team = inTeam;
+        }
+
+        public int getTeam()
+        {
+            return team;
         }
 
 	}

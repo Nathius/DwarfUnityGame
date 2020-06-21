@@ -20,8 +20,8 @@ namespace Assets.Models.Buildings
         public Conversion Conversion { get; set; }
         public bool currentlyProcessing { get; set; }
 
-        public ProductionBuilding(UnityObjectWrapper viewObject, Vector2 inPosition, BuildingType inBuildingType, Conversion inConversion)
-            : base(viewObject, inPosition, inBuildingType)
+        public ProductionBuilding(UnityObjectWrapper viewObject, Vector2 inPosition, int inTeam, BuildingType inBuildingType, Conversion inConversion)
+            : base(viewObject, inPosition, inTeam, inBuildingType)
         {
             this.IsUnderConstruction = true;
             this.ConstructionProgress = 0;
@@ -172,7 +172,7 @@ namespace Assets.Models.Buildings
                     if (Conversion.Result.UnitType != null)
                     {
                         World.Instance.CurrentPop++;
-                        UnitController.Instance.CreateUnitAt(GridHelper.BuildingCenter(Position, Size), Conversion.Result.UnitType.Value);
+                        UnitController.Instance.CreateUnitAt(GridHelper.BuildingCenter(Position, Size), Conversion.Result.UnitType.Value, this.getTeam());
                         DisplayController.Instance.CreateProductionLable(Position, "+1 " + Conversion.Result.UnitType.ToString());
                     }
                 }

@@ -25,6 +25,9 @@ namespace Assets.Controllers
         private const int WorldSize = 40;
         private const int TreeNumber = 15;
 
+        public const int PlayerTeam = 1;
+        public const int nutralTeam = 0;
+
         public List<WorldEntity> CurrentSelection;
 
         // Use this for initialization
@@ -114,6 +117,7 @@ namespace Assets.Controllers
 
                 var node = new ResourceNode(new UnityObjectWrapper(newTree),
                     VectorHelper.ToVector3(gridPosition),
+                    WorldController.nutralTeam,
                     RESOURCE_TYPE.WOOD, 200);
             }
         }

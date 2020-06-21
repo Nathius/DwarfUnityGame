@@ -40,7 +40,7 @@ namespace Assets.Models.Buildings
         {
             UnitType = UnitType.WORKER,
             Cost = new ResourceAmmount(RESOURCE_TYPE.BREAD, 20),
-            Behaviours = new List<CommandTypes>() { CommandTypes.MOVE }
+            Behaviours = new List<CommandTypes>() { CommandTypes.MOVE, CommandTypes.BUILD, CommandTypes.FOLLOW, CommandTypes.PATROLE, CommandTypes.STOP }
         };
     }
 }

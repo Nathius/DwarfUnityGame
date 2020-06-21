@@ -9,9 +9,16 @@ namespace Assets.Models.AI
     public enum CommandTypes
     {
         MOVE,
+        FOLLOW,
         STOP,
         PATROLE,
         HOLD,
+        ATTACK,
+        ATTACK_MOVE,
+        BUILD,
+        CAST,
+        WORK,
+
 
         _COUNT
     }

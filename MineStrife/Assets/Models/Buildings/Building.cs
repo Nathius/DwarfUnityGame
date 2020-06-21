@@ -22,8 +22,9 @@ namespace Assets.Models
 
         public Building(UnityObjectWrapper viewObject,
             Vector2 inPosition,
+            int inTeam,
             BuildingType inBuildingType)
-            : base(viewObject, inPosition)
+            : base(viewObject, inPosition, inTeam)
         {
             BuildingType = inBuildingType;
             SetBuildingSize();

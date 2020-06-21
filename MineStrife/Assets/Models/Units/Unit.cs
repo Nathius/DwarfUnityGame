@@ -20,8 +20,8 @@ namespace Assets.Units
         public int Health { get; set; }
         public float MoveSpeed { get; set; }
 
-        public Unit(UnityObjectWrapper viewObject, Vector2 inPosition, UnitType inUnitType, AI inAi)
-            : base(viewObject, inPosition)
+        public Unit(UnityObjectWrapper viewObject, Vector2 inPosition, int inTeam, UnitType inUnitType, AI inAi)
+            : base(viewObject, inPosition, inTeam)
         {
             UnitType = inUnitType;
             MoveSpeed = 2.2f;

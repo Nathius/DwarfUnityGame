@@ -133,35 +133,117 @@ namespace Assets.Controllers
                 DrawBandBox();   
             }
 
+            //if right click release
             if(Input.GetMouseButtonUp(1))
             {
-                if(WorldController.Instance.CurrentSelection.Count > 0)
+                //if units selected
+                if(WorldController.Instance.CurrentSelection.Count > 0) //TODO check if at least one is a unit
                 {
-                    //formations are just causing issues with pathfinding
-                    //var positions = FormationCalculator.findPositionsForFormation(
-                    //    WorldController.Instance.CurrentSelection.Select(x => x.Position).ToList(),
-                    //    new Vector2(currentMousePosOnFloor.x, currentMousePosOnFloor.y),
-                    //    0.8f
-                    //    );
-
-                    for (int i = 0; i < WorldController.Instance.CurrentSelection.Count; i++ )
-                    {
-                        if (WorldController.Instance.CurrentSelection[i].GetType() == typeof(Unit))
-                        {
-                            //var closestPosition = positions.OrderBy(x => VectorHelper.getDistanceBetween(x, WorldController.Instance.CurrentSelection[i].Position)).First();
-                            //positions.Remove(closestPosition);
-                            ((Unit)WorldController.Instance.CurrentSelection[i]).Ai.AddCommand(
-                                new Command(CommandTypes.MOVE, VectorHelper.ToVector2(MousePosOnGrid), null, false),
-                                Input.GetKey(KeyCode.LeftShift)
-                                );
-                        }
-                    }
+                    GiveOrderToUnits(MousePosOnGrid);
                 } 
             }
 
             //allow the user to drag the screen
             DragScreen(MousePosInWorld);
             UpdateZoomLevel();
+        }
+
+        public void GiveOrderToUnits(Vector3 MousePosOnGrid)
+        {
+            //formations are just causing issues with pathfinding
+            //var positions = FormationCalculator.findPositionsForFormation(
+            //    WorldController.Instance.CurrentSelection.Select(x => x.Position).ToList(),
+            //    new Vector2(currentMousePosOnFloor.x, currentMousePosOnFloor.y),
+            //    0.8f
+            //    );
+
+            CommandTypes commandT = CommandTypes.MOVE;
+
+            var entityAtPosition = World.Instance.EntityAtPosition(MousePosOnGrid);
+            
+            //check if entity is a unit
+            if (entityAtPosition != null && 
+                entityAtPosition.GetType() == typeof(Unit))
+            {
+                Unit entityAsUnit = (Unit)entityAtPosition;
+
+                //curently player is always team 1
+                if (entityAsUnit.getTeam() == WorldController.PlayerTeam)
+                {
+                    //unit on same team
+                    commandT = CommandTypes.FOLLOW;
+                }
+                else if (entityAsUnit.getTeam() == WorldController.nutralTeam)
+                {
+                    //just move up to neutral units
+                    //TODO force attack functionality?
+                    commandT = CommandTypes.MOVE;
+                }
+                else
+                {
+                    //assume enemy unit = attack
+                    commandT = CommandTypes.ATTACK;
+                }
+            }
+
+            //check if entity is a building
+            Building entityAsBuilding = null;
+            if (entityAtPosition != null &&
+                entityAtPosition.GetType() == typeof(Building))
+            {
+                entityAsBuilding = (Building)entityAtPosition;
+
+                //curently player is always team 1
+                if (entityAsBuilding.getTeam() == WorldController.PlayerTeam)
+                {
+                    //unit on same team
+                    if(entityAsBuilding.IsUnderConstruction)
+                    {
+                        //TODO 
+                        commandT = CommandTypes.BUILD;
+                    }
+                    else
+                    {
+                        //TODO logic to figure out if unit should work there, or move there, or build etc
+                        //based on if the building needs workers and if the unit can work there
+                        commandT = CommandTypes.MOVE;
+                    }
+                    
+                }
+                else if (entityAsBuilding.getTeam() == WorldController.nutralTeam)
+                {
+                    //just move up to neutral units
+                    //TODO force attack functionality?
+                    commandT = CommandTypes.MOVE;
+                }
+                else
+                {
+                    //assume enemy unit = attack
+                    commandT = CommandTypes.ATTACK;
+                }
+            }
+
+            //give command to units
+            for (int i = 0; i < WorldController.Instance.CurrentSelection.Count; i++)
+            {
+                if (WorldController.Instance.CurrentSelection[i].GetType() == typeof(Unit))
+                {
+                    //var closestPosition = positions.OrderBy(x => VectorHelper.getDistanceBetween(x, WorldController.Instance.CurrentSelection[i].Position)).First();
+                    //positions.Remove(closestPosition);
+                    var unit = (Unit)WorldController.Instance.CurrentSelection[i];
+                    if (unit.Ai.SupportsBehaviour(commandT))
+                    {
+                        unit.Ai.AddCommand(
+                        new Command(commandT, VectorHelper.ToVector2(MousePosOnGrid), null, false),
+                        Input.GetKey(KeyCode.LeftShift)
+                        );
+                    }
+                    else
+                    {
+                        //TODO default to move?
+                    }
+                }
+            }
         }
 
         public List<WorldEntity> GetSelection(Vector3 inA, Vector3 inB)

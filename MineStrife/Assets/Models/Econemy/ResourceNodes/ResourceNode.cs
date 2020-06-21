@@ -16,8 +16,8 @@ namespace Assets.Models.Econemy.ResourceNodes
         private bool IsDepeleted { get; set; }
         public RESOURCE_TYPE Resource { get; set; }
 
-        public ResourceNode(UnityObjectWrapper viewObject, Vector2 inPosition, RESOURCE_TYPE inResource, int startingAmmount)
-            : base(viewObject, inPosition, BuildingType.RESOURCE_NODE)
+        public ResourceNode(UnityObjectWrapper viewObject, Vector2 inPosition, int inTeam, RESOURCE_TYPE inResource, int startingAmmount)
+            : base(viewObject, inPosition, inTeam, BuildingType.RESOURCE_NODE)
         {
             Resource = inResource;
             ammountRemaining = startingAmmount;

@@ -28,7 +28,7 @@ namespace Assets.Controllers
 
         }
 
-        public void CreateUnitAt(Vector2 inPos, UnitType inUnitType)
+        public void CreateUnitAt(Vector2 inPos, UnitType inUnitType, int team)
         {
             var spawnPos = GetClosestFreePosition(inPos);
 
@@ -44,7 +44,7 @@ namespace Assets.Controllers
 
                 //create a new unit
                 var ai = new AI(definition.Behaviours);
-                new Unit(new UnityObjectWrapper(unit_go), spawnPos.Value, inUnitType, ai);
+                new Unit(new UnityObjectWrapper(unit_go), spawnPos.Value, team, inUnitType, ai);
             }         
         }
 

@@ -33,11 +33,11 @@ namespace Assets.Models.AI
         {
             if (CurrentPath != null && CurrentPath.Any())
             {
-                Body.DrawPath(CurrentPath.ToList());
+                //Body.DrawPath(CurrentPath.ToList());
             }
             else
             {
-                Body.ClearPath();
+                //Body.ClearPath();
             }
             
 
@@ -47,6 +47,7 @@ namespace Assets.Models.AI
                 switch(CurrentCommand.CommandType)
                 {
                     case CommandTypes.MOVE:
+                    case CommandTypes.PATROLE: //TODO probably more like attack move than ignore move
                         //move tracks towards a position
                         if (CurrentCommand.TargetPosition != null)
                         {
@@ -59,21 +60,22 @@ namespace Assets.Models.AI
                                 MoveAllongPath();
                             }
                         }
-                        else
+                        else //reached position
                         {
                             FinishCurrentCommand();
                         }
 
                         break;
+
                     case CommandTypes.STOP:
                         //stop clears the current command list
+                        StopAllCommands();
                         break;
-                    case CommandTypes.PATROLE:
-                        //patrole is a pair of repeated move commands
-                        break;
+
                     case CommandTypes.HOLD:
                         //hold requires no action but never finishes
                         break;
+
                     default:
                         //idle or type not found / supported?
                         break;
@@ -162,6 +164,15 @@ namespace Assets.Models.AI
                 CurrentCommand = null;
                 Body.TargetPosition = null;
             }
+            CurrentPath = null;
+        }
+
+        private void StopAllCommands()
+        {
+            //stops current task (if any) and clears queue
+            QuedCommands.Clear();
+            CurrentCommand = null;
+            Body.TargetPosition = null;
             CurrentPath = null;
         }
 
