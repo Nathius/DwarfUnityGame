@@ -139,7 +139,7 @@ namespace Assets.Controllers
                 //if units selected
                 if(WorldController.Instance.CurrentSelection.Count > 0) //TODO check if at least one is a unit
                 {
-                    GiveOrderToUnits(MousePosOnGrid);
+                    GiveOrderToUnits(MousePosInWorld);
                 } 
             }
 
@@ -148,7 +148,7 @@ namespace Assets.Controllers
             UpdateZoomLevel();
         }
 
-        public void GiveOrderToUnits(Vector3 MousePosOnGrid)
+        public void GiveOrderToUnits(Vector3 MousePosInWorld)
         {
             //formations are just causing issues with pathfinding
             //var positions = FormationCalculator.findPositionsForFormation(
@@ -157,67 +157,86 @@ namespace Assets.Controllers
             //    0.8f
             //    );
 
-            CommandTypes commandT = CommandTypes.MOVE;
 
-            var entityAtPosition = World.Instance.EntityAtPosition(MousePosOnGrid);
+            CommandTypes commandT = CommandTypes.MOVE;
+            WorldEntity clickedEntity = null;
+
+            Debug.Log("checking for entity at position (" + MousePosInWorld.x + "," + MousePosInWorld.y + ")");
+
+            var entityAtPosition = World.Instance.EntityAtPosition(MousePosInWorld);
             
+            if (entityAtPosition != null)
+            {
+                Debug.Log("entity at position");
+            }
+
             //check if entity is a unit
             if (entityAtPosition != null && 
                 entityAtPosition.GetType() == typeof(Unit))
             {
+                Debug.Log("clicker unit");
                 Unit entityAsUnit = (Unit)entityAtPosition;
+                clickedEntity = entityAsUnit;
 
-                //curently player is always team 1
                 if (entityAsUnit.getTeam() == WorldController.PlayerTeam)
                 {
+                    Debug.Log("player unit");
                     //unit on same team
                     commandT = CommandTypes.FOLLOW;
                 }
                 else if (entityAsUnit.getTeam() == WorldController.nutralTeam)
                 {
+                    Debug.Log("neutral unit");
                     //just move up to neutral units
                     //TODO force attack functionality?
                     commandT = CommandTypes.MOVE;
                 }
                 else
                 {
+                    Debug.Log("enemy unit");
                     //assume enemy unit = attack
                     commandT = CommandTypes.ATTACK;
                 }
             }
 
             //check if entity is a building
-            Building entityAsBuilding = null;
+            ProductionBuilding entityAsBuilding = null;
             if (entityAtPosition != null &&
-                entityAtPosition.GetType() == typeof(Building))
+                entityAtPosition.GetType() == typeof(ProductionBuilding))
             {
-                entityAsBuilding = (Building)entityAtPosition;
+                Debug.Log("clicked building");
+                entityAsBuilding = (ProductionBuilding)entityAtPosition;
+                clickedEntity = entityAsBuilding;
 
-                //curently player is always team 1
                 if (entityAsBuilding.getTeam() == WorldController.PlayerTeam)
                 {
+                    Debug.Log("Player building");
                     //unit on same team
                     if(entityAsBuilding.IsUnderConstruction)
                     {
                         //TODO 
+                        Debug.Log("under construction building");
                         commandT = CommandTypes.BUILD;
                     }
                     else
                     {
                         //TODO logic to figure out if unit should work there, or move there, or build etc
                         //based on if the building needs workers and if the unit can work there
+                        Debug.Log("other typoe of building");
                         commandT = CommandTypes.MOVE;
                     }
                     
                 }
                 else if (entityAsBuilding.getTeam() == WorldController.nutralTeam)
                 {
+                    Debug.Log("neutral building");
                     //just move up to neutral units
                     //TODO force attack functionality?
                     commandT = CommandTypes.MOVE;
                 }
                 else
                 {
+                    Debug.Log("enemy building");
                     //assume enemy unit = attack
                     commandT = CommandTypes.ATTACK;
                 }
@@ -234,13 +253,17 @@ namespace Assets.Controllers
                     if (unit.Ai.SupportsBehaviour(commandT))
                     {
                         unit.Ai.AddCommand(
-                        new Command(commandT, VectorHelper.ToVector2(MousePosOnGrid), null, false),
+                        new Command(commandT, VectorHelper.ToVector2(MousePosOnGrid), clickedEntity, false),
                         Input.GetKey(KeyCode.LeftShift)
                         );
                     }
                     else
                     {
                         //TODO default to move?
+                        unit.Ai.AddCommand(
+                        new Command(CommandTypes.MOVE, VectorHelper.ToVector2(MousePosOnGrid), clickedEntity, false),
+                        Input.GetKey(KeyCode.LeftShift)
+                        );
                     }
                 }
             }

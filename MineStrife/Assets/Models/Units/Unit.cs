@@ -31,7 +31,7 @@ namespace Assets.Units
 
         public override void Update(float inTimeDelta)
         {
-            Ai.Update();
+            Ai.Update(inTimeDelta);
             
             Vector2 directionOfTravel = new Vector2(0, 0);
 

@@ -19,6 +19,8 @@ namespace Assets.Models.AI
         private List<Vector2> CurrentPath { get; set; }
         private const float ArrivalDistance = 0.1f;
 
+        private float nextFollowRefresh;
+
         public Unit Body { get; set; }
 
         public AI(List<CommandTypes> inSupportedBehaviours)
@@ -27,9 +29,11 @@ namespace Assets.Models.AI
             QuedCommands = new List<Command>();
             CurrentPath = null;
             CurrentCommand = null;
+
+            nextFollowRefresh = 0;
         }
 
-        public void Update()
+        public void Update(float inTimeDelta)
         {
             if (CurrentPath != null && CurrentPath.Any())
             {
@@ -53,7 +57,7 @@ namespace Assets.Models.AI
                         {
                             if (CurrentPath == null)
                             {
-                                UpdateCurrentPath(Body.Position);
+                                UpdateCurrentPath(Body.Position, CurrentCommand.TargetPosition);
                             }
                             else
                             {
@@ -74,6 +78,28 @@ namespace Assets.Models.AI
 
                     case CommandTypes.HOLD:
                         //hold requires no action but never finishes
+                        break;
+
+                    case CommandTypes.BUILD:
+                        //hold requires no action but never finishes
+                        break;
+
+                    case CommandTypes.FOLLOW:
+                        if (CurrentCommand.TargetEntity != null)
+                        {
+                            if (nextFollowRefresh <= 0 || CurrentPath == null)
+                            {
+                                UpdateCurrentPath(Body.Position, CurrentCommand.TargetEntity.Position, false);
+                                nextFollowRefresh = 0.5f;
+                            }
+                            nextFollowRefresh -= inTimeDelta;
+
+                            if (CurrentPath != null && CurrentPath.Count > 0)
+                            {
+                                MoveAllongPath(false);
+                            }
+                        }
+                        //never finishes
                         break;
 
                     default:
@@ -97,7 +123,7 @@ namespace Assets.Models.AI
 
         }
 
-        private void MoveAllongPath()
+        private void MoveAllongPath(bool allowFinish = true)
         {
             //find the next position in the path to the target
             Body.TargetPosition = CurrentPath.First();
@@ -114,26 +140,36 @@ namespace Assets.Models.AI
                 }
                 else
                 {
-                    FinishCurrentCommand();
+                    if (allowFinish)
+                    {
+                        FinishCurrentCommand();
+                    }
                 }
             }
         }
 
-        private void UpdateCurrentPath(Vector2 inCurrentPosition)
+        private void UpdateCurrentPath(Vector2 inCurrentPosition, Vector2? targetPosition, bool allowFinish = true)
         {
             var pathingEngin = new PathFinder_AStar(World.Instance.GetWidth(), World.Instance.GetHeight(), World.Instance.tiles, false);
 
-            if (inCurrentPosition == null || CurrentCommand.TargetPosition.Value == null)
+            if (inCurrentPosition == null || targetPosition.Value == null)
             {
-                FinishCurrentCommand();
+                if (allowFinish)
+                {
+                    FinishCurrentCommand();
+                }
+                
                 return;
             }
 
-            var path = pathingEngin.findPath(inCurrentPosition, CurrentCommand.TargetPosition.Value);
+            var path = pathingEngin.findPath(inCurrentPosition, targetPosition.Value);
             if (path == null)
             {
                 Debug.Log("No path found");
-                FinishCurrentCommand();
+                if (allowFinish)
+                {
+                    FinishCurrentCommand();
+                }
             }
             else
             {
@@ -142,7 +178,18 @@ namespace Assets.Models.AI
 
                 //add the start and end pos back onto the path list
                 centeredPath.Insert(0, inCurrentPosition);
-                centeredPath.Add(CurrentCommand.TargetPosition.Value);
+
+                //TODO fix different movement options
+                // dont add final position to follow commands
+                if (CurrentCommand.CommandType == CommandTypes.FOLLOW && centeredPath.Count >= 1)
+                {
+                    centeredPath.RemoveAt(centeredPath.Count - 1);
+                }
+                else
+                {
+                    centeredPath.Add(targetPosition.Value);
+                }
+                
 
                 // issues with ray tracing making it difficult to smoth the path
                 //var smoothPath = PathSmoother.SmoothPath(centeredPath);
