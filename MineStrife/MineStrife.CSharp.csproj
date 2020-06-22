@@ -75,6 +75,8 @@
     <Compile Include="Assets\Controllers\PrefabControllers\UnitPrefabController.cs" />
     <Compile Include="Assets\Controllers\UnitController.cs" />
     <Compile Include="Assets\Controllers\WorldController.cs" />
+    <Compile Include="Assets\Models\AI\AiStateMachine.cs" />
+    <Compile Include="Assets\Models\AI\AiStates\AiState.cs" />
     <Compile Include="Assets\Models\AI\Command.cs" />
     <Compile Include="Assets\Models\AI\PathFinding\PathFinder_AStar.cs" />
     <Compile Include="Assets\Models\AI\PathFinding\PathingNode.cs" />

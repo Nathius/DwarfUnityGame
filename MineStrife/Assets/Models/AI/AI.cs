@@ -19,9 +19,12 @@ namespace Assets.Models.AI
         private List<Vector2> CurrentPath { get; set; }
         private const float ArrivalDistance = 0.1f;
 
+
+
         private float nextFollowRefresh;
 
         public Unit Body { get; set; }
+        public AiStateMachine StateMachine { get; set; }
 
         public AI(List<CommandTypes> inSupportedBehaviours)
         {
@@ -29,6 +32,8 @@ namespace Assets.Models.AI
             QuedCommands = new List<Command>();
             CurrentPath = null;
             CurrentCommand = null;
+
+            StateMachine = new AiStateMachine();
 
             nextFollowRefresh = 0;
         }
