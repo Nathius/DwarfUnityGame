@@ -68,6 +68,7 @@ namespace Assets.Models.AI
 
                         case CommandTypes.BUILD:
                             //hold requires no action but never finishes
+                            currentRoutine = new BuildRoutine(Body, currentCommand);
                             break;
 
                         case CommandTypes.FOLLOW:

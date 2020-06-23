@@ -89,6 +89,81 @@ namespace Assets.Scripts
             return gridPosition;
         }
 
-        
+        //ASSUMES BUILDINGS ARE ALWAYS SQUARE
+        public static Vector2? GetClosestFreePosition(Vector2 inStartPosition, int minRange = 0, int maxRange = 10)
+        {
+            //var tileCenterofset = 
+            //starting at the buildings position, 
+            int range = minRange;
+            Vector2? freePosition = null;
+            while ((freePosition == null || freePosition.Value == null) && range < maxRange)
+            {
+                //search from bottom left to bottom right
+                for (int x = (int)(inStartPosition.x - range); x < (inStartPosition.x + range) && (freePosition == null); x++)
+                {
+                    var checkPos = new Vector2(x, (int)(inStartPosition.y - range));
+                    freePosition = GetTilePositionIfFree(checkPos);
+                }
+
+                //search from bottom right to top right
+                for (int y = (int)(inStartPosition.y - range); y < (inStartPosition.y + range) && (freePosition == null); y++)
+                {
+                    var checkPos = new Vector2((int)(inStartPosition.x + range), y);
+                    freePosition = GetTilePositionIfFree(checkPos);
+                }
+
+                //search from top right to top left
+                for (int x = (int)(inStartPosition.x + range); x > (inStartPosition.x - range) && (freePosition == null); x--)
+                {
+                    var checkPos = new Vector2(x, (int)(inStartPosition.y + range));
+                    freePosition = GetTilePositionIfFree(checkPos);
+                }
+
+                //search from top left to bottom right
+                for (int y = (int)(inStartPosition.y + range); y > (inStartPosition.y - range) && (freePosition == null); y--)
+                {
+                    var checkPos = new Vector2((int)(inStartPosition.x - range), y);
+                    freePosition = GetTilePositionIfFree(checkPos);
+                }
+
+                range++;
+            }
+
+            return freePosition;
+        }
+
+        public static Vector2? GetTilePositionIfFree(Vector2 inPosition)
+        {
+            var tileCenter = GridHelper.PositionToTileCenter(inPosition);
+
+            if (!TileIsPassable(inPosition))
+            {
+                return null;
+            }
+
+            var allGameObjects = World.all_worldEntity.AsReadOnly().Select(x => x.ViewObject.GetUnityGameObject()).ToList();
+
+            foreach (var obj in allGameObjects)
+            {
+                var box = obj.GetComponent<BoxCollider2D>();
+                if (box != null)
+                {
+                    if (box.OverlapPoint(tileCenter))
+                    {
+                        return null;
+                    }
+                }
+            }
+            return tileCenter;
+        }
+
+        public static bool TileIsPassable(Vector2 inPosition)
+        {
+            if (World.Instance.GetTileAt(inPosition).TileType == TileType.BLOCKED)
+            {
+                return false;
+            }
+            return true;
+        }
 	}
 }

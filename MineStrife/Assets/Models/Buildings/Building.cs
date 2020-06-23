@@ -40,7 +40,7 @@ namespace Assets.Models
             //temporary, buildings build themselves
             if (IsUnderConstruction)
             {
-                constructBuilding(1);
+                //constructBuilding(1);
             }
 
             base.Update(inTimeDelta);

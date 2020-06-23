@@ -30,7 +30,7 @@ namespace Assets.Controllers
 
         public void CreateUnitAt(Vector2 inPos, UnitType inUnitType, int team)
         {
-            var spawnPos = GetClosestFreePosition(inPos);
+            var spawnPos = GridHelper.GetClosestFreePosition(inPos);
 
             if (spawnPos != null)
             {
@@ -48,80 +48,10 @@ namespace Assets.Controllers
             }         
         }
 
-        public Vector2? GetTilePositionIfFree(Vector2 inPosition)
-        {
-            var tileCenter = GridHelper.PositionToTileCenter(inPosition);
+        
 
-            if (!TileIsPassable(inPosition))
-            {
-                return null;
-            }
+        
 
-            var allGameObjects = World.all_worldEntity.AsReadOnly().Select(x => x.ViewObject.GetUnityGameObject()).ToList();
-
-            foreach (var obj in allGameObjects)
-            {
-                var box = obj.GetComponent<BoxCollider2D>();
-                if(box != null)
-                {
-                    if (box.OverlapPoint(tileCenter))
-                    {
-                        return null;
-                    }
-                }
-            }
-            return tileCenter;
-        }
-
-        private bool TileIsPassable(Vector2 inPosition)
-        {
-            if(World.Instance.GetTileAt(inPosition).TileType == TileType.BLOCKED)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public Vector2? GetClosestFreePosition(Vector2 inStartPosition)
-        {
-            //var tileCenterofset = 
-            //starting at the buildings position, 
-            int range = 0;
-            Vector2? freePosition = null;
-            while ((freePosition == null || freePosition.Value == null) && range < 10)
-            {
-                //search from bottom left to bottom right
-                for (int x = (int)(inStartPosition.x - range); x < (inStartPosition.x + range) && (freePosition == null); x++)
-                {
-                    var checkPos = new Vector2(x, (int)(inStartPosition.y - range));
-                    freePosition = GetTilePositionIfFree(checkPos);
-                }
-
-                //search from bottom right to top right
-                for (int y = (int)(inStartPosition.y - range); y < (inStartPosition.y + range) && (freePosition == null); y++)
-                {
-                    var checkPos = new Vector2((int)(inStartPosition.x + range), y);
-                    freePosition = GetTilePositionIfFree(checkPos);
-                }
-
-                //search from top right to top left
-                for (int x = (int)(inStartPosition.x + range); x > (inStartPosition.x - range) && (freePosition == null); x--)
-                {
-                    var checkPos = new Vector2(x, (int)(inStartPosition.y + range));
-                    freePosition = GetTilePositionIfFree(checkPos);
-                }
-
-                //search from top left to bottom right
-                for (int y = (int)(inStartPosition.y + range); y > (inStartPosition.y - range) && (freePosition == null); y--)
-                {
-                    var checkPos = new Vector2((int)(inStartPosition.x - range), y);
-                    freePosition = GetTilePositionIfFree(checkPos);
-                }
-
-                range++;
-            }
-
-            return freePosition;
-        }
+        
 	}
 }

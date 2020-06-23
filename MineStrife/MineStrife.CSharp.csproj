@@ -81,9 +81,12 @@
     <Compile Include="Assets\Models\AI\PathFinding\PathFinder_AStar.cs" />
     <Compile Include="Assets\Models\AI\PathFinding\PathingNode.cs" />
     <Compile Include="Assets\Models\AI\PathFinding\PathSmoother.cs" />
+    <Compile Include="Assets\Models\AI\Routines\BuildRoutine.cs" />
     <Compile Include="Assets\Models\AI\Routines\MoveRoutine.cs" />
     <Compile Include="Assets\Models\AI\Routines\Routine.cs" />
     <Compile Include="Assets\Models\AI\Routines\StopRoutine.cs" />
+    <Compile Include="Assets\Models\AI\Routines\SubRoutine\ConstructBuildingSubRoutine.cs" />
+    <Compile Include="Assets\Models\AI\Routines\SubRoutine\MoveToBuildingSubRoutine.cs" />
     <Compile Include="Assets\Models\AI\Routines\SubRoutine\MoveToPointSubRoutine.cs" />
     <Compile Include="Assets\Models\Buildings\Building.cs" />
     <Compile Include="Assets\Models\Buildings\BuildingDefinition.cs" />

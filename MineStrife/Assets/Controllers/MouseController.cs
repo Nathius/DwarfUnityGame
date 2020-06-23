@@ -252,6 +252,7 @@ namespace Assets.Controllers
                     var unit = (Unit)WorldController.Instance.CurrentSelection[i];
                     if (unit.Ai.SupportsBehaviour(commandT))
                     {
+                        Debug.Log("Supports behaviour " + commandT.ToString());
                         unit.Ai.AddCommand(
                         new Command(commandT, VectorHelper.ToVector2(MousePosOnGrid), clickedEntity, false),
                         Input.GetKey(KeyCode.LeftShift)
