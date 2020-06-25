@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using Assets.Units;
 using Assets.Models.AI.Routines.SubRoutine;
+using UnityEngine;
+using Assets.Models.Buildings;
 
 namespace Assets.Models.AI.Routines
 {
 	public class BuildRoutine : Routine
 	{
-        private Building TargetBuilding { get; set; }
+        private ProductionBuilding TargetBuilding { get; set; }
 
         private MoveToBuildingSubRoutine moveToBuilding { get; set; }
         private ConstructBuildingSubRoutine constructBuilding { get; set; }
@@ -24,15 +26,16 @@ namespace Assets.Models.AI.Routines
                 return;
             }
 
-            if (inCommand.TargetEntity.GetType() != typeof(Building))
+
+            if (inCommand.TargetEntity.GetType() != typeof(ProductionBuilding))
             {
                 IsFinished = true;
                 return;
             }
 
-            TargetBuilding = (Building)inCommand.TargetEntity;
+            TargetBuilding = (ProductionBuilding)inCommand.TargetEntity;
 
-            moveToBuilding = new MoveToBuildingSubRoutine(inBody, TargetBuilding.Position, TargetBuilding.Size);
+            moveToBuilding = new MoveToBuildingSubRoutine(inBody, TargetBuilding);
             constructBuilding = new ConstructBuildingSubRoutine(inBody, TargetBuilding);
 
             //movetoPoint = new MoveToPointSubRoutine(inBody, inCommand.TargetPosition.Value);
@@ -58,7 +61,6 @@ namespace Assets.Models.AI.Routines
                 //TODO check we are still close enough to the building
                 //var dist = TargetBuilding.Position - Body.Position;
 
-
                 //then build the building
                 if (constructBuilding.GetIsFinished() == false)
                 {
@@ -69,21 +71,7 @@ namespace Assets.Models.AI.Routines
                     IsFinished = true;
                     return;
                 }
-            }
-
-            //check if subroutine is finished , and if so finish routine
-            if (moveToBuilding.GetIsFinished() == true)
-            {
-                IsFinished = true;
-                return;
-            }
-            else
-            {
-                //else allow sub routine to run
-                
-            }
-
-            
+            }            
         }
 	}
 }

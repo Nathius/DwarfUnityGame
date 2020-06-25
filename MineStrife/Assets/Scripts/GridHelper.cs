@@ -132,6 +132,90 @@ namespace Assets.Scripts
             return freePosition;
         }
 
+        public static Vector2? GetClosestBuildPosition(Vector2 inBuilderPosition, Building inBuilding)
+        {
+            var inStartPosition = inBuilding.Position;
+            List<Vector2> freePositions = new List<Vector2>();
+
+            //search from bottom left to bottom right
+            for (int x = (int)(inStartPosition.x - 1); x < (inStartPosition.x + inBuilding.Size.x); x++)
+            {
+                var checkPos = new Vector2(x, (int)(inStartPosition.y - 1));
+                var freePos = GetTilePositionIfFree(checkPos);
+                if(freePos.HasValue)
+                {
+                    freePositions.Add(freePos.Value);
+                }
+            }
+
+            //search from bottom right to top right
+            for (int y = (int)(inStartPosition.y - 1); y < (inStartPosition.y + inBuilding.Size.y); y++)
+            {
+                var checkPos = new Vector2((int)(inStartPosition.x + inBuilding.Size.x), y);
+                var freePos = GetTilePositionIfFree(checkPos);
+                if (freePos.HasValue)
+                {
+                    freePositions.Add(freePos.Value);
+                }
+            }
+
+            //search from top right to top left
+            for (int x = (int)(inStartPosition.x + inBuilding.Size.x); x > (inStartPosition.x - 1); x--)
+            {
+                var checkPos = new Vector2(x, (int)(inStartPosition.y + inBuilding.Size.y));
+                var freePos = GetTilePositionIfFree(checkPos);
+                if (freePos.HasValue)
+                {
+                    freePositions.Add(freePos.Value);
+                }
+            }
+
+            //search from top left to bottom right
+            for (int y = (int)(inStartPosition.y + inBuilding.Size.y); y > (inStartPosition.y - 1); y--)
+            {
+                var checkPos = new Vector2((int)(inStartPosition.x - 1), y);
+                var freePos = GetTilePositionIfFree(checkPos);
+                if (freePos.HasValue)
+                {
+                    freePositions.Add(freePos.Value);
+                }
+            }
+
+            if(freePositions.Count <= 0)
+            {
+                return null;
+            }
+
+            //find closest free position
+            Vector2? closestPosition = null;
+            float closestDist = 0;
+            foreach(var pos in freePositions)
+            {
+                //Debug.Log("Found free position (" + pos.x + "," + pos.y + ")");
+
+                //if none set use the first position
+                if (closestPosition == null)
+                {
+                    closestPosition = pos;
+                    closestDist = (inBuilderPosition - pos).magnitude;
+                }
+                else
+                {
+                    //otherwise only overite with closer position
+                    var thisDist = (inBuilderPosition - pos).magnitude;
+                    //Debug.Log("Comparing current (" + thisDist + ") with old (" + closestDist + ")");
+                    if (thisDist < closestDist)
+                    {
+                        closestDist = thisDist;
+                        closestPosition = pos;
+                    }
+                }
+
+            }
+
+            return closestPosition;
+        }
+
         public static Vector2? GetTilePositionIfFree(Vector2 inPosition)
         {
             var tileCenter = GridHelper.PositionToTileCenter(inPosition);

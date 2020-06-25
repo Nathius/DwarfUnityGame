@@ -20,7 +20,7 @@ namespace Assets.Models.AI.Routines.SubRoutine
 
         private bool isFinished;
 
-        public MoveToBuildingSubRoutine(Unit inBody, Vector2 inBuildingPosition, Vector2 inBuildingSize)
+        public MoveToBuildingSubRoutine(Unit inBody, Building inBuilding)
         {
             CurrentPath = null;
             Body = inBody;
@@ -28,7 +28,7 @@ namespace Assets.Models.AI.Routines.SubRoutine
 
             //figure out closest free poisition next to building
             //TODO for now just any free pos next to building
-            var foundBuildSpot = GridHelper.GetClosestFreePosition(inBuildingPosition, (int)inBuildingSize.x, (int)inBuildingSize.x + 1);
+            var foundBuildSpot = GridHelper.GetClosestBuildPosition(inBody.Position, inBuilding);
             if (foundBuildSpot.HasValue)
             {
                 TargetPoint = foundBuildSpot.Value;
@@ -37,10 +37,11 @@ namespace Assets.Models.AI.Routines.SubRoutine
             {
                 //can not find a spot to build from
                 isFinished = true;
-
-                //on init run pathfinding to set path
-                UpdateCurrentPath(Body.Position, TargetPoint);
+                return;
             }
+
+            //on init run pathfinding to set path
+            UpdateCurrentPath(Body.Position, TargetPoint);
         }
 
         public bool GetIsFinished()
@@ -71,7 +72,7 @@ namespace Assets.Models.AI.Routines.SubRoutine
             }
         }
 
-        private void MoveAllongPath(bool allowFinish = true)
+        private void MoveAllongPath()
         {
             //find the next position in the path to the target
             Body.TargetPosition = CurrentPath.First();

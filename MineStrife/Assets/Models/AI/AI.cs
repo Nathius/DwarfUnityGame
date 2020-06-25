@@ -99,6 +99,7 @@ namespace Assets.Models.AI
                 else
                 {
                     CommandManager.SetCurrentCommand(inCommand);
+                    currentRoutine = null;
                 }
             }
         }

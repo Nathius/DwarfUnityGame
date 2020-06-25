@@ -51,6 +51,8 @@ namespace Assets.Models
         // returns true when progress accepted ; and false when finished
         public bool constructBuilding(int progress)
         {
+            Debug.Log("building constructBuilding");
+
             if (!IsUnderConstruction)
             {
                 return false; //is already finished

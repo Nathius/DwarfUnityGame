@@ -161,39 +161,39 @@ namespace Assets.Controllers
             CommandTypes commandT = CommandTypes.MOVE;
             WorldEntity clickedEntity = null;
 
-            Debug.Log("checking for entity at position (" + MousePosInWorld.x + "," + MousePosInWorld.y + ")");
+            //Debug.Log("checking for entity at position (" + MousePosInWorld.x + "," + MousePosInWorld.y + ")");
 
             var entityAtPosition = World.Instance.EntityAtPosition(MousePosInWorld);
             
             if (entityAtPosition != null)
             {
-                Debug.Log("entity at position");
+               // Debug.Log("entity at position");
             }
 
             //check if entity is a unit
             if (entityAtPosition != null && 
                 entityAtPosition.GetType() == typeof(Unit))
             {
-                Debug.Log("clicker unit");
+                //Debug.Log("clicker unit");
                 Unit entityAsUnit = (Unit)entityAtPosition;
                 clickedEntity = entityAsUnit;
 
                 if (entityAsUnit.getTeam() == WorldController.PlayerTeam)
                 {
-                    Debug.Log("player unit");
+                    //Debug.Log("player unit");
                     //unit on same team
                     commandT = CommandTypes.FOLLOW;
                 }
                 else if (entityAsUnit.getTeam() == WorldController.nutralTeam)
                 {
-                    Debug.Log("neutral unit");
+                    //Debug.Log("neutral unit");
                     //just move up to neutral units
                     //TODO force attack functionality?
                     commandT = CommandTypes.MOVE;
                 }
                 else
                 {
-                    Debug.Log("enemy unit");
+                    //Debug.Log("enemy unit");
                     //assume enemy unit = attack
                     commandT = CommandTypes.ATTACK;
                 }
@@ -204,39 +204,39 @@ namespace Assets.Controllers
             if (entityAtPosition != null &&
                 entityAtPosition.GetType() == typeof(ProductionBuilding))
             {
-                Debug.Log("clicked building");
+                //Debug.Log("clicked building");
                 entityAsBuilding = (ProductionBuilding)entityAtPosition;
                 clickedEntity = entityAsBuilding;
 
                 if (entityAsBuilding.getTeam() == WorldController.PlayerTeam)
                 {
-                    Debug.Log("Player building");
+                    //Debug.Log("Player building");
                     //unit on same team
                     if(entityAsBuilding.IsUnderConstruction)
                     {
                         //TODO 
-                        Debug.Log("under construction building");
+                        //Debug.Log("under construction building");
                         commandT = CommandTypes.BUILD;
                     }
                     else
                     {
                         //TODO logic to figure out if unit should work there, or move there, or build etc
                         //based on if the building needs workers and if the unit can work there
-                        Debug.Log("other typoe of building");
+                        //Debug.Log("other typoe of building");
                         commandT = CommandTypes.MOVE;
                     }
                     
                 }
                 else if (entityAsBuilding.getTeam() == WorldController.nutralTeam)
                 {
-                    Debug.Log("neutral building");
+                    //Debug.Log("neutral building");
                     //just move up to neutral units
                     //TODO force attack functionality?
                     commandT = CommandTypes.MOVE;
                 }
                 else
                 {
-                    Debug.Log("enemy building");
+                    //Debug.Log("enemy building");
                     //assume enemy unit = attack
                     commandT = CommandTypes.ATTACK;
                 }
@@ -252,7 +252,7 @@ namespace Assets.Controllers
                     var unit = (Unit)WorldController.Instance.CurrentSelection[i];
                     if (unit.Ai.SupportsBehaviour(commandT))
                     {
-                        Debug.Log("Supports behaviour " + commandT.ToString());
+                        //Debug.Log("Supports behaviour " + commandT.ToString());
                         unit.Ai.AddCommand(
                         new Command(commandT, VectorHelper.ToVector2(MousePosOnGrid), clickedEntity, false),
                         Input.GetKey(KeyCode.LeftShift)

@@ -6,17 +6,18 @@ using UnityEngine;
 using Assets.Units;
 using Assets.Models.AI.PathFinding;
 using Assets.Scripts;
+using Assets.Models.Buildings;
 
 namespace Assets.Models.AI.Routines.SubRoutine
 {
 	public class ConstructBuildingSubRoutine
 	{
         private Unit Body { get; set; }
-        private Building TargetBuilding { get; set; }
+        private ProductionBuilding TargetBuilding { get; set; }
 
         private bool isFinished;
 
-        public ConstructBuildingSubRoutine(Unit inBody, Building inBuilding)
+        public ConstructBuildingSubRoutine(Unit inBody, ProductionBuilding inBuilding)
         {
             TargetBuilding = inBuilding;
             Body = inBody;
