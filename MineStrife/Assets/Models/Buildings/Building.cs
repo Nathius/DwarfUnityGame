@@ -6,6 +6,7 @@ using UnityEngine;
 using Assets.Scripts;
 using Assets.Controllers.PrefabControllers;
 using Assets.Controllers;
+using System.Collections.Generic;
 
 namespace Assets.Models
 {
@@ -20,6 +21,8 @@ namespace Assets.Models
         public bool IsUnderConstruction { get; set; }
         public int ConstructionProgress { get; set; }
 
+        private List<Vector2> adjacentPositions { get; set; }
+
         public Building(UnityObjectWrapper viewObject,
             Vector2 inPosition,
             int inTeam,
@@ -32,6 +35,41 @@ namespace Assets.Models
             //viewObject.SetBoundSize(Size);
             ViewObject.AddOrUpdateGridBaseCollider(inPosition, Size);
             GridHelper.AddBuildingToCollisionMap(inPosition, Size);
+            
+            adjacentPositions = new List<Vector2>();
+            calcAdjacentPositions();
+        }
+
+        public void calcAdjacentPositions()
+        {
+            //search from bottom left to bottom right
+            for (int x = (int)(Position.x - 1); x < (Position.x + Size.x); x++)
+            {
+                adjacentPositions.Add( new Vector2(x, (int)(Position.y - 1)));
+            }
+
+            //search from bottom right to top right
+            for (int y = (int)(Position.y - 1); y < (Position.y + Size.y); y++)
+            {
+                adjacentPositions.Add( new Vector2((int)(Position.x + Size.x), y));
+            }
+
+            //search from top right to top left
+            for (int x = (int)(Position.x + Size.x); x > (Position.x - 1); x--)
+            {
+                adjacentPositions.Add( new Vector2(x, (int)(Position.y + Size.y)));
+            }
+
+            //search from top left to bottom right
+            for (int y = (int)(Position.y + Size.y); y > (Position.y - 1); y--)
+            {
+                adjacentPositions.Add( new Vector2((int)(Position.x - 1), y));
+            }
+        }
+
+        public List<Vector2> GetAdjacentPositions()
+        {
+            return adjacentPositions;
         }
 
         //update if under construction

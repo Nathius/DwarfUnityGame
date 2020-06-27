@@ -96,28 +96,30 @@ namespace Assets.Controllers
             else if (Input.GetMouseButtonUp(0))
             {
                 ClearBandBox();
-                var selection = GetSelection(startSelectionBox, MousePosInWorld);
-                if (selection.Count > 0)
+
+                //check for interface clicks first
+                BuildingDefinition outBld;
+                if (IconPanelController.Instance.CheckForClick(MousePosInWorld, out outBld))
                 {
-                    Select(selection);
+                    selecting = false;
+                    placing = true;
+                    buildingSelected = outBld;
+                    DisplayController.Instance.BuildingCostText.text = buildingSelected.BuildingType.ToString() + " " + buildingSelected.BuildingCost.ToString();
                 }
                 else
                 {
-                    //check if the mouse was released over a unit or icon
-                    BuildingDefinition outBld;
-                    if (IconPanelController.Instance.CheckForClick(MousePosInWorld, out outBld))
+                    //check if a unit of building was clicked
+                    var clickedEntity = WorldController.Instance.World.EntityAtPosition(MousePosInWorld);
+                    if (clickedEntity != null)
                     {
-                        placing = true;
-                        buildingSelected = outBld;
-                        DisplayController.Instance.BuildingCostText.text = buildingSelected.BuildingType.ToString() + " " + buildingSelected.BuildingCost.ToString();
+                        Select(clickedEntity);
                     }
                     else
                     {
-                        //check if a unit of building was clicked
-                        var clickedEntity = WorldController.Instance.World.EntityAtPosition(MousePosInWorld);
-                        if (clickedEntity != null)
+                        var selection = GetSelection(startSelectionBox, MousePosInWorld);
+                        if (selection.Count > 0)
                         {
-                            Select(clickedEntity);
+                            Select(selection);
                         }
                         else
                         {

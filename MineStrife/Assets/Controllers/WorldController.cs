@@ -22,8 +22,8 @@ namespace Assets.Controllers
         public Sprite BlockedSprite;
         public GameObject TreeSpritePrefab;
 
-        private const int WorldSize = 40;
-        private const int TreeNumber = 15;
+        private const int WorldSize = 30;
+        private const int TreeNumber = 10;
 
         public const int PlayerTeam = 1;
         public const int nutralTeam = 0;

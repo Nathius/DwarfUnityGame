@@ -74,7 +74,7 @@ namespace Assets.Models
             //need to find a better way of initial start up when nothing is ready predictably
             if(!haveSpawnedStartingUnits)
             {
-                SpawnStartingUnits(7);
+                SpawnStartingUnits(1);
                 haveSpawnedStartingUnits = true;         
             }
         }
