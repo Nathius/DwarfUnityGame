@@ -97,7 +97,7 @@ namespace Assets.Scripts
             //starting at the buildings position, 
             int range = minRange;
             Vector2? freePosition = null;
-            while ((freePosition == null || freePosition.Value == null) && range < maxRange)
+            while ((freePosition == null || freePosition.HasValue == false) && range < maxRange)
             {
                 //search from bottom left to bottom right
                 for (int x = (int)(inStartPosition.x - range); x < (inStartPosition.x + range) && (freePosition == null); x++)

@@ -22,12 +22,6 @@ namespace Assets.Controllers
         public Sprite BlockedSprite;
         public GameObject TreeSpritePrefab;
 
-        private const int WorldSize = 30;
-        private const int TreeNumber = 10;
-
-        public const int PlayerTeam = 1;
-        public const int nutralTeam = 0;
-
         public List<WorldEntity> CurrentSelection;
 
         // Use this for initialization
@@ -38,7 +32,7 @@ namespace Assets.Controllers
                 Debug.LogError(this.GetType().ToString() + " already instanced");
             }
             Instance = this;
-            World = new World(WorldSize, WorldSize);
+            World = new World(ConfigFlags.WorldSize, ConfigFlags.WorldSize);
             CurrentSelection = new List<WorldEntity>();
 
             InitControllers();
@@ -105,7 +99,7 @@ namespace Assets.Controllers
 
         public void GenerateTrees()
         {
-            for (int i = 0; i < TreeNumber; i++)
+            for (int i = 0; i < ConfigFlags.TreeCount; i++)
             {
                 var newTree = Instantiate(TreeSpritePrefab);
                 newTree.transform.SetParent(this.transform, true);
@@ -115,9 +109,9 @@ namespace Assets.Controllers
 
                 var gridPosition = GridHelper.SnapBuildingToGridPosition(new Vector2(randomX, randomY));
 
-                var node = new ResourceNode(new UnityObjectWrapper(newTree),
+                new ResourceNode(new UnityObjectWrapper(newTree),
                     VectorHelper.ToVector3(gridPosition),
-                    WorldController.nutralTeam,
+                    ConfigFlags.NutralTeam,
                     RESOURCE_TYPE.WOOD, 200);
             }
         }

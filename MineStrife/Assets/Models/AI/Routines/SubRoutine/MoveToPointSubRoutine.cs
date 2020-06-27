@@ -63,8 +63,7 @@ namespace Assets.Models.AI.Routines.SubRoutine
         {
             //find the next position in the path to the target
             Body.TargetPosition = CurrentPath.First();
-            Vector2 directionOfTravel = CurrentPath.First() - Body.Position;
-            var distance = directionOfTravel.magnitude;
+            var distance = VectorHelper.getDistanceBetween(CurrentPath.First(), Body.Position);
 
             //if we have arrived at our next waypoint
             if (distance <= ArrivalDistance)
@@ -92,13 +91,6 @@ namespace Assets.Models.AI.Routines.SubRoutine
         {
             //init pathing engin
             var pathingEngin = new PathFinder_AStar(World.Instance.GetWidth(), World.Instance.GetHeight(), World.Instance.tiles, false);
-
-            //return if body position or target position are null
-            if (inCurrentPosition == null || targetPoint == null)
-            {
-                isFinished = true;
-                return;
-            }
 
             var path = pathingEngin.findPath(inCurrentPosition, targetPoint);
             if (path == null)

@@ -18,6 +18,7 @@ namespace Assets.Units
         public AI Ai { get; set; }
 
         public int Health { get; set; }
+        public bool isDead { get; set; }
         public float MoveSpeed { get; set; }
 
         public Unit(UnityObjectWrapper viewObject, Vector2 inPosition, int inTeam, UnitType inUnitType, AI inAi)
@@ -27,6 +28,7 @@ namespace Assets.Units
             MoveSpeed = 2.2f;
             Ai = inAi;
             Ai.Body = this;
+            isDead = false;
         }
 
         public override void Update(float inTimeDelta)
@@ -101,8 +103,11 @@ namespace Assets.Units
                 //find vector to next particle from current
                 Vector2 toNextParticle = Position - entity.Position;
                 var distanceToEntityEdge = toNextParticle.magnitude - (entity.ViewObject.GetSpriteSize().Value.x);
+                
+                //TODO figure out what this was for and if it's still to be used
                 //find the relative distance to move away from the particle
                 Vector2 relativeAvoid = (personalSpace - distanceToEntityEdge) * (toNextParticle);
+                
                 //add this new avoid to the result vector
                 avoidanceDirection += toNextParticle;
             }

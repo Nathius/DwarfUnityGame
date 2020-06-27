@@ -61,7 +61,7 @@ namespace Assets.Controllers
 
                     //create a new building data object
                     Vector2 buildingPosition = new Vector2(inPos.x, inPos.y);
-                    var newBuilding = new ProductionBuilding(new UnityObjectWrapper(building_go), buildingPosition, WorldController.PlayerTeam, inBuildingType.BuildingType, inBuildingType.Conversion);
+                    var newBuilding = new ProductionBuilding(new UnityObjectWrapper(building_go), buildingPosition, ConfigFlags.PlayerTeam, inBuildingType.BuildingType, inBuildingType.Conversion);
 
 
                     //withdraw the required resources

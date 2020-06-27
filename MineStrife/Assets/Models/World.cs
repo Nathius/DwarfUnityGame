@@ -51,7 +51,7 @@ namespace Assets.Models
             {
                 World.Instance.CurrentPop++;
                 var pos = new Vector2(centerPos.x + UnityEngine.Random.Range(-4, 4), centerPos.y + UnityEngine.Random.Range(-4, 4));
-                UnitController.Instance.CreateUnitAt(pos, UnitType.WORKER, WorldController.PlayerTeam);
+                UnitController.Instance.CreateUnitAt(pos, UnitType.WORKER, ConfigFlags.PlayerTeam);
             }
         }
 
@@ -74,7 +74,7 @@ namespace Assets.Models
             //need to find a better way of initial start up when nothing is ready predictably
             if(!haveSpawnedStartingUnits)
             {
-                SpawnStartingUnits(1);
+                SpawnStartingUnits(ConfigFlags.StartingDwarves);
                 haveSpawnedStartingUnits = true;         
             }
         }

@@ -73,6 +73,7 @@ namespace Assets.Models.AI
 
                         case CommandTypes.FOLLOW:
                             //move to proximity of unit, never finishes
+                            currentRoutine = new FollowRoutine(Body, currentCommand);
                             break;
 
                         default:

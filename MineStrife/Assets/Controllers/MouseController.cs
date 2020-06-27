@@ -180,13 +180,13 @@ namespace Assets.Controllers
                 Unit entityAsUnit = (Unit)entityAtPosition;
                 clickedEntity = entityAsUnit;
 
-                if (entityAsUnit.getTeam() == WorldController.PlayerTeam)
+                if (entityAsUnit.getTeam() == ConfigFlags.PlayerTeam)
                 {
                     //Debug.Log("player unit");
                     //unit on same team
                     commandT = CommandTypes.FOLLOW;
                 }
-                else if (entityAsUnit.getTeam() == WorldController.nutralTeam)
+                else if (entityAsUnit.getTeam() == ConfigFlags.NutralTeam)
                 {
                     //Debug.Log("neutral unit");
                     //just move up to neutral units
@@ -210,7 +210,7 @@ namespace Assets.Controllers
                 entityAsBuilding = (ProductionBuilding)entityAtPosition;
                 clickedEntity = entityAsBuilding;
 
-                if (entityAsBuilding.getTeam() == WorldController.PlayerTeam)
+                if (entityAsBuilding.getTeam() == ConfigFlags.PlayerTeam)
                 {
                     //Debug.Log("Player building");
                     //unit on same team
@@ -229,7 +229,7 @@ namespace Assets.Controllers
                     }
                     
                 }
-                else if (entityAsBuilding.getTeam() == WorldController.nutralTeam)
+                else if (entityAsBuilding.getTeam() == ConfigFlags.NutralTeam)
                 {
                     //Debug.Log("neutral building");
                     //just move up to neutral units
