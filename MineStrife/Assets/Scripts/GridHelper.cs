@@ -142,27 +142,27 @@ namespace Assets.Scripts
             float closestDist = 0;
             foreach(var nextPos in freePositions)
             {
-                var pos = GetTilePositionIfFree(nextPos);
-                if (pos.HasValue == false)
+                if (TileIsPassable(nextPos) == false)
                 {
                     continue;
                 }
+                var tileCenter = PositionToTileCenter(nextPos);
 
                 //if none set use the first position
                 if (closestPosition == null)
                 {
-                    closestPosition = pos.Value;
-                    closestDist = (inBuilderPosition - pos.Value).magnitude;
+                    closestPosition = tileCenter;
+                    closestDist = (inBuilderPosition - tileCenter).magnitude;
                 }
                 else
                 {
                     //otherwise only overite with closer position
-                    var thisDist = (inBuilderPosition - pos.Value).magnitude;
+                    var thisDist = (inBuilderPosition - tileCenter).magnitude;
                     //Debug.Log("Comparing current (" + thisDist + ") with old (" + closestDist + ")");
                     if (thisDist < closestDist)
                     {
                         closestDist = thisDist;
-                        closestPosition = pos.Value;
+                        closestPosition = tileCenter;
                     }
                 }
 
