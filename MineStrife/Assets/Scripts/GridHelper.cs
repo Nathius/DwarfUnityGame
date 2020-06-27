@@ -6,6 +6,7 @@ using UnityEngine;
 using Assets.Models;
 using Assets.Models.Econemy;
 using Assets.Models.Econemy.ResourceNodes;
+using Assets.Units;
 
 namespace Assets.Scripts
 {
@@ -216,14 +217,17 @@ namespace Assets.Scripts
             return closestPosition;
         }
 
-        public static Vector2? GetTilePositionIfFree(Vector2 inPosition)
+        public static Vector2? GetTilePositionIfFree(Vector2 inGridPosition)
         {
-            var tileCenter = GridHelper.PositionToTileCenter(inPosition);
+            var tileCenter = GridHelper.PositionToTileCenter(inGridPosition);
 
-            if (!TileIsPassable(inPosition))
+            if (!TileIsPassable(inGridPosition))
             {
                 return null;
             }
+
+            //convert grid po to iso pos for bounding box collision detection
+            var isoPosition = GridToIsometric(tileCenter);
 
             var allGameObjects = World.all_worldEntity.AsReadOnly().Select(x => x.ViewObject.GetUnityGameObject()).ToList();
 
@@ -232,7 +236,7 @@ namespace Assets.Scripts
                 var box = obj.GetComponent<BoxCollider2D>();
                 if (box != null)
                 {
-                    if (box.OverlapPoint(tileCenter))
+                    if (box.OverlapPoint(isoPosition))
                     {
                         return null;
                     }
