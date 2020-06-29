@@ -16,6 +16,7 @@ namespace Assets.Controllers.PrefabControllers
             var paths = new Dictionary<UnitType, string>();
             string basePath = "Units/";
             paths.Add(UnitType.WORKER, basePath + "Unit_Worker");
+            paths.Add(UnitType.ARCHER, basePath + "Unit_Archer");
 
             return paths;
         }

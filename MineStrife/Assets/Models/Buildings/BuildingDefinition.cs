@@ -107,10 +107,10 @@ namespace Assets.Models.Buildings
         public static BuildingDefinition Barracks = new BuildingDefinition
         {
             BuildingType = BuildingType.BARRACKS,
-            Conversion = new Conversion("Train Worker", 1,
+            Conversion = new Conversion("Train Archer", 1,
                 new ConversionResult(
                     null,
-                    UnitType.WORKER),
+                    UnitType.ARCHER),
                 new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.BREAD, 10))
                 ),
             BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 20),

@@ -9,7 +9,9 @@ namespace Assets.Models.Buildings
 {
     public enum UnitType
     {
+        NONE,
         WORKER,
+        ARCHER,
         _COUNT
     }
 
@@ -41,6 +43,14 @@ namespace Assets.Models.Buildings
             UnitType = UnitType.WORKER,
             Cost = new ResourceAmmount(RESOURCE_TYPE.BREAD, 20),
             Behaviours = new List<CommandTypes>() { CommandTypes.MOVE, CommandTypes.BUILD, CommandTypes.FOLLOW, CommandTypes.PATROLE, CommandTypes.STOP }
+        };
+
+        //Archer
+        public static UnitDefinition Archer = new UnitDefinition
+        {
+            UnitType = UnitType.ARCHER,
+            Cost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 20),
+            Behaviours = new List<CommandTypes>() { CommandTypes.MOVE, CommandTypes.FOLLOW, CommandTypes.PATROLE, CommandTypes.STOP }
         };
     }
 }
