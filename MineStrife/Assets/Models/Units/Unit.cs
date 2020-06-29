@@ -81,8 +81,10 @@ namespace Assets.Units
         private Vector2 GetPersonalSpaceForce()
         {
             //assume the sprite is square for all units
-            var spriteSize = ViewObject.GetSpriteSize();
-            var radius = spriteSize != null ? (spriteSize.Value.x) : 1;
+            //var spriteSize = ViewObject.GetSpriteSize();
+            var spriteSize = ViewObject.GetUnityGameObject().GetComponent<BoxCollider2D>().size;
+
+            var radius = spriteSize != null ? (spriteSize.x) : 1;
             //add 10% for spacing
             var personalSpace = radius;
 
