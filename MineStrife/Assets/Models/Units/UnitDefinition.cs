@@ -18,7 +18,7 @@ namespace Assets.Models.Buildings
     public class UnitDefinition
     {
         public int MaxHealth{ get; set; }
-        public ResourceAmmount Cost { get; set; }
+        public List<ResourceAmmount> Cost { get; set; }
         public UnitType UnitType { get; set; }
         public List<CommandTypes> Behaviours { get; set; }
 
@@ -41,7 +41,9 @@ namespace Assets.Models.Buildings
         public static UnitDefinition Worker = new UnitDefinition
         {
             UnitType = UnitType.WORKER,
-            Cost = new ResourceAmmount(RESOURCE_TYPE.BREAD, 20),
+            Cost = new List<ResourceAmmount>() {
+                new ResourceAmmount(RESOURCE_TYPE.BREAD, 20)
+            },
             Behaviours = new List<CommandTypes>() { CommandTypes.MOVE, CommandTypes.BUILD, CommandTypes.FOLLOW, CommandTypes.PATROLE, CommandTypes.STOP }
         };
 
@@ -49,7 +51,10 @@ namespace Assets.Models.Buildings
         public static UnitDefinition Archer = new UnitDefinition
         {
             UnitType = UnitType.ARCHER,
-            Cost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 20),
+            Cost = new List<ResourceAmmount>() { 
+                new ResourceAmmount(RESOURCE_TYPE.BREAD, 20),
+                new ResourceAmmount(RESOURCE_TYPE.WOOD, 20)
+            },
             Behaviours = new List<CommandTypes>() { CommandTypes.MOVE, CommandTypes.FOLLOW, CommandTypes.PATROLE, CommandTypes.STOP }
         };
     }

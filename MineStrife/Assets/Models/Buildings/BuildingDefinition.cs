@@ -111,7 +111,8 @@ namespace Assets.Models.Buildings
                 new ConversionResult(
                     null,
                     UnitType.ARCHER),
-                new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.BREAD, 10))
+                //new ConversionRequirement(new ResourceAmmount(RESOURCE_TYPE.BREAD, 10))
+                UnitDefinition.Archer.Cost.Select(x => new ConversionRequirement(x)).ToList<ConversionRequirement>()
                 ),
             BuildingCost = new ResourceAmmount(RESOURCE_TYPE.WOOD, 20),
             Size = new Vector2(3, 3)
