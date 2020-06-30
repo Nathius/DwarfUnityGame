@@ -25,6 +25,7 @@ namespace Assets.Units
         public Unit(UnityObjectWrapper viewObject, Vector2 inPosition, int inTeam, UnitType inUnitType, AI inAi, Weapon inWeapon)
             : base(viewObject, inPosition, inTeam)
         {
+            MaxHealth = 10;
             Health = 10;//TODO set in unit definition
 
             UnitType = inUnitType;
@@ -167,8 +168,11 @@ namespace Assets.Units
 
         public override string ToString()
         {
-            var display = "Unit entity " + "\n" +
+            var display = "Unit entity : " + UnitType + "\n" +
+                " health " + Health + "/" + MaxHealth + " " + ProgressBarHelper.GetBar(Health, MaxHealth) + " \n" +
+                " Team " + Team + " \n" +
                 " Position: " + VectorHelper.ToString(Position) + "\n";
+
             if(TargetPosition != null)
             {
                 display += " Target: " + VectorHelper.ToString(TargetPosition.Value) + "\n";

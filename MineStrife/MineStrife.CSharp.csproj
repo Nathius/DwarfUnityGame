@@ -89,6 +89,7 @@
     <Compile Include="Assets\Models\AI\Routines\Routine.cs" />
     <Compile Include="Assets\Models\AI\Routines\StopRoutine.cs" />
     <Compile Include="Assets\Models\AI\Routines\SubRoutine\ConstructBuildingSubRoutine.cs" />
+    <Compile Include="Assets\Models\AI\Routines\SubRoutine\AttackSubRoutine.cs" />
     <Compile Include="Assets\Models\AI\Routines\SubRoutine\FollowUnitSubRoutine.cs" />
     <Compile Include="Assets\Models\AI\Routines\SubRoutine\MoveToBuildingSubRoutine.cs" />
     <Compile Include="Assets\Models\AI\Routines\SubRoutine\MoveToPointSubRoutine.cs" />

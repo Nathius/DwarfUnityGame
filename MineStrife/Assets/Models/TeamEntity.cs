@@ -10,6 +10,7 @@ namespace Assets.Models
 	public class TeamEntity : WorldEntity
 	{
         protected int Team {get; set; }
+        protected int MaxHealth { get; set; }
         protected int Health {get; set; }
         protected bool IsDead { get; set; }
 

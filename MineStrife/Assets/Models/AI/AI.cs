@@ -77,7 +77,7 @@ namespace Assets.Models.AI
                             break;
 
                         case CommandTypes.ATTACK:
-                            //currentRoutine = new FollowRoutine(Body, currentCommand);
+                            currentRoutine = new AttackRoutine(Body, currentCommand);
                             break;
 
 
@@ -106,6 +106,8 @@ namespace Assets.Models.AI
                 {
                     CommandManager.SetCurrentCommand(inCommand);
                     currentRoutine = null;
+                    Body.TargetPosition = null;
+                    Body.ClearPath();
                 }
             }
         }

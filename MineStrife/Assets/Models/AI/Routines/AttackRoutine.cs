@@ -9,18 +9,26 @@ namespace Assets.Models.AI.Routines
 {
 	public class AttackRoutine : Routine
 	{
-        //private AttackSubRoutine movetoPoint { get; set; }
+        private AttackSubRoutine attackSub { get; set; }
 
         public AttackRoutine(Unit inBody, Command inCommand)
             : base(inBody, inCommand)
         {
             //negate command if target position not provided
-            if(inCommand.TargetPosition.HasValue == false)
+            if (inCommand.TargetEntity == null)
             {
                 IsFinished = true;
+                return;
             }
 
-            //movetoPoint = new MoveToPointSubRoutine(inBody, inCommand.TargetPosition.Value);
+            if((inCommand.TargetEntity is Unit) == false)
+            {
+                IsFinished = true;
+                return;
+            }
+
+            var targetUnit = (Unit)inCommand.TargetEntity;
+            attackSub = new AttackSubRoutine(inBody, targetUnit);
         }
 
         
@@ -34,14 +42,14 @@ namespace Assets.Models.AI.Routines
             }
 
             //check if subroutine is finished , and if so finish routine
-            //if (movetoPoint.GetIsFinished() == true)
-            //{
-            //    IsFinished = true;
-            //    return;
-            //}
+            if (attackSub.GetIsFinished() == true)
+            {
+                IsFinished = true;
+                return;
+            }
 
-            ////else allow sub routine to run
-            //movetoPoint.Update(inTimeDelta);
+            //else allow sub routine to run
+            attackSub.Update(inTimeDelta);
         }
 	}
 }
