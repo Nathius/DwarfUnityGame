@@ -17,6 +17,7 @@ namespace Assets.Units
         public Vector2? TargetPosition { get; set; }
         public UnitType UnitType { get; set; }
         public AI Ai { get; set; }
+        private UnitSpriteState SpriteState { get; set; }
         
         public float MoveSpeed { get; set; }
 
@@ -27,6 +28,8 @@ namespace Assets.Units
         {
             MaxHealth = 10;
             Health = 10;//TODO set in unit definition
+
+            SpriteState = UnitSpriteState.IDLE;
 
             UnitType = inUnitType;
             MoveSpeed = 2.2f;
@@ -178,6 +181,30 @@ namespace Assets.Units
                 display += " Target: " + VectorHelper.ToString(TargetPosition.Value) + "\n";
             }
             return display;
+        }
+
+        public void SetSpriteState(UnitSpriteState state)
+        {
+            SpriteState = state;
+
+            //var newSpritePath = 
+            var spritePath = "Units/" + UnitType + "_" + SpriteState;
+            Debug.Log("set sprite state with path " + spritePath);
+
+            var sprite = Resources.Load<Sprite>(spritePath);
+            Debug.Log("loaded sprite " + sprite);
+
+            if(sprite != null)
+            {
+                var spriteRenderer = ViewObject.GetUnityGameObject().GetComponent<SpriteRenderer>();
+                spriteRenderer.sprite = sprite;
+            }
+        }
+
+        public override void Die()
+        {
+            SetSpriteState(UnitSpriteState.DEAD);
+            base.Die();
         }
 
 	}

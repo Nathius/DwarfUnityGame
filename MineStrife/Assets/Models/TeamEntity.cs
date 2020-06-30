@@ -31,7 +31,7 @@ namespace Assets.Models
             return Team;
         }
 
-        public void Die()
+        public virtual void Die()
         {
             Health = 0;
             IsDead = true;

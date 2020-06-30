@@ -110,6 +110,7 @@
     <Compile Include="Assets\Models\AI\AI.cs" />
     <Compile Include="Assets\Models\Units\Unit.cs" />
     <Compile Include="Assets\Models\Units\UnitDefinition.cs" />
+    <Compile Include="Assets\Models\Units\UnitSpriteState.cs" />
     <Compile Include="Assets\Models\Units\Weapon.cs" />
     <Compile Include="Assets\Models\Units\WeaponDefinition.cs" />
     <Compile Include="Assets\Models\World.cs" />
