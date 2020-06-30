@@ -8,6 +8,7 @@ using Assets.UnityWrappers;
 using Assets.Models.Buildings;
 using Assets.Models.AI;
 using Assets.Scripts;
+using Assets.Models.Units;
 
 namespace Assets.Units
 {
@@ -16,23 +17,36 @@ namespace Assets.Units
         public Vector2? TargetPosition { get; set; }
         public UnitType UnitType { get; set; }
         public AI Ai { get; set; }
-
-        public int Health { get; set; }
-        public bool isDead { get; set; }
+        
         public float MoveSpeed { get; set; }
 
-        public Unit(UnityObjectWrapper viewObject, Vector2 inPosition, int inTeam, UnitType inUnitType, AI inAi)
+        public Weapon Weapon { get; set; }
+
+        public Unit(UnityObjectWrapper viewObject, Vector2 inPosition, int inTeam, UnitType inUnitType, AI inAi, Weapon inWeapon)
             : base(viewObject, inPosition, inTeam)
         {
+            Health = 10;//TODO set in unit definition
+
             UnitType = inUnitType;
             MoveSpeed = 2.2f;
             Ai = inAi;
             Ai.Body = this;
-            isDead = false;
+            IsDead = false;
+            Weapon = inWeapon;
         }
 
         public override void Update(float inTimeDelta)
         {
+            if (IsDead)
+            {
+                return;
+            }
+
+            if(Weapon != null)
+            {
+                Weapon.Update(inTimeDelta);
+            }
+
             Ai.Update(inTimeDelta);
             
             Vector2 directionOfTravel = new Vector2(0, 0);

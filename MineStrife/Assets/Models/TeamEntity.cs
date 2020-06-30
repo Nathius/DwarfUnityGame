@@ -9,18 +9,41 @@ namespace Assets.Models
 {
 	public class TeamEntity : WorldEntity
 	{
-        private int team;
+        protected int Team {get; set; }
+        protected int Health {get; set; }
+        protected bool IsDead { get; set; }
 
         public TeamEntity(UnityObjectWrapper viewObject, Vector2 inPosition, int inTeam)
             : base(viewObject, inPosition)
         {
-            team = inTeam;
+            Team = inTeam;
+            IsDead = false;
+        }
+
+        public bool GetIsDead()
+        {
+            return IsDead;
         }
 
         public int getTeam()
         {
-            return team;
+            return Team;
         }
 
+        public void Die()
+        {
+            Health = 0;
+            IsDead = true;
+        }
+
+        public void TakeDamage(int inDamage)
+        {
+            Health -= inDamage;
+
+            if (Health <= 0)
+            {
+                this.Die();
+            }
+        }
 	}
 }

@@ -44,14 +44,24 @@ namespace Assets.Models
             tiles = new Tile[inWidth, inHeight];
         }
 
-        private void SpawnStartingUnits(int number)
+        private void SpawnStartingUnits()
         {
+            //spawn player units
             var centerPos = new Vector2(World.Instance.GetWidth() * 0.5f, World.Instance.GetHeight() * 0.5f);
-            for (int i = 0; i < number; i++)
+            for (int i = 0; i < ConfigFlags.StartingDwarves; i++)
             {
                 World.Instance.CurrentPop++;
                 var pos = new Vector2(centerPos.x + UnityEngine.Random.Range(-4, 4), centerPos.y + UnityEngine.Random.Range(-4, 4));
                 UnitController.Instance.CreateUnitAt(pos, UnitType.WORKER, ConfigFlags.PlayerTeam);
+            }
+
+
+            //spawn enemy units
+            var quarterPos = new Vector2(World.Instance.GetWidth() * 0.25f, World.Instance.GetHeight() * 0.25f);
+            for (int i = 0; i < ConfigFlags.StartingEnemyDwarves; i++)
+            {
+                var pos = new Vector2(quarterPos.x + UnityEngine.Random.Range(-4, 4), quarterPos.y + UnityEngine.Random.Range(-4, 4));
+                UnitController.Instance.CreateUnitAt(pos, UnitType.WORKER, ConfigFlags.PlayerTeam + 1);
             }
         }
 
@@ -74,7 +84,7 @@ namespace Assets.Models
             //need to find a better way of initial start up when nothing is ready predictably
             if(!haveSpawnedStartingUnits)
             {
-                SpawnStartingUnits(ConfigFlags.StartingDwarves);
+                SpawnStartingUnits();
                 haveSpawnedStartingUnits = true;         
             }
         }

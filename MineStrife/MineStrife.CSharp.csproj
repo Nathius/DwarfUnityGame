@@ -83,6 +83,7 @@
     <Compile Include="Assets\Models\AI\PathFinding\PathingNode.cs" />
     <Compile Include="Assets\Models\AI\PathFinding\PathSmoother.cs" />
     <Compile Include="Assets\Models\AI\Routines\BuildRoutine.cs" />
+    <Compile Include="Assets\Models\AI\Routines\AttackRoutine.cs" />
     <Compile Include="Assets\Models\AI\Routines\FollowRoutine.cs" />
     <Compile Include="Assets\Models\AI\Routines\MoveRoutine.cs" />
     <Compile Include="Assets\Models\AI\Routines\Routine.cs" />
@@ -108,6 +109,8 @@
     <Compile Include="Assets\Models\AI\AI.cs" />
     <Compile Include="Assets\Models\Units\Unit.cs" />
     <Compile Include="Assets\Models\Units\UnitDefinition.cs" />
+    <Compile Include="Assets\Models\Units\Weapon.cs" />
+    <Compile Include="Assets\Models\Units\WeaponDefinition.cs" />
     <Compile Include="Assets\Models\World.cs" />
     <Compile Include="Assets\Models\WorldEntity.cs" />
     <Compile Include="Assets\Scripts\FormationCalculator.cs" />

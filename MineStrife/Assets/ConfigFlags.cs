@@ -14,5 +14,6 @@ namespace Assets
         public const int NutralTeam = 0;
 
         public const int StartingDwarves = 4;
+        public const int StartingEnemyDwarves = 4;
 	}
 }

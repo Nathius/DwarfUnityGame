@@ -141,7 +141,22 @@ namespace Assets.Controllers
                 //if units selected
                 if(WorldController.Instance.CurrentSelection.Count > 0) //TODO check if at least one is a unit
                 {
-                    GiveOrderToUnits(MousePosInWorld);
+                    //check if selected are player units
+                    var selectedUnits = WorldController.Instance.CurrentSelection
+                        .Where(x => x is Unit)
+                        .Select(x => (Unit)x)
+                        .ToList<Unit>();
+
+                    Debug.Log("selected units: " + selectedUnits.Count);
+                    
+                    if(selectedUnits.Count > 0 
+                        && selectedUnits.Where(x => x.getTeam() == ConfigFlags.PlayerTeam).Any())
+                    {
+                        GiveOrderToUnits(selectedUnits.Where(x => x.getTeam() == ConfigFlags.PlayerTeam).ToList(), 
+                            MousePosInWorld);
+                    }
+
+                    
                 } 
             }
 
@@ -150,8 +165,11 @@ namespace Assets.Controllers
             UpdateZoomLevel();
         }
 
-        public void GiveOrderToUnits(Vector3 MousePosInWorld)
+        public void GiveOrderToUnits(List<Unit> units, Vector3 MousePosInWorld)
         {
+
+            Debug.Log("giving orders to player units : " + units.Count);
+
             //formations are just causing issues with pathfinding
             //var positions = FormationCalculator.findPositionsForFormation(
             //    WorldController.Instance.CurrentSelection.Select(x => x.Position).ToList(),
@@ -245,29 +263,26 @@ namespace Assets.Controllers
             }
 
             //give command to units
-            for (int i = 0; i < WorldController.Instance.CurrentSelection.Count; i++)
+            for (int i = 0; i < units.Count; i++)
             {
-                if (WorldController.Instance.CurrentSelection[i].GetType() == typeof(Unit))
+                //var closestPosition = positions.OrderBy(x => VectorHelper.getDistanceBetween(x, WorldController.Instance.CurrentSelection[i].Position)).First();
+                //positions.Remove(closestPosition);
+                var unit = units[i];
+                if (unit.Ai.SupportsBehaviour(commandT))
                 {
-                    //var closestPosition = positions.OrderBy(x => VectorHelper.getDistanceBetween(x, WorldController.Instance.CurrentSelection[i].Position)).First();
-                    //positions.Remove(closestPosition);
-                    var unit = (Unit)WorldController.Instance.CurrentSelection[i];
-                    if (unit.Ai.SupportsBehaviour(commandT))
-                    {
-                        //Debug.Log("Supports behaviour " + commandT.ToString());
-                        unit.Ai.AddCommand(
-                        new Command(commandT, VectorHelper.ToVector2(MousePosOnGrid), clickedEntity, false),
-                        Input.GetKey(KeyCode.LeftShift)
-                        );
-                    }
-                    else
-                    {
-                        //TODO default to move?
-                        unit.Ai.AddCommand(
-                        new Command(CommandTypes.MOVE, VectorHelper.ToVector2(MousePosOnGrid), clickedEntity, false),
-                        Input.GetKey(KeyCode.LeftShift)
-                        );
-                    }
+                    //Debug.Log("Supports behaviour " + commandT.ToString());
+                    unit.Ai.AddCommand(
+                    new Command(commandT, VectorHelper.ToVector2(MousePosOnGrid), clickedEntity, false),
+                    Input.GetKey(KeyCode.LeftShift)
+                    );
+                }
+                else
+                {
+                    //TODO default to move?
+                    unit.Ai.AddCommand(
+                    new Command(CommandTypes.MOVE, VectorHelper.ToVector2(MousePosOnGrid), clickedEntity, false),
+                    Input.GetKey(KeyCode.LeftShift)
+                    );
                 }
             }
         }

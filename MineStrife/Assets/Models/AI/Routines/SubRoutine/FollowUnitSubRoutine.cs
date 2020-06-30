@@ -41,7 +41,7 @@ namespace Assets.Models.AI.Routines.SubRoutine
 
         public void Update(float inTimeDelta)
         {
-            if(TargetUnit.isDead)
+            if (TargetUnit.GetIsDead())
             {
                 isFinished = true;
             }

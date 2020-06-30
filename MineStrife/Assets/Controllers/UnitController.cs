@@ -11,6 +11,7 @@ using Assets.Controllers.PrefabControllers;
 using Assets.Units;
 using Assets.Models.AI;
 using Assets.Scripts;
+using Assets.Models.Units;
 
 namespace Assets.Controllers
 {
@@ -35,7 +36,14 @@ namespace Assets.Controllers
             if (spawnPos != null)
             {
                 var prefab = UnitPrefabController.Instance.GetPrefab(inUnitType);
-                var definition = UnitDefinition.GetDefinitionForType(inUnitType);
+                var unitDef = UnitDefinition.GetDefinitionForType(inUnitType);
+                Weapon weapon = null;
+
+                if (unitDef.Weapon != WeaponType.NONE)
+                {
+                    var wepDef = WeaponDefinition.GetDefinitionForType(unitDef.Weapon);
+                    weapon = new Weapon(wepDef);
+                }
 
                 //instance a new build prefab and place it on the screen
                 GameObject unit_go = Instantiate(prefab);
@@ -43,8 +51,8 @@ namespace Assets.Controllers
                 unit_go.name = "Unit_" + inUnitType.ToString();
 
                 //create a new unit
-                var ai = new AI(definition.Behaviours);
-                new Unit(new UnityObjectWrapper(unit_go), spawnPos.Value, team, inUnitType, ai);
+                var ai = new AI(unitDef.Behaviours);
+                new Unit(new UnityObjectWrapper(unit_go), spawnPos.Value, team, inUnitType, ai, weapon);
             }         
         }
 

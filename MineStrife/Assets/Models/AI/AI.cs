@@ -76,6 +76,11 @@ namespace Assets.Models.AI
                             currentRoutine = new FollowRoutine(Body, currentCommand);
                             break;
 
+                        case CommandTypes.ATTACK:
+                            //currentRoutine = new FollowRoutine(Body, currentCommand);
+                            break;
+
+
                         default:
                             //idle or type not found / supported?
                             break;
