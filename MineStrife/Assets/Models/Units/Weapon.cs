@@ -12,21 +12,32 @@ namespace Assets.Models.Units
         public float Range { get; set; }
         public int Damage { get; set; }
         public float CoolDownTime { get; set; }
+        public float AimTime { get; set; }
 
         public float CoolDownCounter { get; set; }
 
-        public Weapon(WeaponDefinition inDefinition)
+        public Weapon(WeaponDefinition inDef)
         {
-            WeaponType = inDefinition.WeaponType;
-            Range = inDefinition.Range;
-            Damage = inDefinition.Damage;
-            CoolDownTime = inDefinition.CoolDownTime;
+            WeaponType = inDef.WeaponType;
+            Range = inDef.Range;
+            Damage = inDef.Damage;
+            CoolDownTime = inDef.CoolDownTime;
+            AimTime = inDef.AimTime;
             CoolDownCounter = 0;
         }
 
         public bool ReadyToFire()
         {
             return CoolDownCounter <= 0;
+        }
+
+        public bool Aiming()
+        {
+            if (CoolDownCounter > 0 && CoolDownCounter < AimTime)
+            {
+                return true;
+            }
+            return false;
         }
 
         public void FireAtUnit(TeamEntity inTarget)

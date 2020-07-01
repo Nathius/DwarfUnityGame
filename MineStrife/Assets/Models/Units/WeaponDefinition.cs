@@ -24,6 +24,7 @@ namespace Assets.Models.Units
         public float Range {get; set; }
         public int Damage {get; set; }
         public float CoolDownTime {get; set; }
+        public float AimTime { get; set; }
 
         public static List<WeaponDefinition> allDefinitions { get; set; }
         public WeaponDefinition()
@@ -44,6 +45,7 @@ namespace Assets.Models.Units
         {
             WeaponType = WeaponType.SHORT_BOW,
             CoolDownTime = 3,
+            AimTime = 1,
             Damage = 1,
             Range = 6
         };

@@ -72,6 +72,10 @@ namespace Assets.Models.AI.Routines.SubRoutine
                     Body.Weapon.FireAtUnit(TargetUnit);
                     Body.SetSpriteState(UnitSpriteState.AIMING);
                 }
+                else if(Body.Weapon.Aiming())
+                {
+                    Body.SetSpriteState(UnitSpriteState.AIMING);
+                }
                 else
                 {
                     //wait
