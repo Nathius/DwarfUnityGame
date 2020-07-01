@@ -185,14 +185,21 @@ namespace Assets.Units
 
         public void SetSpriteState(UnitSpriteState state)
         {
+            //check if already in that state and no need to do anything
+            if (SpriteState == state)
+            {
+                return;
+            }
+
+
             SpriteState = state;
 
             //var newSpritePath = 
-            var spritePath = "Units/" + UnitType + "_" + SpriteState;
-            Debug.Log("set sprite state with path " + spritePath);
+            var spritePath = "Graphics/Units/" + UnitType + "_" + SpriteState;
+            //Debug.Log("set sprite state with path " + spritePath);
 
             var sprite = Resources.Load<Sprite>(spritePath);
-            Debug.Log("loaded sprite " + sprite);
+            //Debug.Log("loaded sprite " + sprite);
 
             if(sprite != null)
             {

@@ -6,6 +6,7 @@ using Assets.Units;
 using Assets.Models.AI.Routines.SubRoutine;
 using UnityEngine;
 using Assets.Models.Buildings;
+using Assets.Models.Units;
 
 namespace Assets.Models.AI.Routines
 {
@@ -50,6 +51,8 @@ namespace Assets.Models.AI.Routines
             {
                 return;
             }
+
+            Body.SetSpriteState(UnitSpriteState.BUILDING);
 
             //first move to building
             if (moveToBuilding.GetIsFinished() == false)

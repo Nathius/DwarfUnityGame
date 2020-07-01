@@ -6,6 +6,7 @@ using UnityEngine;
 using Assets.Units;
 using Assets.Models.AI.PathFinding;
 using Assets.Scripts;
+using Assets.Models.Units;
 
 namespace Assets.Models.AI.Routines.SubRoutine
 {
@@ -69,15 +70,19 @@ namespace Assets.Models.AI.Routines.SubRoutine
                 {
                     //fire weapon
                     Body.Weapon.FireAtUnit(TargetUnit);
+                    Body.SetSpriteState(UnitSpriteState.AIMING);
                 }
                 else
                 {
                     //wait
                     //return;
+                    Body.SetSpriteState(UnitSpriteState.RELOADING);
                 }
             }
             else
             {
+                Body.SetSpriteState(UnitSpriteState.MOVING);
+
                 //if has path
                 if (CurrentPath != null)
                 {

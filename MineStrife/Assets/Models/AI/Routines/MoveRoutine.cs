@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Assets.Units;
 using Assets.Models.AI.Routines.SubRoutine;
+using Assets.Models.Units;
 
 namespace Assets.Models.AI.Routines
 {
@@ -27,6 +28,8 @@ namespace Assets.Models.AI.Routines
 
         public override void Update(float inTimeDelta)
         {
+            Body.SetSpriteState(UnitSpriteState.MOVING);
+
             //exit if routine is finished, manager should pick up and delete routine
             if(IsFinished)
             {

@@ -14,6 +14,7 @@ namespace Assets.Models.AI.Routines
 
         public Routine(Unit inBody, Command inCommand)
         {
+            Body = inBody;
             IsFinished = false;
             Command = inCommand;
         }

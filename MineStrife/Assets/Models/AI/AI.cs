@@ -7,6 +7,7 @@ using UnityEngine;
 using Assets.Models.AI.PathFinding;
 using Assets.Scripts;
 using Assets.Models.AI.Routines;
+using Assets.Models.Units;
 
 namespace Assets.Models.AI
 {
@@ -86,9 +87,11 @@ namespace Assets.Models.AI
                             break;
                     }
                 }
-                
-
-                //else attempt to action command
+            }
+            else
+            {
+                //idle when no command or routine
+                Body.SetSpriteState(UnitSpriteState.IDLE);
             }
         }
 

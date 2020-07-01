@@ -11,6 +11,7 @@ namespace Assets.Models.Units
         MOVING,
         AIMING,
         RELOADING,
+        BUILDING,
         DEAD,
         _COUNT
 	}
