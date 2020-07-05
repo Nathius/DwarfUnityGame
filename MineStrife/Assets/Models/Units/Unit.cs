@@ -37,6 +37,13 @@ namespace Assets.Units
             Ai.Body = this;
             IsDead = false;
             Weapon = inWeapon;
+
+            //if not player unit, tint red
+            if(inTeam != ConfigFlags.PlayerTeam)
+            {
+                viewObject.GetUnityGameObject().GetComponent<SpriteRenderer>().color = Color.red;
+                Ai.AddCommand(new Command(CommandTypes.WANDER, null, null, false), false);
+            }            
         }
 
         public override void Update(float inTimeDelta)

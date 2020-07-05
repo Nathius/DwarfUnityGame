@@ -84,6 +84,7 @@
     <Compile Include="Assets\Models\AI\PathFinding\PathSmoother.cs" />
     <Compile Include="Assets\Models\AI\Routines\BuildRoutine.cs" />
     <Compile Include="Assets\Models\AI\Routines\AttackRoutine.cs" />
+    <Compile Include="Assets\Models\AI\Routines\WanderRoutine.cs" />
     <Compile Include="Assets\Models\AI\Routines\FollowRoutine.cs" />
     <Compile Include="Assets\Models\AI\Routines\MoveRoutine.cs" />
     <Compile Include="Assets\Models\AI\Routines\Routine.cs" />
@@ -107,7 +108,7 @@
     <Compile Include="Assets\Models\Econemy\Stockpile.cs" />
     <Compile Include="Assets\Models\TeamEntity.cs" />
     <Compile Include="Assets\Models\Tile.cs" />
-    <Compile Include="Assets\Models\AI\AI.cs" />
+    <Compile Include="Assets\Models\AI\Routines\AI.cs" />
     <Compile Include="Assets\Models\Units\Unit.cs" />
     <Compile Include="Assets\Models\Units\UnitDefinition.cs" />
     <Compile Include="Assets\Models\Units\UnitSpriteState.cs" />

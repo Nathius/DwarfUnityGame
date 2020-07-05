@@ -46,7 +46,7 @@ namespace Assets.Models.Buildings
             Cost = new List<ResourceAmmount>() {
                 new ResourceAmmount(RESOURCE_TYPE.BREAD, 20)
             },
-            Behaviours = new List<CommandTypes>() { CommandTypes.MOVE, CommandTypes.BUILD, CommandTypes.FOLLOW}
+            Behaviours = new List<CommandTypes>() { CommandTypes.MOVE, CommandTypes.BUILD, CommandTypes.FOLLOW, CommandTypes.WANDER}
         };
 
         //Archer

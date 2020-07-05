@@ -18,6 +18,7 @@ namespace Assets.Models.AI
         BUILD,
         CAST,
         WORK,
+        WANDER,
 
 
         _COUNT

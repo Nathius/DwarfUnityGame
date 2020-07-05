@@ -81,6 +81,9 @@ namespace Assets.Models.AI
                             currentRoutine = new AttackRoutine(Body, currentCommand);
                             break;
 
+                        case CommandTypes.WANDER:
+                            currentRoutine = new WanderRoutine(Body, null);
+                            break;
 
                         default:
                             //idle or type not found / supported?

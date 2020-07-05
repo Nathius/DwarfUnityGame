@@ -27,7 +27,7 @@ namespace Assets.Models
         public World(int inWidth = 10, int inHeight = 10)
         {
             Instance = this;
-            PopCap = 10;
+            PopCap = ConfigFlags.StartingPopCap;
             CurrentPop = 0;
 
             //new empty list of game objects
@@ -109,7 +109,7 @@ namespace Assets.Models
                 tiles[inX, inY] = inTile;
             }
         }
-        private bool PointInGrid(int inX, int inY)
+        public bool PointInGrid(int inX, int inY)
         {
             if (inX >= GetWidth() || inX < 0 || inY >= GetHeight() || inY < 0)
             {
